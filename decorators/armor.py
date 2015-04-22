@@ -1,3 +1,6 @@
+
+from util import DotDict
+
 # col, row, upgradable, min_mech, metals zijn nog niet verwerkt.
 
 #                     value, min sta, protection, dexterity, stealth, sortering
@@ -24,48 +27,53 @@ armor_upgraded = {
 }
 # hoogste protection mogelijk is 15: Heavy Silver/Titanium Armor /+/++
 
-armors = {'emptyarmor': {'name': "Empty Armor",
-                         'raw': "emptyarmor",
-                         'value': 0,
-                         'shop': False,
-                         'min_sta': 0,
-                         'protection': 0,
-                         'dexterity': 0,
-                         'stealth': 0,
-                         'sort': 0}}
+armors = DotDict(dict(
+    emptyarmor=DotDict(dict(
+        name="Empty Armor",
+        raw="emptyarmor",
+        value=0,
+        shop=False,
+        min_sta=0,
+        protection=0,
+        dexterity=0,
+        stealth=0,
+        sort=0
+    ))))
 
 for key_material, value_material in armor_material.items():
     for key_type, value_type in armor_type.items():
         for key_upgraded, value_upgraded in armor_upgraded.items():
 
-            armors[(key_type + key_material + key_upgraded).strip().lower().replace(" ", "")] = {
-                'name': (key_type + " " + key_material + " " + key_upgraded).strip(),
-                'raw': (key_type + key_material + key_upgraded).strip().lower().replace(" ", ""),
+            raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
+
+            armors[raw_key_name] = DotDict(dict(
+                name=(key_type + " " + key_material + " " + key_upgraded).strip(),
+                raw=raw_key_name,
 
                 # berekening value: material * type * upgraded
-                'value': int(value_material[0] * value_type[0] * value_upgraded[0]),
-                'shop': True,
+                value=int(value_material[0] * value_type[0] * value_upgraded[0]),
+                shop=True,
 
                 # berekening min sta: material + type
-                'min_sta': value_material[1] + value_type[1],
+                min_sta=value_material[1] + value_type[1],
 
                 # berekening protection: material + type
-                'protection': value_material[2] + value_type[2],
+                protection=value_material[2] + value_type[2],
 
                 # berekening dexterity: material + type + upgraded
-                'dexterity': value_material[3] + value_type[3] + value_upgraded[3],
+                dexterity=value_material[3] + value_type[3] + value_upgraded[3],
 
                 # berekening stealth: material + type + upgraded
-                'stealth': value_material[4] + value_type[4] + value_upgraded[4],
+                stealth=value_material[4] + value_type[4] + value_upgraded[4],
 
                 # puur voor sortering
-                'sort': value_material[5] + value_type[5] + value_upgraded[5]
-            }
+                sort=value_material[5] + value_type[5] + value_upgraded[5]
+            ))
 
 # shop uitzetten voor sommige armors
 for key, value in armors.items():
     if "+" in key or "titanium" in key:
-        value['shop'] = False
+        value.shop = False
 # de laatste van shop is misschien niet nodig. dit kan ook in de shop zelf gecheckt worden. scheelt een variable.
 
 # for i, j in armors.items():

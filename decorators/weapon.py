@@ -57,7 +57,8 @@ weapons = DotDict(dict(
         min_str=0,
         base_hit=0,
         damage=0,
-        sort=0))))
+        sort=0
+    ))))
 
 for key_material, value_material in weapon_material.items():
     for key_type, value_type in weapon_type.items():
@@ -65,7 +66,7 @@ for key_material, value_material in weapon_material.items():
 
             raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
 
-            weapons[raw_key_name] = dict(
+            weapons[raw_key_name] = DotDict(dict(
                 name=(key_material + " " + key_type + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
@@ -86,8 +87,7 @@ for key_material, value_material in weapon_material.items():
 
                 # puur voor sortering
                 sort=value_material[3] + value_type[7] + value_upgraded[3]
-            )
-            weapons[raw_key_name] = DotDict(weapons[raw_key_name])
+            ))
 
 # min_int op 0 zetten voor close weapons
 # min_str op 0 zetten voor range weapons

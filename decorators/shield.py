@@ -5,12 +5,12 @@ from util import DotDict
 
 #                   value, min str, protection, defense, dexterity, stealth, sortering
 shield_material = {
-    "Wooden":          (0,       3,          2,       1,        -1,      -1,    100),
-    "Bronze":        (300,       6,          4,       2,        -2,      -2,    200),
-    "Iron":          (600,       9,          6,       3,        -3,      -3,    300),
-    "Steel":         (900,      12,          8,       4,        -4,      -4,    400),
-    "Silver":       (1200,      15,         10,       5,        -5,      -5,    500),
-    "Titanium":     (1500,       3,         10,       5,        -1,      -1,    600)
+    "Wooden":        (200,       3,          2,       1,        -1,      -1,    100),
+    "Bronze":        (500,       6,          4,       2,        -2,      -2,    200),
+    "Iron":          (800,       9,          6,       3,        -3,      -3,    300),
+    "Steel":        (1100,      12,          8,       4,        -4,      -4,    400),
+    "Silver":       (1400,      15,         10,       5,        -5,      -5,    500),
+    "Titanium":     (1700,       3,         10,       5,        -1,      -1,    600)
     # "Stealth":      (16,       1,          0,       0,        -1,      -1)
 }
 #                   value, min str, protection, defense, dexterity, stealth
@@ -29,54 +29,52 @@ shield_upgraded = {
 }
 # de hoogste protection/defense mogelijk is 15/30: Large Silver/Titanium Scutum /+/++
 
-shields = DotDict(
-    {'emptyshield': DotDict(
-        {'name': "Empty Shield",
-         'raw': "emptyshield",
-         'value': 0,
-         'shop': False,
-         'min_str': 0,
-         'protection': 0,
-         'defense': 0,
-         'dexterity': 0,
-         'stealth': 0,
-         'sort': 0
-         })})
+shields = DotDict(dict(
+    emptyshield=DotDict(dict(
+        name="Empty Shield",
+        raw="emptyshield",
+        value=0,
+        shop=False,
+        min_str=0,
+        protection=0,
+        defense=0,
+        dexterity=0,
+        stealth=0,
+        sort=0))))
 
 for key_material, value_material in shield_material.items():
     for key_type, value_type in shield_type.items():
         for key_upgraded, value_upgraded in shield_upgraded.items():
 
             raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
-            # price = int((value_material[0] + value_type[0]))
+            price = (value_material[0] + value_type[0]) * (value_material[0] + value_type[0]) / 900
 
-            shields[raw_key_name] = {
-                'name': (key_material + " " + key_type + " " + key_upgraded).strip(),
-                'raw': raw_key_name,
+            shields[raw_key_name] = DotDict(dict(
+                name=(key_material + " " + key_type + " " + key_upgraded).strip(),
+                raw=raw_key_name,
 
                 # berekening value: material * type * upgraded
-                'value': int((value_material[0] + value_type[0]) * value_upgraded[0]),
-                'shop': True,
+                value=int(price * value_upgraded[0]),
+                shop=True,
 
                 # berekening min str: material + type
-                'min_str': value_material[1] + value_type[1],
+                min_str=value_material[1] + value_type[1],
 
                 # berekening protection: material + type
-                'protection': value_material[2] + value_type[2],
+                protection=value_material[2] + value_type[2],
 
                 # berekening defense: material + type
-                'defense': value_material[3] + value_type[3],
+                defense=value_material[3] + value_type[3],
 
                 # berekening dexterity: material + type + upgraded
-                'dexterity': value_material[4] + value_type[4] + value_upgraded[4],
+                dexterity=value_material[4] + value_type[4] + value_upgraded[4],
 
                 # berekening stealth: material + type + upgraded
-                'stealth': value_material[5] + value_type[5] + value_upgraded[5],
+                stealth=value_material[5] + value_type[5] + value_upgraded[5],
 
                 # puur voor sortering
-                'sort': value_material[6] + value_type[6] + value_upgraded[6]
-            }
-            shields[raw_key_name] = DotDict(shields[raw_key_name])
+                sort=value_material[6] + value_type[6] + value_upgraded[6]
+            ))
 
 # shop uitzetten voor sommige armors
 for key, value in shields.items():

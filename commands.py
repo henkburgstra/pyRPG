@@ -111,7 +111,7 @@ def cmd_purchaselist(*params):
         print("{:40}{:13}{:12}{:18}{:13}{:17}{:14}{}".format("Name", "Value", "Min.Str", "Protection", "Defense",
                                                                               "Dexterity", "Stealth", "Quantity"))
         print()
-        for key, value in sorted(shields.items(), key=lambda shield: (shield[1].value, shield[1].name)):
+        for key, value in sorted(shields.items(), key=lambda shield: shield[1].sort):
             if value.shop:
                 print("{:30}{:15}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
                                                                         value.value,
