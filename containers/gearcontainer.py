@@ -32,9 +32,11 @@ class GearContainer(Container):
             return
 
         if gear in self:
+            # self[gear].quantity += quantity
             self.get_item(gear.RAW).quantity += quantity
         else:
             self[gear] = gear                                 # self[gear] bestaat uit zichzelf al uit quantity = 1
+            # self[gear].quantity += quantity - 1
             self.get_item(gear.RAW).quantity += quantity - 1  # dus daarom, wanneer nieuw: plus - 1
 
         if verbose:

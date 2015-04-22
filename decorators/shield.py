@@ -40,7 +40,8 @@ shields = DotDict(dict(
         defense=0,
         dexterity=0,
         stealth=0,
-        sort=0))))
+        sort=0
+    ))))
 
 for key_material, value_material in shield_material.items():
     for key_type, value_type in shield_type.items():

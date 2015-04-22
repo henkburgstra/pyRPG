@@ -128,14 +128,14 @@ def cmd_purchaselist(*params):
         print("{:40}{:13}{:12}{:16}{:17}{:14}{}".format("Name", "Value", "Min.Sta", "Protection", "Dexterity",
                                                                                     "Stealth", "Quantity"))
         print()
-        for key, value in sorted(armors.items(), key=lambda armor: armor[1]['sort']):
-            if value['shop']:
-                print("{:30}{:15}{:15}{:15}{:15}{:15}{:15}".format(value['name'],
-                                                                   value['value'],
-                                                                   value['min_sta'],
-                                                                   value['protection'],
-                                                                   value['dexterity'],
-                                                                   value['stealth'],
+        for key, value in sorted(armors.items(), key=lambda armor: armor[1].sort):
+            if value.shop:
+                print("{:30}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
+                                                                   value.value,
+                                                                   value.min_sta,
+                                                                   value.protection,
+                                                                   value.dexterity,
+                                                                   value.stealth,
                                                                    shop_count(key)))
         print()
 
@@ -165,7 +165,7 @@ def cmd_purchase(*params):
             item = Armor.factory(armors[gear_raw])
 
         if item.SHOP:
-            if data.pouch.remove(data.pouchitems['gold'], item.VALUE * quantity):
+            if data.pouch.remove(data.pouchitems.gold, item.VALUE * quantity):
                 print("Purchased {} {} for {} gold.".format(quantity, item.NAME, item.VALUE * quantity))
                 data.inventory.add(item, quantity)
     except (AttributeError, ValueError):
@@ -182,7 +182,7 @@ def cmd_sell(*params):
             quantity = int(params[0])
 
         data.inventory.remove(item, quantity)
-        data.pouch.add(data.pouchitems['gold'], int((item.VALUE * quantity) / 2))
+        data.pouch.add(data.pouchitems.gold, int((item.VALUE * quantity) / 2))
     except (KeyError, AttributeError, ValueError):
         try:
             hero = data.party.get_member_with_this_equipment(params[0])
@@ -192,7 +192,7 @@ def cmd_sell(*params):
             hero.set_equipment(empty_item, False)
             print("Sold {}.".format(item.NAME))
             print("{} was equipped by {}.".format(item.NAME, hero.NAME))
-            data.pouch.add(data.pouchitems['gold'], int(item.VALUE / 2))
+            data.pouch.add(data.pouchitems.gold, int(item.VALUE / 2))
         except (AttributeError, ValueError):
             print("sell ([quantity]) [gear_name_without_spaces]")
 
@@ -229,7 +229,7 @@ def cmd_heroes():
         for int_hero in data.party:                                       # intern
             if ext_hero == int_hero:
                 available = "Party member"
-                if int_hero == data.heroes['alagos']:
+                if int_hero == data.heroes.alagos:
                     available = "Party leader"
                 break
         print("{:10}\t{}\t{}".format(ext_hero.NAME, ext_hero.level, available))
@@ -307,11 +307,11 @@ def create_empty_gear(gear_type):
         # 2 verschillende mogelijk van gear_type, eentje komt van sell en de ander van unequip
 
         if gear_type == "weapon" or gear_type in weapons:
-            return Weapon.factory(weapons['emptyweapon'])
+            return Weapon.factory(weapons.emptyweapon)
         elif gear_type == "shield" or gear_type in shields:
-            return Shield.factory(shields['emptyshield'])
+            return Shield.factory(shields.emptyshield)
         elif gear_type == "armor" or gear_type in armors:
-            return Armor.factory(armors['emptyarmor'])
+            return Armor.factory(armors.emptyarmor)
 
 
 def shop_count(key):

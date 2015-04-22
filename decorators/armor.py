@@ -44,7 +44,7 @@ for key_material, value_material in armor_material.items():
     for key_type, value_type in armor_type.items():
         for key_upgraded, value_upgraded in armor_upgraded.items():
 
-            raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
+            raw_key_name = (key_type + key_material + key_upgraded).strip().lower().replace(" ", "")
 
             armors[raw_key_name] = DotDict(dict(
                 name=(key_type + " " + key_material + " " + key_upgraded).strip(),

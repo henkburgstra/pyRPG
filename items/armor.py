@@ -13,7 +13,12 @@ class Armor(Gear):
         self.STEALTH = stealth
 
     @staticmethod
-    def factory(properties):
-        return Armor(properties['name'], properties['value'], properties['shop'], properties['min_sta'],
-                     properties['protection'], properties['dexterity'], properties['stealth'], )
+    def factory(armor_dict):
+        return Armor(armor_dict.name,
+                     armor_dict.value,
+                     armor_dict.shop,
+                     armor_dict.min_sta,
+                     armor_dict.protection,
+                     armor_dict.dexterity,
+                     armor_dict.stealth)
 

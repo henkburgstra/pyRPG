@@ -14,7 +14,13 @@ class Shield(Gear):
         self.STEALTH = stealth
 
     @staticmethod
-    def factory(properties):
-        return Shield(properties['name'], properties['value'], properties['shop'], properties['min_str'],
-                      properties['protection'], properties['defense'], properties['dexterity'], properties['stealth'])
+    def factory(shield_dict):
+        return Shield(shield_dict.name,
+                      shield_dict.value,
+                      shield_dict.shop,
+                      shield_dict.min_str,
+                      shield_dict.protection,
+                      shield_dict.defense,
+                      shield_dict.dexterity,
+                      shield_dict.stealth)
 

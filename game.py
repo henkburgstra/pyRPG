@@ -3,13 +3,9 @@
 # aan het einde, als property's geen special voorwaarden hebben, gewoon de lokale _variablen globaal maken, dus zonder _
 # misschien hoeft een enemy geen equipment te hebben of skills, maar raw stats. idee om over na te denken
 
-# github
 # voorwaarden aan de wapens maken
 # meer decorators
 # meer stats voor heroes
-# shields decorator herberekenen price enzo
-# dot notificatie instellen op vele plekken nog
-# de dotdict gebruiken in de character constructor ipv data
 # een print output class gebruiken?
 
 # de pouchvraag verwijderen bij buy, (misschien toch niet)

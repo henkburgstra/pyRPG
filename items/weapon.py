@@ -19,9 +19,15 @@ class Weapon(Gear):
     #     return randint(self.minDMG, self.maxDMG)
 
     @staticmethod
-    def factory(properties):
-        return Weapon(properties['name'], properties['value'], properties['shop'], properties['skill'],
-                      properties['min_int'], properties['min_str'], properties['base_hit'], properties['damage'])
+    def factory(weapon_dict):
+        return Weapon(weapon_dict.name,
+                      weapon_dict.value,
+                      weapon_dict.shop,
+                      weapon_dict.skill,
+                      weapon_dict.min_int,
+                      weapon_dict.min_str,
+                      weapon_dict.base_hit,
+                      weapon_dict.damage)
 
 
 # class WeaponEnchanted(Weapon):
