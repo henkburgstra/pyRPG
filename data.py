@@ -1,52 +1,35 @@
 
-import util
-import stats
-import skills
+from util import DotDict
+from stats import *
 import items
 import decorators
 import characters
 import containers
 
 stats_alagos = dict(
-    int=stats.Intelligence(18), wil=stats.Willpower(12), dex=stats.Dexterity(15),
-    edu=stats.Endurance(15), str=stats.Strength(15), sta=stats.Stamina(30)
-)
+    int=Intelligence(18), wil=Willpower(12), dex=Dexterity(15), edu=Endurance(15), str=Strength(15), sta=Stamina(30))
 stats_luana = dict(
-    int=stats.Intelligence(14), wil=stats.Willpower(10), dex=stats.Dexterity(22),
-    edu=stats.Endurance(10), str=stats.Strength(8), sta=stats.Stamina(20)
-)
+    int=Intelligence(14), wil=Willpower(10), dex=Dexterity(22), edu=Endurance(10), str=Strength(8), sta=Stamina(20))
 stats_grindan = dict(
-    int=stats.Intelligence(10), wil=stats.Willpower(8), dex=stats.Dexterity(25),
-    edu=stats.Endurance(20), str=stats.Strength(20), sta=stats.Stamina(40)
-)
+    int=Intelligence(10), wil=Willpower(8), dex=Dexterity(25), edu=Endurance(20), str=Strength(20), sta=Stamina(40))
 
 stats_brownbat = dict(
-    int=stats.Intelligence(4), wil=stats.Willpower(3), dex=stats.Dexterity(14),
-    edu=stats.Endurance(5), str=stats.Strength(8), sta=stats.Stamina(10)
-)
+    int=Intelligence(4), wil=Willpower(3), dex=Dexterity(14), edu=Endurance(5), str=Strength(8), sta=Stamina(10))
 stats_darkbat = dict(
-    int=stats.Intelligence(4), wil=stats.Willpower(3), dex=stats.Dexterity(12),
-    edu=stats.Endurance(5), str=stats.Strength(9), sta=stats.Stamina(14)
-)
+    int=Intelligence(4), wil=Willpower(3), dex=Dexterity(12), edu=Endurance(5), str=Strength(9), sta=Stamina(14))
 
 skills_alagos = dict(
-    chm=skills.Chemist(), dip=skills.Diplomat(), lor=skills.Loremaster(), mec=skills.Mechanic(), med=skills.Medic(),
-    mer=skills.Merchant(), ran=skills.Ranger(), sci=skills.Scientist(1), stl=skills.Stealth(1), thf=skills.Thief(),
-    trb=skills.Troubadour(1), war=skills.Warrior(3), haf=skills.Hafted(1), mis=skills.Missile(3), pol=skills.Pole(),
-    shd=skills.Shield(3), swd=skills.Sword(3), thr=skills.Thrown()
-)
+    chm=Chemist(), dip=Diplomat(), lor=Loremaster(), mec=Mechanic(), med=Medic(), mer=Merchant(),
+    ran=Ranger(), sci=Scientist(1), stl=Stealth(1), thf=Thief(), trb=Troubadour(1), war=Warrior(3),
+    haf=Hafted(1), mis=Missile(3), pol=Pole(), shd=Shield(3), swd=Sword(3), thr=Thrown())
 skills_luana = dict(
-    chm=skills.Chemist(), dip=skills.Diplomat(), lor=skills.Loremaster(), mec=skills.Mechanic(1), med=skills.Medic(),
-    mer=skills.Merchant(), ran=skills.Ranger(), sci=skills.Scientist(), stl=skills.Stealth(3), thf=skills.Thief(3),
-    trb=skills.Troubadour(), war=skills.Warrior(), haf=skills.Hafted(-1), mis=skills.Missile(-1), pol=skills.Pole(),
-    shd=skills.Shield(-1), swd=skills.Sword(1), thr=skills.Thrown(2)
-)
+    chm=Chemist(), dip=Diplomat(), lor=Loremaster(), mec=Mechanic(1), med=Medic(), mer=Merchant(),
+    ran=Ranger(), sci=Scientist(), stl=Stealth(3), thf=Thief(3), trb=Troubadour(), war=Warrior(),
+    haf=Hafted(-1), mis=Missile(-1), pol=Pole(), shd=Shield(-1), swd=Sword(1), thr=Thrown(2))
 skills_grindan = dict(
-    chm=skills.Chemist(-1), dip=skills.Diplomat(), lor=skills.Loremaster(), mec=skills.Mechanic(), med=skills.Medic(),
-    mer=skills.Merchant(), ran=skills.Ranger(), sci=skills.Scientist(-1), stl=skills.Stealth(1), thf=skills.Thief(-1),
-    trb=skills.Troubadour(), war=skills.Warrior(4), haf=skills.Hafted(), mis=skills.Missile(-1), pol=skills.Pole(),
-    shd=skills.Shield(4), swd=skills.Sword(4), thr=skills.Thrown(2)
-)
+    chm=Chemist(-1), dip=Diplomat(), lor=Loremaster(), mec=Mechanic(), med=Medic(), mer=Merchant(),
+    ran=Ranger(), sci=Scientist(-1), stl=Stealth(1), thf=Thief(-1), trb=Troubadour(), war=Warrior(4),
+    haf=Hafted(), mis=Missile(-1), pol=Pole(), shd=Shield(4), swd=Sword(4), thr=Thrown(2))
 
 equipment_alagos = dict(
     wpn=items.Weapon.factory(decorators.weapons.bronzeshortsword),
@@ -64,17 +47,17 @@ equipment_grindan = dict(
     arm=items.Armor.factory(decorators.armors.mediumbronzearmor)
 )
 
-heroes = util.DotDict(dict(
-    alagos=characters.Hero('Alagos',   1, stats.Level(1),    500, stats_alagos,  skills_alagos,  equipment_alagos),
-    luana=characters.Hero('Luana',     2, stats.Level(1),    500, stats_luana,   skills_luana,   equipment_luana),
-    grindan=characters.Hero('Grindan', 3, stats.Level(8), 102000, stats_grindan, skills_grindan, equipment_grindan),
+heroes = DotDict(dict(
+    alagos=characters.Hero('Alagos',   1, Level(1),    500, stats_alagos,  skills_alagos,  equipment_alagos),
+    luana=characters.Hero('Luana',     2, Level(1),    500, stats_luana,   skills_luana,   equipment_luana),
+    grindan=characters.Hero('Grindan', 3, Level(8), 102000, stats_grindan, skills_grindan, equipment_grindan),
 ))
-villains = util.DotDict(dict(
-    # brownbat=characters.Villain('Brown Bat', stats.Level(2), stats_brownbat),
-    # darkbat=characters.Villain('Dark Bat',   stats.Level(2), stats_darkbat)
+villains = DotDict(dict(
+    # brownbat=characters.Villain('Brown Bat', Level(2), stats_brownbat),
+    # darkbat=characters.Villain('Dark Bat',   Level(2), stats_darkbat)
 ))
 
-pouchitems = util.DotDict(dict(
+pouchitems = DotDict(dict(
     gold=items.PouchItem("Gold"),
     herbs=items.PouchItem("Herbs"),
     spices=items.PouchItem("Spices")
