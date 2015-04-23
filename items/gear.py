@@ -20,7 +20,7 @@ class Gear(Item):
         self.BASE_HIT = None
         self.DAMAGE = None
 
-        self.DEXTERITY = 0
+        self.DEXTERITY = None
         self.STEALTH = None
 
     def show_gear(self):
@@ -50,7 +50,7 @@ class Gear(Item):
             print("Base Hit          : {}".format(self.BASE_HIT))
         if self.DAMAGE is not None:
             print("Damage            : {}".format(self.DAMAGE))
-        if self.DEXTERITY != 0:
+        if self.DEXTERITY is not None:
             print("Dexterity         : {}".format(self.DEXTERITY))
         if self.STEALTH is not None:
             print("Stealth           : {}".format(self.STEALTH))

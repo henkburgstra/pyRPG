@@ -9,17 +9,44 @@ class Skill(object):
         self.RAW = raw
         self.UPGRADE = upgrade
         self._quantity = quantity
+        self._extra = 0
+        self._total = quantity
         self.SORT = sort
 
     def show_skill(self):
         """ Deze is voor hero stats"""
-        print("      {:13}: {}".format(self.NAME, self._quantity))
+        if self._extra == 0:
+            print("      {:13}: {}".format(self.NAME, self._quantity))
+        elif self._extra > 0:
+            print("      {:13}: {} (+{})".format(self.NAME, self._quantity, self._extra))
+        else:
+            print("      {:13}: {} ({})".format(self.NAME, self._quantity, self._extra))
 
     def positive_quantity(self):
         """ Deze is voor hero stats"""
         if self._quantity >= 1:
             return True
         return False
+
+    def get_extra(self):
+        return self._extra
+
+    def set_extra(self, extra):
+        self._extra = extra
+
+    extra = property(get_extra, set_extra)
+
+    def get_total(self):
+        return self._total
+
+    def set_total(self, total):
+        self._total = total
+
+    total = property(get_total, set_total)
+
+    @property
+    def quantity(self):
+        return self._quantity
 
 
 class Chemist(Skill):
