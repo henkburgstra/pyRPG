@@ -1,6 +1,6 @@
 
 class Output(object):
 
- 	pass
+    pass
 
-#test
+# test
