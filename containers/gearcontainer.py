@@ -25,8 +25,8 @@ class GearContainer(Container):
     def add(self, gear, quantity=1, verbose=True):
         """Deze is voor purchase, equip en unequip"""
         if quantity < 1:
-            print("That is not possible.")
-            raise AttributeError
+            self._output.quantity_less_than_one()
+            raise ValueError
         if "empty" in gear.RAW:
             return
 
@@ -39,15 +39,15 @@ class GearContainer(Container):
             self.get_item(gear.RAW).quantity += quantity - 1  # dus daarom, wanneer nieuw: plus - 1
 
         if verbose:
-            print("Put {} {} in {}.".format(quantity, gear.NAME, self.NAME))
+            self._output.add_item(quantity, gear.NAME, self.NAME)
 
     def remove(self, gear, quantity=1, verbose=True):
         """Deze is voor sell en equip"""
         if gear not in self:
-            print("Item not in container.")
+            self._output.no_item()
             raise AttributeError
         if quantity < 1:
-            print("That is not possible.")
+            self._output.quantity_less_than_one()
             raise ValueError
 
         if gear.quantity > quantity:
@@ -55,8 +55,8 @@ class GearContainer(Container):
         elif gear.quantity == quantity:
             del self[gear]
         else:
-            print("Item quantity not in container.")
+            self._output.error_quantity_not_enough()
             raise ValueError
 
         if verbose:
-            self._output.item_removed(quantity, gear.NAME, self.NAME)
+            self._output.remove_item(quantity, gear.NAME, self.NAME)

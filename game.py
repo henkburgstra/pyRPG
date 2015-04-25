@@ -6,7 +6,6 @@
 # voorwaarden aan de wapens maken
 # meer decorators
 # meer stats voor heroes
-# een print output class gebruiken?
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 
 # de pouchvraag verwijderen bij buy, (misschien toch niet)

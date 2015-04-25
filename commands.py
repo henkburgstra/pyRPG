@@ -68,9 +68,7 @@ def cmd_inventory():
 
 
 def cmd_pouch():
-    print()
     data.pouch.show_content()
-    print()
 
 
 def cmd_find(*params):

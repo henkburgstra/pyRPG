@@ -9,16 +9,12 @@ class SmallContainer(Container):
 
     def show_content(self):
         """Deze is voor pouch"""
-        if len(self) > 0:
-            for item in self:
-                print("{} x{}".format(item.NAME, item.quantity))
-        else:
-            print("Empty")
+        self._output.pouch(len(self), self)
 
     def add(self, item, quantity, verbose=True):
         """Deze is voor find en sell"""
         if quantity < 1:
-            print("That is not possible.")
+            self._output.quantity_less_than_one()
             raise ValueError
         if item in self:
             self[item].quantity += quantity
@@ -26,16 +22,15 @@ class SmallContainer(Container):
             self[item] = item                    # self[item] bestaat uit zichzelf al uit quantity = 1
             self[item].quantity += quantity - 1  # dus daarom, wanneer hij voor het eerst wordt toegevoegd: - 1
         if verbose:
-            print("Put {} {} in {}.".format(quantity, item.NAME, self.NAME))
+            self._output.add_item(quantity, item.NAME, self.NAME)
 
     def remove(self, item, price):
         """Deze is voor purchase"""
         if price < 1:
-            print("That is not possible.")
+            self._output.quantity_less_than_one()
             return False
         if item not in self or self[item].quantity < price:
-            print("Not enough {}.".format(item.NAME))
-            print("You need {} more {}.".format(price - item.quantity, item.NAME))
+            self._output.quantity_not_enough(item.NAME, price, item.quantity)
             return False
         else:
             self[item].quantity -= price

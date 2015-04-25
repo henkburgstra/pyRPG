@@ -2,7 +2,7 @@
 class Output(object):
 
     @staticmethod
-    def partymembers(party_size, party_maximum, party):
+    def party(party_size, party_maximum, party):
         """Deze is voor party"""
         print()
         print(str(party_size) + "/" + str(party_maximum))
@@ -12,14 +12,76 @@ class Output(object):
         print()
 
     @staticmethod
+    def pouch(volume, inventory):
+        """Deze is voor pouch"""
+        print()
+        if volume > 0:
+            for item in inventory:
+                print("{} x{}".format(item.NAME, item.quantity))
+        else:
+            print("Empty")
+        print()
+
+    @staticmethod
     def is_equipping(character_name, item_name):
         """Deze is voor sell, equip en unequip"""
         print("{} is equipping {}.".format(character_name, item_name))
 
     @staticmethod
-    def item_removed(item_quantity, item_name, inventory_name):
+    def add_item(item_quantity, item_name, inventory_name):
+        """Deze is voor find, purchase, sell, equip en unequip"""
+        print("Put {} {} in {}.".format(item_quantity, item_name, inventory_name))
+
+    @staticmethod
+    def remove_item(item_quantity, item_name, inventory_name):
         """Deze is voor sell en equip"""
         print("Removed {} {} from {}.".format(item_quantity, item_name, inventory_name))
+
+    @staticmethod
+    def quantity_not_enough(item_name, item_price, item_quantity):
+        """Deze is voor purchase"""
+        print("Not enough {}.".format(item_name))
+        print("You need {} more {}.".format(item_price - item_quantity, item_name))
+
+    @staticmethod
+    def error_quantity_not_enough():
+        """Deze is voor sell en equip"""
+        print("Item quantity not in container.")
+
+    @staticmethod
+    def no_item():
+        """Deze is voor sell en equip"""
+        print("Item not in container.")
+
+    @staticmethod
+    def quantity_less_than_one():
+        """Deze is voor find, purchase, sell, equip en unequip"""
+        print("That is not possible.")
+
+    @staticmethod
+    def character_join_party(character_name, party_name):
+        """Deze is voor join"""
+        print("{} joined {}.".format(character_name, party_name))
+
+    @staticmethod
+    def character_double_join(character_name, party_name):
+        """Deze is voor join"""
+        print("{} is already in {}.".format(character_name, party_name))
+
+    @staticmethod
+    def character_full_party(party_name):
+        """Deze is voor join"""
+        print("{} is full.".format(party_name))
+
+    @staticmethod
+    def character_leave_party(character_name, party_name):
+        """Deze is voor leave"""
+        print("{} left {}.".format(character_name, party_name))
+
+    @staticmethod
+    def leader_not_leave_party():
+        """Deze is voor leave"""
+        print("The party leader cannot leave his own party!")
 
     @staticmethod
     def character_inventory(character_name, item_quantity, character_equipment):

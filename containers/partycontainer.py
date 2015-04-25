@@ -28,23 +28,23 @@ class PartyContainer(Container):
 
     def show_members(self):
         """Deze is voor party"""
-        self._output.partymembers(len(self), self.MAXIMUM, self)
+        self._output.party(len(self), self.MAXIMUM, self)
 
     def add(self, character, verbose=True):
         """Deze is voor join"""
         if character in self:
-            print("{} is already in {}.".format(character.NAME, self.NAME))
+            self._output.character_double_join(character.NAME, self.NAME)
         elif len(self) < self.MAXIMUM:
             self[character] = character
             if verbose:
-                print("{} joined {}.".format(character.NAME, self.NAME))
+                self._output.character_join_party(character.NAME, self.NAME)
         else:
-            print("{} is full.".format(self.NAME))
+            self._output.character_full_party(self.NAME)
 
     def remove(self, character):
         """Deze is voor leave"""
         if character.RAW == 'alagos':
-            print("The party leader cannot leave his own party!")
+            self._output.leader_not_leave_party()
         elif character in self:
-            print("{} left {}.".format(character.NAME, self.NAME))
+            self._output.character_leave_party(character.NAME, self.NAME)
             del self[character]
