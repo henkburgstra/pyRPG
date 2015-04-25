@@ -1,6 +1,6 @@
 
 
-from items import Item
+from items.item import Item
 
 from items import Skill
 from items import MinIntelligence

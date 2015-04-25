@@ -1,5 +1,5 @@
 
-from stats import Stat
+from characters.stats import Stat
 
 
 class Skill(Stat):

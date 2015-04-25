@@ -1,6 +1,6 @@
 
 
-from items import Gear
+from items.gear import Gear
 
 from items import Skill
 from items import MinIntelligence

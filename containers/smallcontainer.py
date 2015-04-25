@@ -1,5 +1,5 @@
 
-from containers import Container
+from containers.container import Container
 
 
 class SmallContainer(Container):

@@ -1,9 +1,8 @@
 
 from util import DotDict
-from stats import *
+from characters import *
 import items
 import decorators
-import characters
 import containers
 
 stats_alagos = dict(
@@ -48,13 +47,13 @@ equipment_grindan = dict(
 )
 
 heroes = DotDict(dict(
-    alagos=characters.Hero('Alagos',   1, Level(1),    500, stats_alagos,  skills_alagos,  equipment_alagos),
-    luana=characters.Hero('Luana',     2, Level(1),    500, stats_luana,   skills_luana,   equipment_luana),
-    grindan=characters.Hero('Grindan', 3, Level(8), 102000, stats_grindan, skills_grindan, equipment_grindan),
+    alagos=Hero('Alagos',   1, Level(1),    500, stats_alagos,  skills_alagos,  equipment_alagos),
+    luana=Hero('Luana',     2, Level(1),    500, stats_luana,   skills_luana,   equipment_luana),
+    grindan=Hero('Grindan', 3, Level(8), 102000, stats_grindan, skills_grindan, equipment_grindan),
 ))
 villains = DotDict(dict(
-    # brownbat=characters.Villain('Brown Bat', Level(2), stats_brownbat),
-    # darkbat=characters.Villain('Dark Bat',   Level(2), stats_darkbat)
+    # brownbat=Villain('Brown Bat', Level(2), stats_brownbat),
+    # darkbat=Villain('Dark Bat',   Level(2), stats_darkbat)
 ))
 
 pouchitems = DotDict(dict(

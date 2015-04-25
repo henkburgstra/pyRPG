@@ -1,6 +1,4 @@
 
-from .item import Item
-
 from .property import Skill
 from .property import MinIntelligence
 from .property import MinStrength
@@ -13,7 +11,6 @@ from .property import Dexterity
 from .property import Stealth
 
 from .pouchitem import PouchItem
-from .gear import Gear
 
 from .weapon import Weapon
 from .shield import Shield

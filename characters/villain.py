@@ -1,6 +1,6 @@
 
 
-from characters import Character
+from characters.character import Character
 
 
 class Villain(Character):
