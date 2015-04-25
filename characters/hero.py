@@ -20,9 +20,7 @@ class Hero(Character):
 
     def show_equipment(self):
         """Deze is voor inv"""
-        for value in sorted(self._equipment.values(), key=lambda equipment: equipment.SORT):
-            if "empty" not in value.RAW:
-                self._output.inventory(value.NAME, value.__class__.__name__, "1", self.NAME)
+        self._output.character_inventory(self.NAME, "1", self._equipment.values())
 
     def get_same_type_equipment_of(self, item):
         """Deze is voor equip en unequip"""

@@ -65,10 +65,8 @@ def cmd_stats(*params):
 
 
 def cmd_inventory():
-    print()
     data.party.show_equipment()
     data.inventory.show_content()
-    print()
 
 
 def cmd_pouch():

@@ -20,8 +20,7 @@ class GearContainer(Container):
 
     def show_content(self):
         """Deze is voor inv"""
-        for item in sorted(self, key=lambda x: (x.SORT, x.NAME)):
-            print("{:30} {:15} x{}".format(item.NAME, item.__class__.__name__, item.quantity))
+        self._output.backpack_inventory(self)
 
     def add(self, gear, quantity=1, verbose=True):
         """Deze is voor purchase, equip en unequip"""

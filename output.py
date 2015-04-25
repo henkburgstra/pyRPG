@@ -7,9 +7,21 @@ class Output(object):
         print("{} is equipping {}.".format(character_name, item_name))
 
     @staticmethod
-    def inventory(item_name, item_type, item_quantity, character_name):
+    def character_inventory(character_name, item_quantity, character_equipment):
         """Deze is voor inv"""
-        print("{:30} {:15} x{} {}".format(item_name, item_type, item_quantity, character_name))
+        print()
+        for value in sorted(character_equipment, key=lambda equipment: equipment.SORT):
+            if "empty" not in value.RAW:
+                print("{:30} {:15} x{} {}".format(value.NAME, value.__class__.__name__, item_quantity, character_name))
+        print()
+
+    @staticmethod
+    def backpack_inventory(inventory):
+        """Deze is voor inv"""
+        print()
+        for value in sorted(inventory, key=lambda item: (item.SORT, item.NAME)):
+            print("{:30} {:15} x{}".format(value.NAME, value.__class__.__name__, value.quantity))
+        print()
 
     @staticmethod
     def stat(stat_name, stat_quantity, stat_extra):
