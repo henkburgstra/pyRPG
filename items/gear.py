@@ -1,6 +1,7 @@
 
 
 from items import Item
+import output
 
 
 class Gear(Item):
@@ -23,35 +24,16 @@ class Gear(Item):
         self.DEXTERITY = None
         self.STEALTH = None
 
+        self._output = output.Output()
+
     def show_gear(self):
         """Deze is voor hero stats"""
-        if "empty" not in self.RAW:
-            print("      {:13}: {}".format(self.__class__.__name__, self.NAME))
-        else:
-            print("      {:13}: ".format(self.__class__.__name__))
+        self._output.equipment(self.RAW, self.__class__.__name__, self.NAME)
 
     def show_gear_stats(self):
         """Deze is voor gear stats"""
-        print()
-        print("{:18}: {}".format(self.__class__.__name__, self.NAME))
-        if self.SKILL is not None:
-            print("Skill             : {}".format(self.SKILL))
-        if self.MIN_INTELLIGENCE is not None:
-            print("Min.Intelligence  : {}".format(self.MIN_INTELLIGENCE))
-        if self.MIN_STRENGTH is not None:
-            print("Min.Strength      : {}".format(self.MIN_STRENGTH))
-        if self.MIN_STAMINA is not None:
-            print("Min.Stamina       : {}".format(self.MIN_STAMINA))
-        if self.PROTECTION is not None:
-            print("Protection        : {}".format(self.PROTECTION))
-        if self.DEFENSE is not None:
-            print("Defense           : {}".format(self.DEFENSE))
-        if self.BASE_HIT is not None:
-            print("Base Hit          : {}".format(self.BASE_HIT))
-        if self.DAMAGE is not None:
-            print("Damage            : {}".format(self.DAMAGE))
-        if self.DEXTERITY is not None:
-            print("Dexterity         : {}".format(self.DEXTERITY))
-        if self.STEALTH is not None:
-            print("Stealth           : {}".format(self.STEALTH))
-        print()
+        self._output.gear(self.__class__.__name__, self.NAME, self.SKILL,
+                          self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
+                          self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
+                          self.DEXTERITY,
+                          self.STEALTH)

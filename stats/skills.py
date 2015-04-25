@@ -11,15 +11,6 @@ class Skill(Stat):
         super().__init__(name, raw, self.maximum, upgrade, quantity)
         self.SORT = sort
 
-    def show_skill(self):
-        """ Deze is voor hero stats"""
-        if self._extra == 0:
-            print("      {:13}: {}".format(self.NAME, self._quantity))
-        elif self._extra > 0:
-            print("      {:13}: {} (+{})".format(self.NAME, self._quantity, self._extra))
-        else:
-            print("      {:13}: {} ({})".format(self.NAME, self._quantity, self._extra))
-
     def positive_quantity(self):
         """ Deze is voor hero stats"""
         if self._quantity >= 1:

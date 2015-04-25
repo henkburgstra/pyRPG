@@ -1,4 +1,7 @@
 
+import output
+
+
 class Stat(object):
     def __init__(self, name, raw, maximum, upgrade, quantity):
         self.NAME = name
@@ -9,15 +12,11 @@ class Stat(object):
         self._extra = 0             # wat geeft gear voor pos/neg extra
         self._total = quantity      # quantity + extra
         self._current = quantity    # gaat af wanneer er bijv schade is (sta, edu, lev)
+        self._output = output.Output()
 
     def show_stat(self):
         """ Deze is voor hero stats"""
-        if self._extra == 0:
-            print("      {:13}: {}".format(self.NAME, self._quantity))
-        elif self._extra > 0:
-            print("      {:13}: {} (+{})".format(self.NAME, self._quantity, self._extra))
-        else:
-            print("      {:13}: {} ({})".format(self.NAME, self._quantity, self._extra))
+        self._output.stat(self.NAME, self._quantity, self._extra)
 
     def get_extra(self):
         return self._extra
