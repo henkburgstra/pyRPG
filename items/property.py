@@ -7,8 +7,8 @@ class Property(object):
 
 
 class Skill(Property):
-    def __init__(self, quantity=None):
-        super().__init__("Skill", "skill", quantity)
+    def __init__(self, skill_type=None):    # heet anders en is string, maar verder hetzelfde
+        super().__init__("Skill", "skill", skill_type)
 
 
 class MinIntelligence(Property):

@@ -48,3 +48,5 @@ class PartyContainer(Container):
         elif character in self:
             self._output.character_leave_party(character.NAME, self.NAME)
             del self[character]
+        else:
+            raise KeyError

@@ -28,6 +28,11 @@ class Output(object):
         print("{} is equipping {}.".format(character_name, item_name))
 
     @staticmethod
+    def not_equipping(character_name, item_name):
+        """Deze is voor equip"""
+        print("{} is not able to equip {}.\nCheck the requirements.".format(character_name, item_name))
+
+    @staticmethod
     def add_item(item_quantity, item_name, inventory_name):
         """Deze is voor find, purchase, sell, equip en unequip"""
         print("Put {} {} in {}.".format(item_quantity, item_name, inventory_name))
@@ -94,6 +99,7 @@ class Output(object):
     @staticmethod
     def backpack_inventory(inventory):
         """Deze is voor inv"""
+        print()
         for value in sorted(inventory, key=lambda item: (item.SORT, item.NAME)):
             print("{:30} {:15} x{}".format(value.NAME, value.__class__.__name__, value.quantity))
         print()

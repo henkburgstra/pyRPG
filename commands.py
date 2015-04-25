@@ -197,9 +197,9 @@ def cmd_equip(*params):
         item = data.inventory[params[1]]
         equipped_item = hero.get_same_type_equipment_of(item)
 
-        data.inventory.add(equipped_item)
-        hero.set_equipment(item)
-        data.inventory.remove(item)
+        if hero.set_equipment(item):
+            data.inventory.add(equipped_item)
+            data.inventory.remove(item, verbose=False)
     except (KeyError, AttributeError):
         print("equip [hero_name_in_party] [gear_name_without_spaces]")
 

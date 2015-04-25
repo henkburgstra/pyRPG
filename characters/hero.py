@@ -39,9 +39,35 @@ class Hero(Character):
         """Deze is voor sell, equip en unequip"""
         for key, value in self._equipment.items():
             if isinstance(value, type(item)):
+                if (item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity) or \
+                   (item.MIN_STRENGTH.QUANTITY is not None and item.MIN_STRENGTH.QUANTITY > self._stats.str.quantity) or \
+                   (item.MIN_STAMINA.QUANTITY is not None and item.MIN_STAMINA.QUANTITY > self._stats.sta.quantity) or \
+                   (self._get_skill(item.__class__.__name__, item.SKILL.QUANTITY) < 1):
+                        self._output.not_equipping(self.NAME, item.NAME)
+                        return False
                 self._equipment[key] = item
-        if verbose:
-            self._output.is_equipping(self.NAME, item.NAME)
+                if verbose:
+                    self._output.is_equipping(self.NAME, item.NAME)
+                return True
+
+    def _get_skill(self, skill, skill_type):
+        if skill == "Weapon":
+            if skill_type == "Sword":
+                return self._skills.swd.quantity
+            elif skill_type == "Hafted":
+                return self._skills.haf.quantity
+            elif skill_type == "Pole":
+                return self._skills.pol.quantity
+            elif skill_type == "Missile":
+                return self._skills.mis.quantity
+            elif skill_type == "Thrown":
+                return self._skills.thr.quantity
+            else:
+                return 1    # vanwege "Empty" skill
+        elif skill == "Shield":
+            return self._skills.shd.quantity
+        else:
+            return 1
 
     def show_hero_stats(self):
         """ Deze is voor hero stats"""
