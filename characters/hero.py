@@ -39,16 +39,21 @@ class Hero(Character):
         """Deze is voor sell, equip en unequip"""
         for key, value in self._equipment.items():
             if isinstance(value, type(item)):
-                if (item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity) or \
-                   (item.MIN_STRENGTH.QUANTITY is not None and item.MIN_STRENGTH.QUANTITY > self._stats.str.quantity) or \
-                   (item.MIN_STAMINA.QUANTITY is not None and item.MIN_STAMINA.QUANTITY > self._stats.sta.quantity) or \
-                   (self._get_skill(item.__class__.__name__, item.SKILL.QUANTITY) < 1):
-                        self._output.not_equipping(self.NAME, item.NAME)
-                        return False
+                if self._is_unable_to_equip(item):
+                    self._output.not_equipping(self.NAME, item.NAME)
+                    return False
                 self._equipment[key] = item
                 if verbose:
                     self._output.is_equipping(self.NAME, item.NAME)
                 return True
+
+    def _is_unable_to_equip(self, item):
+        if (item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity) or \
+           (item.MIN_STRENGTH.QUANTITY is not None and item.MIN_STRENGTH.QUANTITY > self._stats.str.quantity) or \
+           (item.MIN_STAMINA.QUANTITY is not None and item.MIN_STAMINA.QUANTITY > self._stats.sta.quantity) or \
+           (self._get_skill(item.__class__.__name__, item.SKILL.QUANTITY) < 1):
+                return True
+        return False
 
     def _get_skill(self, skill, skill_type):
         if skill == "Weapon":
