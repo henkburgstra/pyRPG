@@ -28,9 +28,24 @@ class Output(object):
         print("{} is equipping {}.".format(character_name, item_name))
 
     @staticmethod
-    def not_equipping(character_name, item_name):
+    def not_equipping_skl(character_name, item_name):
         """Deze is voor equip"""
-        print("{} is not able to equip {}.\nCheck the requirements.".format(character_name, item_name))
+        print("{} doesn't have the skill to equip that {}.".format(character_name, item_name))
+
+    @staticmethod
+    def not_equipping_int(character_name, item_name, needed_intelligence):
+        """Deze is voor equip"""
+        print("{} needs {} intelligence to equip that {}.".format(character_name, needed_intelligence, item_name))
+
+    @staticmethod
+    def not_equipping_str(character_name, item_name, needed_strength):
+        """Deze is voor equip"""
+        print("{} needs {} strength to equip that {}.".format(character_name, needed_strength, item_name))
+
+    @staticmethod
+    def not_equipping_sta(character_name, item_name, needed_stamina):
+        """Deze is voor equip"""
+        print("{} needs {} stamina to equip that {}.".format(character_name, needed_stamina, item_name))
 
     @staticmethod
     def add_item(item_quantity, item_name, inventory_name):
