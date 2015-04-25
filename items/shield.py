@@ -2,16 +2,22 @@
 
 from items import Gear
 
+from items import MinStrength
+from items import Protection
+from items import Defense
+from items import Dexterity
+from items import Stealth
+
 
 class Shield(Gear):
     def __init__(self, name, value, shop, min_strength, protection, defense, dexterity, stealth):
         self.SORT = 2
         super().__init__(name, value, shop)
-        self.MIN_STRENGTH = min_strength
-        self.PROTECTION = protection
-        self.DEFENSE = defense
-        self.DEXTERITY = dexterity
-        self.STEALTH = stealth
+        self.MIN_STRENGTH = MinStrength(min_strength)
+        self.PROTECTION = Protection(protection)
+        self.DEFENSE = Defense(defense)
+        self.DEXTERITY = Dexterity(dexterity)
+        self.STEALTH = Stealth(stealth)
 
     @staticmethod
     def factory(shield_dict):

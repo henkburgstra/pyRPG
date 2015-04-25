@@ -2,16 +2,22 @@
 
 from items import Gear
 
+from items import Skill
+from items import MinIntelligence
+from items import MinStrength
+from items import BaseHit
+from items import Damage
+
 
 class Weapon(Gear):
     def __init__(self, name, value, shop, skill, min_intelligence, min_strength, base_hit, damage):
         self.SORT = 1
         super().__init__(name, value, shop)
-        self.SKILL = skill
-        self.MIN_INTELLIGENCE = min_intelligence
-        self.MIN_STRENGTH = min_strength
-        self.BASE_HIT = base_hit
-        self.DAMAGE = damage
+        self.SKILL = Skill(skill)
+        self.MIN_INTELLIGENCE = MinIntelligence(min_intelligence)
+        self.MIN_STRENGTH = MinStrength(min_strength)
+        self.BASE_HIT = BaseHit(base_hit)
+        self.DAMAGE = Damage(damage)
         # self.minDMG = damage[0]
         # self.maxDMG = damage[1]
 

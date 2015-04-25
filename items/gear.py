@@ -1,6 +1,18 @@
 
 
 from items import Item
+
+from items import Skill
+from items import MinIntelligence
+from items import MinStrength
+from items import MinStamina
+from items import Protection
+from items import Defense
+from items import BaseHit
+from items import Damage
+from items import Dexterity
+from items import Stealth
+
 import output
 
 
@@ -10,19 +22,19 @@ class Gear(Item):
         self.VALUE = value
         self.SHOP = shop
 
-        self.SKILL = None
+        self.SKILL = Skill()
 
-        self.MIN_INTELLIGENCE = None
-        self.MIN_STRENGTH = None
-        self.MIN_STAMINA = None
+        self.MIN_INTELLIGENCE = MinIntelligence()
+        self.MIN_STRENGTH = MinStrength()
+        self.MIN_STAMINA = MinStamina()
 
-        self.PROTECTION = None
-        self.DEFENSE = None
-        self.BASE_HIT = None
-        self.DAMAGE = None
+        self.PROTECTION = Protection()
+        self.DEFENSE = Defense()
+        self.BASE_HIT = BaseHit()
+        self.DAMAGE = Damage()
 
-        self.DEXTERITY = None
-        self.STEALTH = None
+        self.DEXTERITY = Dexterity()
+        self.STEALTH = Stealth()
 
         self._output = output.Output()
 
