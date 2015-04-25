@@ -43,9 +43,7 @@ def cmd_cls():
 
 
 def cmd_party():
-    print()
     data.party.show_members()
-    print()
 
 
 def cmd_stats(*params):

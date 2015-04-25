@@ -28,9 +28,7 @@ class PartyContainer(Container):
 
     def show_members(self):
         """Deze is voor party"""
-        print(str(len(self)) + "/" + str(self.MAXIMUM))
-        for character in sorted(self, key=lambda x: x.SORT):
-            print(character.NAME)
+        self._output.partymembers(len(self), self.MAXIMUM, self)
 
     def add(self, character, verbose=True):
         """Deze is voor join"""

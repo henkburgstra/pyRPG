@@ -2,9 +2,24 @@
 class Output(object):
 
     @staticmethod
+    def partymembers(party_size, party_maximum, party):
+        """Deze is voor party"""
+        print()
+        print(str(party_size) + "/" + str(party_maximum))
+        print()
+        for character in sorted(party, key=lambda name: name.SORT):
+            print(character.NAME)
+        print()
+
+    @staticmethod
     def is_equipping(character_name, item_name):
         """Deze is voor sell, equip en unequip"""
         print("{} is equipping {}.".format(character_name, item_name))
+
+    @staticmethod
+    def item_removed(item_quantity, item_name, inventory_name):
+        """Deze is voor sell en equip"""
+        print("Removed {} {} from {}.".format(item_quantity, item_name, inventory_name))
 
     @staticmethod
     def character_inventory(character_name, item_quantity, character_equipment):

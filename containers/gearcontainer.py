@@ -59,4 +59,4 @@ class GearContainer(Container):
             raise ValueError
 
         if verbose:
-            print("Removed {} {} from {}.".format(quantity, gear.NAME, self.NAME))
+            self._output.item_removed(quantity, gear.NAME, self.NAME)
