@@ -80,7 +80,7 @@ def cmd_find(*params):
 
 def cmd_purchaselist(*params):
 
-    from decorators import weapons, shields, armors
+    from decorators import weapons, shields, helmets, armors
 
     if params[0] == "weapons" and params[1] in ("sword", "hafted", "pole", "missile", "thrown"):
         print()
@@ -102,12 +102,12 @@ def cmd_purchaselist(*params):
 
     elif params[0] == "shields":
         print()
-        print("{:40}{:13}{:12}{:18}{:13}{:17}{:14}{}".format("Name", "Value", "Min.Str", "Protection", "Defense",
+        print("{:30}{:13}{:12}{:18}{:13}{:17}{:14}{}".format("Name", "Value", "Min.Str", "Protection", "Defense",
                                                                               "Dexterity", "Stealth", "Quantity"))
         print()
         for key, value in sorted(shields.items(), key=lambda shield: shield[1].sort):
             if value.shop:
-                print("{:30}{:15}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
+                print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
                                                                         value.value,
                                                                         value.min_str,
                                                                         value.protection,
@@ -117,14 +117,28 @@ def cmd_purchaselist(*params):
                                                                         shop_count(key)))
         print()
 
+    elif params[0] == "helmets":
+        sortlist = ['Skill', 'Min.Int', 'Min.Str', 'Min.Sta', 'Protection', 'Defense', 'Base Hit', 'Damage', 'Dexterity', 'Stealth']
+
+        columns = []
+        print()
+        for key1, value1 in helmets.items():
+            for key2, value2 in value1.items():
+                if key2 not in ("name", "value", "raw", "shop", "sort", "skill"):
+                    columns.append(key2.capitalize().replace("_", "."))
+            break
+
+        columns.sort()
+        print("{:30}{:15}{}{:10}{}".format("Name", "Value", "\t\t".join(columns), "", "Quantity"))
+
     elif params[0] == "armors":
         print()
-        print("{:40}{:13}{:12}{:16}{:17}{:14}{}".format("Name", "Value", "Min.Sta", "Protection", "Dexterity",
+        print("{:30}{:13}{:12}{:16}{:17}{:14}{}".format("Name", "Value", "Min.Sta", "Protection", "Dexterity",
                                                                                     "Stealth", "Quantity"))
         print()
         for key, value in sorted(armors.items(), key=lambda armor: armor[1].sort):
             if value.shop:
-                print("{:30}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
+                print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
                                                                    value.value,
                                                                    value.min_sta,
                                                                    value.protection,
@@ -213,7 +227,7 @@ def cmd_unequip(*params):
         data.inventory.add(equipped_item)
         hero.set_equipment(empty_item, False)
     except (KeyError, AttributeError):
-        print("unequip [hero_name_in_party] [weapon/shield/armor]")
+        print("unequip [hero_name_in_party] [weapon/shield/helmet/armor]")
 
 
 def cmd_heroes():
@@ -295,8 +309,8 @@ def yes_or_no(prompt="(Y/N)?"):
 
 def create_empty_gear(gear_type):
 
-        from items import Weapon, Shield, Armor
-        from decorators import weapons, shields, armors
+        from items import Weapon, Shield, Helmet, Armor
+        from decorators import weapons, shields, helmets, armors
 
         # 2 verschillende mogelijk van gear_type, eentje komt van sell en de ander van unequip
 
@@ -304,6 +318,8 @@ def create_empty_gear(gear_type):
             return Weapon.factory(weapons.emptyweapon)
         elif gear_type == "shield" or gear_type in shields:
             return Shield.factory(shields.emptyshield)
+        elif gear_type == "helmet" or gear_type in helmets:
+            return Helmet.factory(helmets.emptyhelmet)
         elif gear_type == "armor" or gear_type in armors:
             return Armor.factory(armors.emptyarmor)
 

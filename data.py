@@ -33,16 +33,19 @@ skills_grindan = dict(
 equipment_alagos = dict(
     wpn=items.Weapon.factory(decorators.weapons.bronzeshortsword),
     shd=items.Shield.factory(decorators.shields.woodenbuckler),
+    hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
     arm=items.Armor.factory(decorators.armors.mediumleatherarmor)
 )
 equipment_luana = dict(
     wpn=items.Weapon.factory(decorators.weapons.bronzedagger),
     shd=items.Shield.factory(decorators.shields.emptyshield),
+    hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
     arm=items.Armor.factory(decorators.armors.lightleatherarmor)
 )
 equipment_grindan = dict(
     wpn=items.Weapon.factory(decorators.weapons.ironlongsword),
     shd=items.Shield.factory(decorators.shields.irontarge),
+    hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
     arm=items.Armor.factory(decorators.armors.mediumbronzearmor)
 )
 
