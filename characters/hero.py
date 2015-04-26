@@ -47,7 +47,7 @@ class Hero(Character):
                 return True
 
     def _is_unable_to_equip(self, item):
-        if self._get_skill(item.__class__.__name__, item.SKILL.QUANTITY) < 1:
+        if self._get_skill(item.TYPE, item.SKILL.QUANTITY) < 1:
             self._output.not_equipping_skl(self.NAME, item.NAME)
             return True
         if item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity:
@@ -61,8 +61,8 @@ class Hero(Character):
             return True
         return False
 
-    def _get_skill(self, skill, skill_type):
-        if skill == "Weapon":
+    def _get_skill(self, item_type, skill_type):
+        if item_type == "Weapon":
             if skill_type == "Sword":
                 return self._skills.swd.quantity
             elif skill_type == "Hafted":
@@ -75,7 +75,7 @@ class Hero(Character):
                 return self._skills.thr.quantity
             else:
                 return 1    # vanwege "Empty" skill
-        elif skill == "Shield":
+        elif item_type == "Shield":
             return self._skills.shd.quantity
         else:
             return 1

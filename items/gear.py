@@ -40,11 +40,11 @@ class Gear(Item):
 
     def show_gear(self):
         """Deze is voor hero stats"""
-        self._output.equipment(self.RAW, self.__class__.__name__, self.NAME)
+        self._output.equipment(self.RAW, self.TYPE, self.NAME)
 
     def show_gear_stats(self):
         """Deze is voor gear stats"""
-        self._output.gear(self.__class__.__name__, self.NAME, self.SKILL,
+        self._output.gear(self.TYPE, self.NAME, self.SKILL,
                           self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
                           self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
                           self.DEXTERITY,

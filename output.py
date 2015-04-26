@@ -109,14 +109,14 @@ class Output(object):
         print()
         for value in sorted(character_equipment, key=lambda equipment: equipment.SORT):
             if "empty" not in value.RAW:
-                print("{:30} {:15} x{} {}".format(value.NAME, value.__class__.__name__, item_quantity, character_name))
+                print("{:30} {:15} x{} {}".format(value.NAME, value.TYPE, item_quantity, character_name))
 
     @staticmethod
     def backpack_inventory(inventory):
         """Deze is voor inv"""
         print()
         for value in sorted(inventory, key=lambda item: (item.SORT, item.NAME)):
-            print("{:30} {:15} x{}".format(value.NAME, value.__class__.__name__, value.quantity))
+            print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
         print()
 
     @staticmethod

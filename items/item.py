@@ -4,6 +4,7 @@ class Item(object):
     def __init__(self, name):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
+        self.TYPE = self.__class__.__name__
         self._quantity = 1
 
     def get_quantity(self):
