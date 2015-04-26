@@ -14,4 +14,5 @@ from .pouchitem import PouchItem
 
 from .weapon import Weapon
 from .shield import Shield
+from .helmet import Helmet
 from .armor import Armor
