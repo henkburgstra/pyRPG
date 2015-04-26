@@ -11,6 +11,8 @@
 # itemproperty sortering, bestaat al, maar wordt nog niet gebruikt in item stats, of in shop.
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 
+# universele shop verder afmaken
+
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
 
 import commands
