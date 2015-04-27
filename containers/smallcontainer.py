@@ -29,7 +29,10 @@ class SmallContainer(Container):
         if price < 1:
             self._output.quantity_less_than_one()
             return False
-        if item not in self or self[item].quantity < price:
+        if item not in self:
+            self._output.quantity_not_enough(item.NAME, price, item.quantity - 1)
+            return False
+        elif self[item].quantity < price:
             self._output.quantity_not_enough(item.NAME, price, item.quantity)
             return False
         else:
