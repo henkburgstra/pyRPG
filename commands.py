@@ -147,14 +147,19 @@ def shop_list(gear):
 
     sortlist = ['name', 'value', 'min_int', 'min_str', 'min_sta', 'protection', 'defense', 'base_hit', 'damage', 'dexterity', 'stealth']
 
-    tempdict = {}
+    w = next(iter([x for x in gear[next(iter(y for y in gear))]]))
+    print(w)
+
+    # y = [x.keys() for x in gear.values()]
+    # print(y)
 
     # for value in gear.values():
     #     for key in value.keys():
     #         if key not in sortlist:
     #             del value[key]
+    return
 
-    print(tabulate(gear.values(), headers="keys", tablefmt="rst"))
+    print(tabulate(sorted(gear.values(), key=lambda x: x.sort), headers=next(iter(gear.values())), tablefmt="rst"))
 
     return
 
