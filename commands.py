@@ -144,11 +144,39 @@ def cmd_purchaselist(*params):
 def shop_list(gear):
 
     from tabulate import tabulate
+    from terminaltables import AsciiTable
+    from texttable import Texttable
 
     sortlist = ['name', 'value', 'min_int', 'min_str', 'min_sta', 'protection', 'defense', 'base_hit', 'damage', 'dexterity', 'stealth']
 
-    w = next(iter([x for x in gear[next(iter(y for y in gear))]]))
-    print(w)
+    templist = []
+    print()
+    for key1, value1 in gear.items():
+        for key2, value2 in value1.items():
+            if key2 in sortlist:
+                templist.append(key2)
+        break
+    sortlist = [x for x in sortlist if x in templist]
+    caplist = [item.title().replace("_", ".") for item in sortlist]
+
+    tab = Texttable()
+    templist = []
+    for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
+        for item in sortlist:
+            for key2, value2 in value1.items():
+                if item == key2:
+                    templist.append(str(value2))
+
+    # for i in range(1,11):
+    #     templist.append([i,i**2,i**3])
+
+    tab.add_rows(templist)
+    tab.set_cols_align(['r', 'r', 'r', 'r'])
+    tab.header(caplist)
+    print(tab.draw())
+
+
+    # w = next(iter([x for x in gear[next(iter(y for y in gear))]]))
 
     # y = [x.keys() for x in gear.values()]
     # print(y)
