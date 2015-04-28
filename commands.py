@@ -83,142 +83,84 @@ def cmd_purchaselist(*params):
     from decorators import weapons, shields, helmets, armors
 
     if params[0] == "weapons" and params[1] in ("sword", "hafted", "pole", "missile", "thrown"):
-        print()
-        print("{:30}{:13}{:15}{:14}{:17}{:13}{}".format("Name", "Value", "Min.Int", "Min.Str", "Base Hit", "Damage",
-                                                                                                           "Quantity"))
-        print()
-        for key, value in sorted(weapons.items(), key=lambda weapon: weapon[1].sort):
-            if value.shop and value.skill.lower() == params[1]:
-                print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
-                                                                   value.value,
-                                                                   value.min_int if value.min_int is not None
-                                                                   else "",
-                                                                   value.min_str if value.min_str is not None
-                                                                   else "",
-                                                                   value.base_hit,
-                                                                   value.damage,
-                                                                   shop_count(key)))
-        print()
+        shop_list(weapons, params[1])
 
-    elif params[0] == "shields":
-        print()
-        print("{:30}{:13}{:12}{:18}{:13}{:17}{:14}{}".format("Name", "Value", "Min.Str", "Protection", "Defense",
-                                                                              "Dexterity", "Stealth", "Quantity"))
-        print()
-        for key, value in sorted(shields.items(), key=lambda shield: shield[1].sort):
-            if value.shop:
-                print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
-                                                                        value.value,
-                                                                        value.min_str,
-                                                                        value.protection,
-                                                                        value.defense,
-                                                                        value.dexterity,
-                                                                        value.stealth,
-                                                                        shop_count(key)))
-        print()
-
-    elif params[0] == "helmets":
-        shop_list(helmets)
-
-    elif params[0] == "armors":
-        shop_list(armors)
         # print()
-        # print("{:30}{:13}{:12}{:16}{:17}{:14}{}".format("Name", "Value", "Min.Sta", "Protection", "Dexterity",
-        #                                                                             "Stealth", "Quantity"))
+        # print("{:30}{:13}{:15}{:14}{:17}{:13}{}".format("Name", "Value", "Min.Int", "Min.Str", "Base Hit", "Damage",
+        #                                                                                                    "Quantity"))
         # print()
-        # for key, value in sorted(armors.items(), key=lambda armor: armor[1].sort):
-        #     if value.shop:
+        # for key, value in sorted(weapons.items(), key=lambda weapon: weapon[1].sort):
+        #     if value.shop and value.skill.lower() == params[1]:
         #         print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
         #                                                            value.value,
-        #                                                            value.min_sta,
-        #                                                            value.protection,
-        #                                                            value.dexterity,
-        #                                                            value.stealth,
+        #                                                            value.min_int if value.min_int is not None
+        #                                                            else "",
+        #                                                            value.min_str if value.min_str is not None
+        #                                                            else "",
+        #                                                            value.base_hit,
+        #                                                            value.damage,
         #                                                            shop_count(key)))
         # print()
 
+    elif params[0] == "shields":
+        shop_list(shields, 0)
+    elif params[0] == "helmets":
+        shop_list(helmets, 0)
+    elif params[0] == "armors":
+        shop_list(armors, 0)
     else:
         print("purchaselist [weapons/shields/helmets/armors] ([weaponskill: sword/hafted/pole/missile/thrown])")
 
 
-def shop_list(gear):
+def shop_list(gear, skill):
 
-    from tabulate import tabulate
-    from terminaltables import AsciiTable
     from texttable import Texttable
 
-    sortlist = ['name', 'value', 'min_int', 'min_str', 'min_sta', 'protection', 'defense', 'base_hit', 'damage', 'dexterity', 'stealth']
+    columns = ['name', 'value', 'min_int', 'min_str', 'min_sta',
+               'protection', 'defense', 'base_hit', 'damage',
+               'dexterity', 'stealth']
+
+    print()
 
     templist = []
-    print()
     for key1, value1 in gear.items():
         for key2, value2 in value1.items():
-            if key2 in sortlist:
+            if key2 in columns:
                 templist.append(key2)
         break
-    sortlist = [x for x in sortlist if x in templist]
-    caplist = [item.title().replace("_", ".") for item in sortlist]
+    columns = [x for x in columns if x in templist]
+    headers = [item.title().replace("_", ".") for item in columns]
+    headers.append('Inventory')
 
     tab = Texttable()
-    sortlist2 = []
+    sortlist = []
     for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
         templist = []
-        for item in sortlist:
-            for key2, value2 in value1.items():
-                if item == key2:
-                    templist.append(str(value2))
-        sortlist2.append(templist)
+        if value1.shop:
+            if skill == 0 or skill == value1.skill.lower():
+                for item in columns:
+                    for key2, value2 in value1.items():
+                        if item == key2:
+                            templist.append(str(value2))
+                templist.append(shop_count(key1))
+                sortlist.append(templist)
+    tab.add_rows(sortlist, header=False)
 
-    # for i in range(1,11):
-    #     templist.append([i,i**2,i**3])
+    tab.header(headers)
 
-    tab.add_rows(sortlist2)
-    tab.set_cols_align(['r', 'r', 'r', 'r'])
-    tab.header(caplist)
+    align = []
+    width = []
+    align.append('l')   # vanwege owned erachter, extra kolom
+    width.append(20)
+    for _ in columns:
+        align.append('r')
+        width.append(10)
+    tab.set_cols_align(align)
+    tab.set_cols_width(width)
+
+    tab.set_deco(Texttable.HEADER | Texttable.VLINES)
     print(tab.draw())
-
-
-    # w = next(iter([x for x in gear[next(iter(y for y in gear))]]))
-
-    # y = [x.keys() for x in gear.values()]
-    # print(y)
-
-    # for value in gear.values():
-    #     for key in value.keys():
-    #         if key not in sortlist:
-    #             del value[key]
-    return
-
-    print(tabulate(sorted(gear.values(), key=lambda x: x.sort), headers=next(iter(gear.values())), tablefmt="rst"))
-
-    return
-
-    sortlist = ['min_int', 'min_str', 'min_sta', 'protection', 'defense', 'base_hit', 'damage', 'dexterity', 'stealth']
-    templist = []
     print()
-    for key1, value1 in gear.items():
-        for key2, value2 in value1.items():
-            if key2 in sortlist:
-                templist.append(key2)
-        break
-    sortlist = [x for x in sortlist if x in templist]
-    caplist = [item.title().replace("_", ".") for item in sortlist]
-    print("{:30}{:15}{:15}{:5}{}".format("Name", "Value", "\t\t\t".join(caplist), "", "Quantity"))
-    print()
-    for key, value in sorted(gear.items(), key=lambda x: x[1].sort):
-
-        templist = []
-        for item in sortlist:
-            for key2, value2 in value.items():
-                if item == key2:
-                    templist.append(str(value2))
-
-        if value.shop:
-            print("{:20}{:15}{:15}{:15}{:5}{}".format(value.name, value.value,
-                                                      "", "\t\t\t\t ".join(templist),
-                                                      "", shop_count(key)))
-    print()
-
 
 
 def cmd_purchase(*params):

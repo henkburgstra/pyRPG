@@ -14,8 +14,7 @@
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 
-# universele shop verder afmaken
-# quantity in shop, naam aanpassen naar owned
+# in shop, min_int en min_str worden beide weergegeven, nog aanpassen
 
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
 
