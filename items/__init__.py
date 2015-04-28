@@ -1,5 +1,5 @@
 
-from .property import Skill
+from .property import WeaponSkill
 from .property import MinIntelligence
 from .property import MinStrength
 from .property import MinStamina

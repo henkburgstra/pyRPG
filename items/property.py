@@ -7,8 +7,8 @@ class Property(object):
         self.SORT = sort
 
 
-class Skill(Property):
-    def __init__(self, skill_type=None):    # heet anders en is string, maar verder hetzelfde. (=weaponskill)
+class WeaponSkill(Property):
+    def __init__(self, skill_type=None):    # quantity heet anders en is string, maar verder hetzelfde. (=weaponskill)
         super().__init__("Skill", "skill", skill_type, 1)
 
 

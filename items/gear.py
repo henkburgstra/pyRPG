@@ -2,7 +2,7 @@
 
 from items.item import Item
 
-from items import Skill
+from items import WeaponSkill
 from items import MinIntelligence
 from items import MinStrength
 from items import MinStamina
@@ -22,7 +22,7 @@ class Gear(Item):
         self.VALUE = value
         self.SHOP = shop
 
-        self.SKILL = Skill()
+        self.WPN_SKILL = WeaponSkill()
 
         self.MIN_INTELLIGENCE = MinIntelligence()
         self.MIN_STRENGTH = MinStrength()
@@ -44,7 +44,7 @@ class Gear(Item):
 
     def show_gear_stats(self):
         """Deze is voor gear stats"""
-        self._output.gear(self.TYPE, self.NAME, self.SKILL,
+        self._output.gear(self.TYPE, self.NAME, self.WPN_SKILL,
                           self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
                           self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
                           self.DEXTERITY,

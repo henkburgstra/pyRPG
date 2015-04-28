@@ -94,7 +94,7 @@ def cmd_purchaselist(*params):
         print("purchaselist [weapons/shields/helmets/armors] ([weaponskill: sword/hafted/pole/missile/thrown])")
 
 
-def shop_list(gear, skill):
+def shop_list(gear, weaponskill):
 
     from texttable import Texttable
 
@@ -119,7 +119,7 @@ def shop_list(gear, skill):
     for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
         templist = []
         if value1.shop:
-            if skill == 0 or skill == value1.skill.lower():
+            if weaponskill == 0 or weaponskill == value1.skill.lower():
                 for item in columns:
                     for key2, value2 in value1.items():
                         if item == key2:
