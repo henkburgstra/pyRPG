@@ -84,24 +84,6 @@ def cmd_purchaselist(*params):
 
     if params[0] == "weapons" and params[1] in ("sword", "hafted", "pole", "missile", "thrown"):
         shop_list(weapons, params[1])
-
-        # print()
-        # print("{:30}{:13}{:15}{:14}{:17}{:13}{}".format("Name", "Value", "Min.Int", "Min.Str", "Base Hit", "Damage",
-        #                                                                                                    "Quantity"))
-        # print()
-        # for key, value in sorted(weapons.items(), key=lambda weapon: weapon[1].sort):
-        #     if value.shop and value.skill.lower() == params[1]:
-        #         print("{:20}{:15}{:15}{:15}{:15}{:15}{:15}".format(value.name,
-        #                                                            value.value,
-        #                                                            value.min_int if value.min_int is not None
-        #                                                            else "",
-        #                                                            value.min_str if value.min_str is not None
-        #                                                            else "",
-        #                                                            value.base_hit,
-        #                                                            value.damage,
-        #                                                            shop_count(key)))
-        # print()
-
     elif params[0] == "shields":
         shop_list(shields, 0)
     elif params[0] == "helmets":
@@ -130,7 +112,7 @@ def shop_list(gear, skill):
         break
     columns = [x for x in columns if x in templist]
     headers = [item.title().replace("_", ".") for item in columns]
-    headers.append('Inventory')
+    headers.append('Backpack')
 
     tab = Texttable()
     sortlist = []
@@ -141,7 +123,10 @@ def shop_list(gear, skill):
                 for item in columns:
                     for key2, value2 in value1.items():
                         if item == key2:
-                            templist.append(str(value2))
+                            if value2 is None:
+                                templist.append("")
+                            else:
+                                templist.append(str(value2))
                 templist.append(shop_count(key1))
                 sortlist.append(templist)
     tab.add_rows(sortlist, header=False)
@@ -158,7 +143,7 @@ def shop_list(gear, skill):
     tab.set_cols_align(align)
     tab.set_cols_width(width)
 
-    tab.set_deco(Texttable.HEADER | Texttable.VLINES)
+    # tab.set_deco(Texttable.HEADER | Texttable.VLINES | Texttable.BORDER)
     print(tab.draw())
     print()
 

@@ -13,10 +13,15 @@
 # skill item en skill char, dezelfde maken?
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
+# wel veel static methods... is dat de juiste manier?
 
-# in shop, min_int en min_str worden beide weergegeven, nog aanpassen
+# in shop, aanpassen naar output class
+# texttable gebruiken bij stats van hero
+# purchase en createemptygear verbeteren in commands
+# idee om vanaf het begin af aan empty gear in de backpack te hebben?
 
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
+
 
 import commands
 
