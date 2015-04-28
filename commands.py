@@ -160,17 +160,19 @@ def shop_list(gear):
     caplist = [item.title().replace("_", ".") for item in sortlist]
 
     tab = Texttable()
-    templist = []
+    sortlist2 = []
     for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
+        templist = []
         for item in sortlist:
             for key2, value2 in value1.items():
                 if item == key2:
                     templist.append(str(value2))
+        sortlist2.append(templist)
 
     # for i in range(1,11):
     #     templist.append([i,i**2,i**3])
 
-    tab.add_rows(templist)
+    tab.add_rows(sortlist2)
     tab.set_cols_align(['r', 'r', 'r', 'r'])
     tab.header(caplist)
     print(tab.draw())
