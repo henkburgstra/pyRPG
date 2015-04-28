@@ -5,19 +5,19 @@ from util import DotDict
 
 #                     value, min sta, protection, dexterity, stealth, sortering
 armor_material = {
-    "Leather Armor":     (1,      20,          0,         0,       0,      1000),
-    "Bronze Armor":      (3,      35,          3,        -1,      -3,      2000),
-    "Iron Armor":        (9,      50,          6,        -2,      -6,      3000),
-    "Steel Armor":      (27,      65,          9,        -3,      -9,      4000),
-    "Silver Armor":     (81,      80,         12,        -4,     -12,      5000),
-    "Titanium Armor":  (243,      20,         12,         0,       0,      6000)
+    "Leather Armor":   (100,      20,          0,         0,       0,      1000),
+    "Bronze Armor":    (600,      35,          3,        -1,      -3,      2000),
+    "Iron Armor":     (1100,      50,          6,        -2,      -6,      3000),
+    "Steel Armor":    (1600,      65,          9,        -3,      -9,      4000),
+    "Silver Armor":   (2100,      80,         12,        -4,     -12,      5000),
+    "Titanium Armor": (2600,      20,         12,         0,       0,      6000)
     # "Stealth":        (16,      10,          1,         0,       1)
 }
 #                     value, min sta, protection, dexterity, stealth, sortering
 armor_type = {
     "Light":           (100,       0,          1,         0,       0,       100),
-    "Medium":          (150,       5,          2,        -1,      -1,       200),
-    "Heavy":           (200,      10,          3,        -2,      -2,       300)
+    "Medium":          (300,       5,          2,        -1,      -1,       200),
+    "Heavy":           (500,      10,          3,        -2,      -2,       300)
 }
 #                     value, min sta, protection, dexterity, stealth
 armor_upgraded = {
@@ -45,13 +45,14 @@ for key_material, value_material in armor_material.items():
         for key_upgraded, value_upgraded in armor_upgraded.items():
 
             raw_key_name = (key_type + key_material + key_upgraded).strip().lower().replace(" ", "")
+            price = (value_material[0] + value_type[0]) * (value_material[0] + value_type[0]) / 400
 
             armors[raw_key_name] = DotDict(dict(
                 name=(key_type + " " + key_material + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
                 # berekening value: material * type * upgraded
-                value=int(value_material[0] * value_type[0] * value_upgraded[0]),
+                value=int(price * value_upgraded[0]),
                 shop=True,
 
                 # berekening min sta: material + type

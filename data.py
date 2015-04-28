@@ -34,7 +34,7 @@ equipment_alagos = dict(
     wpn=items.Weapon.factory(decorators.weapons.bronzeshortsword),
     shd=items.Shield.factory(decorators.shields.woodenbuckler),
     hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
-    arm=items.Armor.factory(decorators.armors.mediumleatherarmor)
+    arm=items.Armor.factory(decorators.armors.lightleatherarmor)
 )
 equipment_luana = dict(
     wpn=items.Weapon.factory(decorators.weapons.bronzedagger),
