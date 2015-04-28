@@ -42,6 +42,7 @@ class Hero(Character):
                 if self._is_unable_to_equip(item):
                     return False
                 self._equipment[key] = item
+                self.stats_update()
                 if verbose:
                     self._output.is_equipping(self.NAME, item.NAME)
                 return True
@@ -82,7 +83,6 @@ class Hero(Character):
 
     def show_hero_stats(self):
         """ Deze is voor hero stats"""
-        self.stats_update()
         self._output.character(self.NAME, self.level, self.current_hp(), self.max_hp(), self._totalxp,
                                self._stats.values(), self._skills.values(), self._equipment.values())
 

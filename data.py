@@ -54,6 +54,10 @@ heroes = DotDict(dict(
     luana=Hero('Luana',     2, Level(1),    500, stats_luana,   skills_luana,   equipment_luana),
     grindan=Hero('Grindan', 3, Level(8), 102000, stats_grindan, skills_grindan, equipment_grindan),
 ))
+heroes.alagos.stats_update()
+heroes.luana.stats_update()
+heroes.grindan.stats_update()
+
 villains = DotDict(dict(
     # brownbat=Villain('Brown Bat', Level(2), stats_brownbat),
     # darkbat=Villain('Dark Bat',   Level(2), stats_darkbat)

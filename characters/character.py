@@ -33,12 +33,14 @@ class Character(object):
         return self._level.quantity + self._stats.sta.quantity + self._stats.edu.quantity
 
     def set_dex(self):
+        self._stats.dex.extra = 0
         for value in self._equipment.values():
             if value.DEXTERITY.QUANTITY is not None:
                 self._stats.dex.extra += value.DEXTERITY.QUANTITY
         self._stats.dex.total = self._stats.dex.quantity + self._stats.dex.extra
 
     def set_stealth(self):
+        self._skills.stl.extra = 0
         for value in self._equipment.values():
             if value.STEALTH.QUANTITY is not None:
                 self._skills.stl.extra += value.STEALTH.QUANTITY
