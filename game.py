@@ -3,6 +3,8 @@
 # aan het einde, als property's geen special voorwaarden hebben, gewoon de lokale _variablen globaal maken, dus zonder _
 # misschien hoeft een enemy geen equipment te hebben of skills, maar raw stats. idee om over na te denken
 
+# de pouchvraag verwijderen bij buy, (misschien toch niet)
+
 # meer decorators
 # meer stats voor heroes
 # idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange
@@ -19,8 +21,8 @@
 # texttable gebruiken bij stats van hero
 # purchase en createemptygear verbeteren in commands
 # idee om vanaf het begin af aan empty gear in de backpack te hebben?
-
-# de pouchvraag verwijderen bij buy, (misschien toch niet)
+# regels in character.py toevoegen, na de aanpassing van dex en stealth
+# hetzelfde doen bij stats als bij skill in character.py, het op 0 zetten van total, zie vb.net
 
 
 import commands

@@ -48,7 +48,7 @@ class Hero(Character):
                 return True
 
     def _is_unable_to_equip(self, item):
-        if self._get_skill(item.TYPE, item.SKILL.QUANTITY) < 1:
+        if self._get_skill(item.TYPE, item.WPN_SKILL.QUANTITY) < 1:
             self._output.not_equipping_skl(self.NAME, item.NAME)
             return True
         if item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity:

@@ -23,8 +23,9 @@ class Character(object):
         return self._level.quantity
 
     def stats_update(self):
-        self.set_dex()
-        self.set_stealth()
+        self._set_dex()
+        self._set_stealth()
+        self._set_total()
 
     def current_hp(self):
         return self._level.current + self._stats.sta.current + self._stats.edu.current
@@ -32,19 +33,28 @@ class Character(object):
     def max_hp(self):
         return self._level.quantity + self._stats.sta.quantity + self._stats.edu.quantity
 
-    def set_dex(self):
+    def _set_dex(self):
         self._stats.dex.extra = 0
         for value in self._equipment.values():
             if value.DEXTERITY.QUANTITY is not None:
                 self._stats.dex.extra += value.DEXTERITY.QUANTITY
         self._stats.dex.total = self._stats.dex.quantity + self._stats.dex.extra
+        if self._stats.dex.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
+            self._stats.dex.total = 1
 
-    def set_stealth(self):
+    def _set_stealth(self):
         self._skills.stl.extra = 0
         for value in self._equipment.values():
             if value.STEALTH.QUANTITY is not None:
                 self._skills.stl.extra += value.STEALTH.QUANTITY
         self._skills.stl.total = self._skills.stl.quantity + self._skills.stl.extra
+        # if self._skills.stl.total < 0 or self._skills.stl.quantity <= 0:
+        #     self._skills.stl.total = 0
+
+    def _set_total(self):
+        for value in self._skills.values():
+            if value.total < 0 or value.quantity <= 0:
+                value.total = 0
 
     # @staticmethod
     # def make_car_sound():
