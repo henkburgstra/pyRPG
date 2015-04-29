@@ -54,6 +54,8 @@ class Character(object):
         for value in self._skills.values():
             if value.total < 0 or value.quantity <= 0:
                 value.total = 0
+            if 0 > value.extra < value.quantity:
+                value.extra = -value.quantity
 
     # @staticmethod
     # def make_car_sound():
