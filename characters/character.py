@@ -39,8 +39,6 @@ class Character(object):
             if value.DEXTERITY.QUANTITY is not None:
                 self._stats.dex.extra += value.DEXTERITY.QUANTITY
         self._stats.dex.total = self._stats.dex.quantity + self._stats.dex.extra
-        if self._stats.dex.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
-            self._stats.dex.total = 1
 
     def _set_stealth(self):
         self._skills.stl.extra = 0
@@ -48,10 +46,11 @@ class Character(object):
             if value.STEALTH.QUANTITY is not None:
                 self._skills.stl.extra += value.STEALTH.QUANTITY
         self._skills.stl.total = self._skills.stl.quantity + self._skills.stl.extra
-        # if self._skills.stl.total < 0 or self._skills.stl.quantity <= 0:
-        #     self._skills.stl.total = 0
 
     def _set_total(self):
+        for value in self._stats.values():
+            if value.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
+                value.total = 1
         for value in self._skills.values():
             if value.total < 0 or value.quantity <= 0:
                 value.total = 0
