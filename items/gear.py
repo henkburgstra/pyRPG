@@ -43,7 +43,7 @@ class Gear(Item):
     def show_gear_stats(self):
         """Deze is voor gear stats"""
         Output.gear(self.TYPE, self.NAME, self.WPN_SKILL,
-                          self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
-                          self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
-                          self.DEXTERITY,
-                          self.STEALTH)
+                    self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
+                    self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
+                    self.DEXTERITY,
+                    self.STEALTH)
