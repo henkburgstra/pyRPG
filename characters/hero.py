@@ -1,7 +1,7 @@
 
 
 from characters.character import Character
-import output
+from output import Output
 
 
 class Hero(Character):
@@ -9,7 +9,6 @@ class Hero(Character):
         super().__init__(name,       level,         stats, skills, equipment)
         self.SORT = sort
         self._totalxp = totalxp
-        self._output = output.Output()
 
     def count_equipment(self, gear_raw):
         """Deze is voor shop count"""
@@ -20,7 +19,7 @@ class Hero(Character):
 
     def show_equipment(self):
         """Deze is voor inv"""
-        self._output.character_inventory(self.NAME, "1", self._equipment.values())
+        Output.character_inventory(self.NAME, "1", self._equipment.values())
 
     def get_same_type_equipment_of(self, item):
         """Deze is voor equip en unequip"""
@@ -44,21 +43,21 @@ class Hero(Character):
                 self._equipment[key] = item
                 self.stats_update()
                 if verbose:
-                    self._output.is_equipping(self.NAME, item.NAME)
+                    Output.is_equipping(self.NAME, item.NAME)
                 return True
 
     def _is_unable_to_equip(self, item):
         if self._get_skill(item.TYPE, item.WPN_SKILL.QUANTITY) < 1:
-            self._output.not_equipping_skl(self.NAME, item.NAME)
+            Output.not_equipping_skl(self.NAME, item.NAME)
             return True
         if item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self._stats.int.quantity:
-            self._output.not_equipping_int(self.NAME, item.NAME, item.MIN_INTELLIGENCE.QUANTITY)
+            Output.not_equipping_int(self.NAME, item.NAME, item.MIN_INTELLIGENCE.QUANTITY)
             return True
         if item.MIN_STRENGTH.QUANTITY is not None and item.MIN_STRENGTH.QUANTITY > self._stats.str.quantity:
-            self._output.not_equipping_str(self.NAME, item.NAME, item.MIN_STRENGTH.QUANTITY)
+            Output.not_equipping_str(self.NAME, item.NAME, item.MIN_STRENGTH.QUANTITY)
             return True
         if item.MIN_STAMINA.QUANTITY is not None and item.MIN_STAMINA.QUANTITY > self._stats.sta.quantity:
-            self._output.not_equipping_sta(self.NAME, item.NAME, item.MIN_STAMINA.QUANTITY)
+            Output.not_equipping_sta(self.NAME, item.NAME, item.MIN_STAMINA.QUANTITY)
             return True
         return False
 
@@ -83,8 +82,8 @@ class Hero(Character):
 
     def show_hero_stats(self):
         """ Deze is voor hero stats"""
-        self._output.character(self.NAME, self.level, self.current_hp(), self.max_hp(), self._totalxp,
-                               self._stats.values(), self._skills.values(), self._equipment.values())
+        Output.character(self.NAME, self.level, self.current_hp(), self.max_hp(), self._totalxp,
+                         self._stats.values(), self._skills.values(), self._equipment.values())
 
     # def level_up(self):
     #     self._level += 1
