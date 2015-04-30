@@ -1,5 +1,6 @@
 
 from containers.container import Container
+from output import Output
 
 
 class GearContainer(Container):
@@ -20,12 +21,12 @@ class GearContainer(Container):
 
     def show_content(self):
         """Deze is voor inv"""
-        self._output.backpack_inventory(self)
+        Output.backpack_inventory(self)
 
     def add(self, gear, quantity=1, verbose=True):
         """Deze is voor purchase, equip en unequip"""
         if quantity < 1:
-            self._output.quantity_less_than_one()
+            Output.quantity_less_than_one()
             raise ValueError
         if "empty" in gear.RAW:
             return
@@ -39,15 +40,15 @@ class GearContainer(Container):
             self.get_item(gear.RAW).quantity += quantity - 1  # dus daarom, wanneer nieuw: plus - 1
 
         if verbose:
-            self._output.add_item(quantity, gear.NAME, self.NAME)
+            Output.add_item(quantity, gear.NAME, self.NAME)
 
     def remove(self, gear, quantity=1, verbose=True):
         """Deze is voor sell en equip"""
         if gear not in self:
-            self._output.no_item()
+            Output.no_item()
             raise AttributeError
         if quantity < 1:
-            self._output.quantity_less_than_one()
+            Output.quantity_less_than_one()
             raise ValueError
 
         if gear.quantity > quantity:
@@ -55,8 +56,8 @@ class GearContainer(Container):
         elif gear.quantity == quantity:
             del self[gear]
         else:
-            self._output.error_quantity_not_enough()
+            Output.error_quantity_not_enough()
             raise ValueError
 
         if verbose:
-            self._output.remove_item(quantity, gear.NAME, self.NAME)
+            Output.remove_item(quantity, gear.NAME, self.NAME)

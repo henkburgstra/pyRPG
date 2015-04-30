@@ -1,5 +1,5 @@
 
-import output
+from output import Output
 
 
 class Stat(object):
@@ -12,11 +12,10 @@ class Stat(object):
         self._extra = 0             # wat geeft gear voor pos/neg extra
         self._total = quantity      # quantity + extra
         self._current = quantity    # gaat af wanneer er bijv schade is (sta, edu, lev)
-        self._output = output.Output()
 
     def show_stat(self):
         """ Deze is voor hero stats"""
-        self._output.stat(self.NAME, self._quantity, self._extra)
+        Output.stat(self.NAME, self._quantity, self._extra)
 
     def get_extra(self):
         return self._extra

@@ -13,7 +13,7 @@ from items import Damage
 from items import Dexterity
 from items import Stealth
 
-import output
+from output import Output
 
 
 class Gear(Item):
@@ -36,15 +36,13 @@ class Gear(Item):
         self.DEXTERITY = Dexterity()
         self.STEALTH = Stealth()
 
-        self._output = output.Output()
-
     def show_gear(self):
         """Deze is voor hero stats"""
-        self._output.equipment(self.RAW, self.TYPE, self.NAME)
+        Output.equipment(self.RAW, self.TYPE, self.NAME)
 
     def show_gear_stats(self):
         """Deze is voor gear stats"""
-        self._output.gear(self.TYPE, self.NAME, self.WPN_SKILL,
+        Output.gear(self.TYPE, self.NAME, self.WPN_SKILL,
                           self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
                           self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
                           self.DEXTERITY,

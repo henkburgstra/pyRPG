@@ -1,5 +1,6 @@
 
 from containers.container import Container
+from output import Output
 
 
 class PartyContainer(Container):
@@ -28,25 +29,25 @@ class PartyContainer(Container):
 
     def show_members(self):
         """Deze is voor party"""
-        self._output.party(len(self), self.MAXIMUM, self)
+        Output.party(len(self), self.MAXIMUM, self)
 
     def add(self, character, verbose=True):
         """Deze is voor join"""
         if character in self:
-            self._output.character_double_join(character.NAME, self.NAME)
+            Output.character_double_join(character.NAME, self.NAME)
         elif len(self) < self.MAXIMUM:
             self[character] = character
             if verbose:
-                self._output.character_join_party(character.NAME, self.NAME)
+                Output.character_join_party(character.NAME, self.NAME)
         else:
-            self._output.character_full_party(self.NAME)
+            Output.character_full_party(self.NAME)
 
     def remove(self, character):
         """Deze is voor leave"""
         if character.RAW == 'alagos':
-            self._output.leader_not_leave_party()
+            Output.leader_not_leave_party()
         elif character in self:
-            self._output.character_leave_party(character.NAME, self.NAME)
+            Output.character_leave_party(character.NAME, self.NAME)
             del self[character]
         else:
             raise KeyError

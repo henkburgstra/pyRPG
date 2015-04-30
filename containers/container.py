@@ -1,12 +1,9 @@
 
-import output
-
 
 class Container(object):
     def __init__(self, name):
         self.NAME = name
         self._inside = {}
-        self._output = output.Output
 
     def __len__(self):
         return len(self._inside)
