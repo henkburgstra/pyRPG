@@ -1,29 +1,7 @@
 
 
 import data
-
-
-def cmd_help():
-    print()
-    print("Possible commands:")
-    print()
-    print('help         []')
-    print('exit         []')
-    print('cls          []')
-    print('party        []')
-    print('stats        [hero_name_in_party/gear_name_without_spaces]')
-    print('inventory    []')
-    print('pouch        []')
-    print("find         [quantity] [gold/herbs/spices]")
-    print("purchaselist [weapons/shields/armors] ([weaponskill: sword/hafted/pole/missile/thrown])")
-    print("purchase     ([quantity]) [gear_name_without_spaces]")
-    print("sell         ([quantity]) [gear_name_without_spaces]")
-    print("equip        [hero_name_in_party] [gear_name_without_spaces]")
-    print("unequip      [hero_name_in_party] [weapon/shield/armor]")
-    print('heroes       []')
-    print("join         [hero_name_outside_party]")
-    print("leave        [hero_name_in_party]")
-    print()
+from output import Output
 
 
 def cmd_exit():
@@ -259,7 +237,7 @@ def cmd_leave(*params):
 
 def run_command(cmd, *params):
     if cmd == 'help':
-        cmd_help()
+        Output.cmd_help()
     elif cmd in ('exit', 'quit'):
         cmd_exit()
     elif cmd in ('cls', 'clear'):
