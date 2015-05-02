@@ -27,10 +27,6 @@ class PartyContainer(Container):
             if item is not None and item.RAW == gear_raw:
                 return character
 
-    def show_members(self):
-        """Deze is voor party"""
-        Output.party(len(self), self.MAXIMUM, self)
-
     def add(self, character, verbose=True):
         """Deze is voor join"""
         if character in self:

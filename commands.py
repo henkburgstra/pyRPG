@@ -20,10 +20,6 @@ def cmd_cls():
         print('\n' * 100)
 
 
-def cmd_party():
-    data.party.show_members()
-
-
 def cmd_stats(*params):
     try:
         data.party[params[0]].show_hero_stats()
@@ -229,7 +225,7 @@ def run_command(cmd, *params):
     elif cmd in ('cls', 'clear'):
         cmd_cls()
     elif cmd == 'party':
-        cmd_party()
+        Output.cmd_party(data.party)
     elif cmd == 'stats':
         cmd_stats(*params)
     elif cmd in ('backpack', 'inventory', 'inv'):

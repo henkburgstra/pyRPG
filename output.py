@@ -10,6 +10,7 @@ class Output(object):
 
     @staticmethod
     def cmd_help():
+        """Deze is voor help"""
         print()
         print("Possible commands:")
         print()
@@ -32,7 +33,21 @@ class Output(object):
         print()
 
     @staticmethod
+    def cmd_party(party_heroes):
+        """Deze is voor party"""
+        print()
+        print(str(len(party_heroes)) + "/" + str(party_heroes.MAXIMUM))
+        print()
+        for herolist_item in Output.hero_sort:
+            for character in party_heroes:
+                if herolist_item == character.RAW:
+                    print(character.NAME)
+                    break
+        print()
+
+    @staticmethod
     def cmd_heroes(all_heroes, party_heroes):
+        """Deze is voor heroes"""
         print()
         for herolist_item in Output.hero_sort:
             for value1 in all_heroes.values():
@@ -44,19 +59,6 @@ class Output(object):
                             if value1.RAW == "alagos":
                                 available = "Party leader"
                     print("{:10}\t{}\t{}".format(value1.NAME, value1.level, available))
-                    break
-        print()
-
-    @staticmethod
-    def party(party_size, party_maximum, party):
-        """Deze is voor party"""
-        print()
-        print(str(party_size) + "/" + str(party_maximum))
-        print()
-        for herolist_item in Output.hero_sort:
-            for character in party:
-                if herolist_item == character.RAW:
-                    print(character.NAME)
                     break
         print()
 
