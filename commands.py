@@ -36,11 +36,6 @@ def cmd_stats(*params):
                 print('stats [hero_name_in_party/gear_name_without_spaces]')
 
 
-def cmd_inventory():
-    data.party.show_equipment()
-    data.inventory.show_content()
-
-
 def cmd_pouch():
     data.pouch.show_content()
 
@@ -225,11 +220,11 @@ def run_command(cmd, *params):
     elif cmd in ('cls', 'clear'):
         cmd_cls()
     elif cmd == 'party':
-        Output.cmd_party(data.party)
+        Output.cmd_party()
     elif cmd == 'stats':
         cmd_stats(*params)
     elif cmd in ('backpack', 'inventory', 'inv'):
-        cmd_inventory()
+        Output.cmd_inventory()
     elif cmd == 'pouch':
         cmd_pouch()
     elif cmd == 'find':
@@ -245,7 +240,7 @@ def run_command(cmd, *params):
     elif cmd == 'unequip':
         cmd_unequip(*params)
     elif cmd == 'heroes':
-        Output.cmd_heroes(data.heroes, data.party)
+        Output.cmd_heroes()
     elif cmd == 'join':
         cmd_join(*params)
     elif cmd == 'leave':

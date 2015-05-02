@@ -15,11 +15,6 @@ class PartyContainer(Container):
             total += character.count_equipment(gear_raw)
         return total
 
-    def show_equipment(self):
-        """Deze is voor inv"""
-        for character in sorted(self, key=lambda x: x.SORT):
-            character.show_equipment()
-
     def get_member_with_this_equipment(self, gear_raw):
         """Deze is voor sell en stats"""
         for character in self:

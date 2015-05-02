@@ -6,7 +6,7 @@ from output import Output
 class SmallContainer(Container):
 
     def __getitem__(self, key):
-        return self._inside[key.RAW]
+        return self.inside[key.RAW]
 
     def show_content(self):
         """Deze is voor pouch"""

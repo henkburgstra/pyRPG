@@ -22,6 +22,11 @@
 # purchase en createemptygear verbeteren in commands
 # idee om vanaf het begin af aan empty gear in de backpack te hebben?
 
+# sortering er uit, maar in de ouput
+# geen classes van gear values, maar variablen?
+# wx python onderzoeken
+
+
 
 import commands
 

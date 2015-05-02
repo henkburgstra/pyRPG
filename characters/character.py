@@ -8,15 +8,11 @@ class Character(object):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
         self._level = level
-        self._stats = DotDict(stats)
-        self._skills = DotDict(skills)
-        self._equipment = DotDict(equipment)
+        self.stats = DotDict(stats)
+        self.skills = DotDict(skills)
+        self.equipment = DotDict(equipment)
 
         # self._dead = False
-
-    @property
-    def stats(self):
-        return self._stats
 
     @property
     def level(self):
@@ -28,30 +24,30 @@ class Character(object):
         self._set_total()
 
     def current_hp(self):
-        return self._level.current + self._stats.sta.current + self._stats.edu.current
+        return self._level.current + self.stats.sta.current + self.stats.edu.current
 
     def max_hp(self):
-        return self._level.quantity + self._stats.sta.quantity + self._stats.edu.quantity
+        return self._level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
 
     def _set_dex(self):
-        self._stats.dex.extra = 0
-        for value in self._equipment.values():
+        self.stats.dex.extra = 0
+        for value in self.equipment.values():
             if value.DEXTERITY.QUANTITY is not None:
-                self._stats.dex.extra += value.DEXTERITY.QUANTITY
-        self._stats.dex.total = self._stats.dex.quantity + self._stats.dex.extra
+                self.stats.dex.extra += value.DEXTERITY.QUANTITY
+        self.stats.dex.total = self.stats.dex.quantity + self.stats.dex.extra
 
     def _set_stealth(self):
-        self._skills.stl.extra = 0
-        for value in self._equipment.values():
+        self.skills.stl.extra = 0
+        for value in self.equipment.values():
             if value.STEALTH.QUANTITY is not None:
-                self._skills.stl.extra += value.STEALTH.QUANTITY
-        self._skills.stl.total = self._skills.stl.quantity + self._skills.stl.extra
+                self.skills.stl.extra += value.STEALTH.QUANTITY
+        self.skills.stl.total = self.skills.stl.quantity + self.skills.stl.extra
 
     def _set_total(self):
-        for value in self._stats.values():
+        for value in self.stats.values():
             if value.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
                 value.total = 1
-        for value in self._skills.values():
+        for value in self.skills.values():
             if value.total < 0 or value.quantity <= 0:
                 value.total = 0
             if 0 > value.extra < value.quantity:

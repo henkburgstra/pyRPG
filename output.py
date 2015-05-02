@@ -1,11 +1,14 @@
 
+import data
+
+
 class Output(object):
 
     stats = ['name', 'value', 'min_int', 'min_str', 'min_sta',
              'protection', 'defense', 'base_hit', 'damage',
              'dexterity', 'stealth']
 
-    hero_sort = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
+    HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
                  'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
 
     @staticmethod
@@ -33,27 +36,44 @@ class Output(object):
         print()
 
     @staticmethod
-    def cmd_party(party_heroes):
+    def cmd_party():
         """Deze is voor party"""
         print()
-        print(str(len(party_heroes)) + "/" + str(party_heroes.MAXIMUM))
+        print(str(len(data.party)) + "/" + str(data.party.MAXIMUM))
         print()
-        for herolist_item in Output.hero_sort:
-            for character in party_heroes:
-                if herolist_item == character.RAW:
+        for hero_from_const_list in Output.HERO_SORT:
+            for character in data.party:
+                if hero_from_const_list == character.RAW:
                     print(character.NAME)
                     break
         print()
 
     @staticmethod
-    def cmd_heroes(all_heroes, party_heroes):
+    def cmd_inventory():
+        """Deze is voor inv"""
+
+        print()
+
+        for hero_from_const_list in Output.HERO_SORT:
+            for character in data.party:
+                if hero_from_const_list == character.RAW:
+
+                    for value in sorted(character.equipment.values(), key=lambda equipment: equipment.SORT):
+                        if "empty" not in value.RAW:
+                            print("{:30} {:15} x1 {}".format(value.NAME, value.TYPE, character.NAME))
+
+        data.inventory.show_content()
+
+
+    @staticmethod
+    def cmd_heroes():
         """Deze is voor heroes"""
         print()
         for herolist_item in Output.hero_sort:
-            for value1 in all_heroes.values():
+            for value1 in data.heroes.values():
                 if herolist_item == value1.RAW:
                     available = "Available"
-                    for value2 in party_heroes:
+                    for value2 in data.party:
                         if value1.RAW == value2.RAW:
                             available = "Party member"
                             if value1.RAW == "alagos":
@@ -61,6 +81,14 @@ class Output(object):
                     print("{:10}\t{}\t{}".format(value1.NAME, value1.level, available))
                     break
         print()
+
+
+
+
+
+
+
+
 
     @staticmethod
     def pouch(volume, inventory):
@@ -153,14 +181,6 @@ class Output(object):
     def leader_not_leave_party():
         """Deze is voor leave"""
         print("The party leader cannot leave his own party!")
-
-    @staticmethod
-    def character_inventory(character_name, item_quantity, character_equipment):
-        """Deze is voor inv"""
-        print()
-        for value in sorted(character_equipment, key=lambda equipment: equipment.SORT):
-            if "empty" not in value.RAW:
-                print("{:30} {:15} x{} {}".format(value.NAME, value.TYPE, item_quantity, character_name))
 
     @staticmethod
     def backpack_inventory(inventory):

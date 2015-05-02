@@ -4,16 +4,16 @@ from characters.stats import Stat
 
 class Skill(Stat):
 
-    trainingcost = (200, 80, 120, 160, 200, 240, 280, 320, 360, 400, "Max")
-    maximum = 10
+    TRAININGSCOSTS = (200, 80, 120, 160, 200, 240, 280, 320, 360, 400, "Max")
+    MAXIMUM = 10
 
     def __init__(self, name, raw, upgrade, quantity, sort=0):
-        super().__init__(name, raw, self.maximum, upgrade, quantity)
+        super().__init__(name, raw, self.MAXIMUM, upgrade, quantity)
         self.SORT = sort
 
     def positive_quantity(self):
         """ Deze is voor hero stats"""
-        if self._quantity >= 1:
+        if self.quantity >= 1:
             return True
         return False
 
