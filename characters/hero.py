@@ -5,9 +5,8 @@ from output import Output
 
 
 class Hero(Character):
-    def __init__(self, name, sort, level, totalxp, stats, skills, equipment):
-        super().__init__(name,       level,         stats, skills, equipment)
-        self.SORT = sort
+    def __init__(self, name, level, totalxp, stats, skills, equipment):
+        super().__init__(name, level,         stats, skills, equipment)
         self._totalxp = totalxp
 
     def count_equipment(self, gear_raw):

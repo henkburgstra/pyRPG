@@ -207,20 +207,6 @@ def cmd_unequip(*params):
         print("unequip [hero_name_in_party] [weapon/shield/helmet/armor]")
 
 
-def cmd_heroes():
-    print()
-    for ext_hero in sorted(data.heroes.values(), key=lambda x: x.SORT):   # extern
-        available = "Available"
-        for int_hero in data.party:                                       # intern
-            if ext_hero == int_hero:
-                available = "Party member"
-                if int_hero == data.heroes.alagos:
-                    available = "Party leader"
-                break
-        print("{:10}\t{}\t{}".format(ext_hero.NAME, ext_hero.level, available))
-    print()
-
-
 def cmd_join(*params):
     try:
         data.party.add(data.heroes[params[0]])
@@ -263,7 +249,7 @@ def run_command(cmd, *params):
     elif cmd == 'unequip':
         cmd_unequip(*params)
     elif cmd == 'heroes':
-        cmd_heroes()
+        Output.cmd_heroes(data.heroes, data.party)
     elif cmd == 'join':
         cmd_join(*params)
     elif cmd == 'leave':

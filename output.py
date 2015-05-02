@@ -1,6 +1,13 @@
 
 class Output(object):
 
+    stats = ['name', 'value', 'min_int', 'min_str', 'min_sta',
+             'protection', 'defense', 'base_hit', 'damage',
+             'dexterity', 'stealth']
+
+    hero_sort = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
+                 'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
+
     @staticmethod
     def cmd_help():
         print()
@@ -25,13 +32,32 @@ class Output(object):
         print()
 
     @staticmethod
+    def cmd_heroes(all_heroes, party_heroes):
+        print()
+        for herolist_item in Output.hero_sort:
+            for value1 in all_heroes.values():
+                if herolist_item == value1.RAW:
+                    available = "Available"
+                    for value2 in party_heroes:
+                        if value1.RAW == value2.RAW:
+                            available = "Party member"
+                            if value1.RAW == "alagos":
+                                available = "Party leader"
+                    print("{:10}\t{}\t{}".format(value1.NAME, value1.level, available))
+                    break
+        print()
+
+    @staticmethod
     def party(party_size, party_maximum, party):
         """Deze is voor party"""
         print()
         print(str(party_size) + "/" + str(party_maximum))
         print()
-        for character in sorted(party, key=lambda name: name.SORT):
-            print(character.NAME)
+        for herolist_item in Output.hero_sort:
+            for character in party:
+                if herolist_item == character.RAW:
+                    print(character.NAME)
+                    break
         print()
 
     @staticmethod
