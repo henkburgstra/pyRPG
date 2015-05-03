@@ -11,6 +11,19 @@ class Output(object):
     HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
                  'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
 
+    GEAR_SORT = ['weapon', 'shield', 'helmet', 'armor']
+
+    STAT_SORT = ['int', 'wil', 'dex', 'edu', 'str', 'sta']
+
+    # STAT_SORT = ['intelligence', 'willpower', 'dexterity', 'endurance', 'strength', 'stamina']
+
+    SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
+                  'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
+
+    # SKILL_SORT = ['chemist', 'diplomat', 'loremaster', 'mechanic', 'medic', 'merchant',
+    #               'ranger', 'scientist', 'stealth', 'thief', 'troubadour', 'warrior',
+    #               'hafted', 'missile', 'pole', 'shield', 'sword', 'thrown']
+
     @staticmethod
     def cmd_help():
         """Deze is voor help"""
@@ -51,25 +64,29 @@ class Output(object):
     @staticmethod
     def cmd_inventory():
         """Deze is voor inv"""
-
         print()
-
+        # hero volgorde
         for hero_from_const_list in Output.HERO_SORT:
             for character in data.party:
                 if hero_from_const_list == character.RAW:
-
-                    for value in sorted(character.equipment.values(), key=lambda equipment: equipment.SORT):
-                        if "empty" not in value.RAW:
-                            print("{:30} {:15} x1 {}".format(value.NAME, value.TYPE, character.NAME))
-
-        data.inventory.show_content()
-
+                    # equipment volgorde
+                    for gear_from_const_list in Output.GEAR_SORT:
+                        for value in sorted(character.equipment.values(), key=lambda equipment: equipment.NAME):
+                            if gear_from_const_list == value.TYPE.lower():
+                                if "empty" not in value.RAW:
+                                    print("{:30} {:15} x1 {}".format(value.NAME, value.TYPE, character.NAME))
+        # rest van unequipped volgorde
+        for gear_from_const_list in Output.GEAR_SORT:
+            for value in sorted(data.inventory, key=lambda item: item.NAME):
+                if gear_from_const_list == value.TYPE.lower():
+                    print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
+        print()
 
     @staticmethod
     def cmd_heroes():
         """Deze is voor heroes"""
         print()
-        for herolist_item in Output.hero_sort:
+        for herolist_item in Output.HERO_SORT:
             for value1 in data.heroes.values():
                 if herolist_item == value1.RAW:
                     available = "Available"
@@ -78,9 +95,60 @@ class Output(object):
                             available = "Party member"
                             if value1.RAW == "alagos":
                                 available = "Party leader"
-                    print("{:10}\t{}\t{}".format(value1.NAME, value1.level, available))
+                    print("{:10}\t{:1}\t{}".format(value1.NAME, value1.level, available))
                     break
         print()
+
+    @staticmethod
+    def character(character):
+        """Deze is voor hero stats"""
+        print()
+        print("Name: {},\tLevel: {},\tHitPoints: {}/{},\tTotal XP: {}".format(
+            character.NAME, character.level, character.current_hp(), character.max_hp(), character.totalxp))
+        print("Stats:")
+        for stat_from_const_list in Output.STAT_SORT:
+            for value in character.stats.values():
+                if stat_from_const_list == value.RAW:
+                    if value.extra == 0:
+                        print("      {:13}: {}".format(value.NAME, value.quantity))
+                    elif value.extra > 0:
+                        print("      {:13}: {} (+{})".format(value.NAME, value.quantity, value.extra))
+                    else:
+                        print("      {:13}: {} ({})".format(value.NAME, value.quantity, value.extra))
+        print("Skills:")
+        for skill_from_const_list in Output.SKILL_SORT:
+            for value in character.skills.values():
+                if skill_from_const_list == value.RAW:
+                    if value.positive_quantity():
+                        if value.extra == 0:
+                            print("      {:13}: {}".format(value.NAME, value.quantity))
+                        elif value.extra > 0:
+                            print("      {:13}: {} (+{})".format(value.NAME, value.quantity, value.extra))
+                        else:
+                            print("      {:13}: {} ({})".format(value.NAME, value.quantity, value.extra))
+        print("Equipment:")
+        for gear_from_const_list in Output.GEAR_SORT:
+            for value in character.equipment.values():
+                if gear_from_const_list == value.TYPE.lower():
+                    if "empty" not in value.RAW:
+                        print("      {:13}: {}".format(value.TYPE, value.NAME))
+                    else:
+                        print("      {:13}: ".format(value.TYPE))
+
+    @staticmethod
+    def gear(item_type, item_name, *args):
+        """Deze is voor gear stats"""
+        print()
+        print("{:18}: {}".format(item_type, item_name))
+        for prop in args:
+            if prop.QUANTITY is not None:
+                print("{:18}: {}". format(prop.NAME, prop.QUANTITY))
+        print()
+
+
+
+
+
 
 
 
@@ -181,60 +249,3 @@ class Output(object):
     def leader_not_leave_party():
         """Deze is voor leave"""
         print("The party leader cannot leave his own party!")
-
-    @staticmethod
-    def backpack_inventory(inventory):
-        """Deze is voor inv"""
-        print()
-        for value in sorted(inventory, key=lambda item: (item.SORT, item.NAME)):
-            print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
-        print()
-
-    @staticmethod
-    def stat(stat_name, stat_quantity, stat_extra):
-        """Deze is voor hero stats"""
-        if stat_extra == 0:
-            print("      {:13}: {}".format(stat_name, stat_quantity))
-        elif stat_extra > 0:
-            print("      {:13}: {} (+{})".format(stat_name, stat_quantity, stat_extra))
-        else:
-            print("      {:13}: {} ({})".format(stat_name, stat_quantity, stat_extra))
-
-    @staticmethod
-    def equipment(item_raw, item_type, item_name):
-        """Deze is voor hero stats"""
-        if "empty" not in item_raw:
-            print("      {:13}: {}".format(item_type, item_name))
-        else:
-            print("      {:13}: ".format(item_type))
-
-    @staticmethod
-    def character(character_name, character_level, character_current_hp, character_max_hp, character_totalxp,
-                  character_stats, character_skills, character_equipment):
-        """Deze is voor hero stats"""
-        print()
-        print("Name: {},\tLevel: {},\tHitPoints: {}/{},\tTotal XP: {}".format(
-            character_name, character_level, character_current_hp, character_max_hp, character_totalxp))
-
-        print("Stats:")
-        for value in sorted(character_stats, key=lambda stat: stat.SORT):
-            value.show_stat()
-
-        print("Skills:")
-        for value in sorted(character_skills, key=lambda skill: (skill.SORT, skill.NAME)):
-            if value.positive_quantity():
-                value.show_stat()
-
-        print("Equipment:")
-        for value in sorted(character_equipment, key=lambda equipment: equipment.SORT):
-            value.show_gear()
-
-    @staticmethod
-    def gear(item_type, item_name, *args):
-        """Deze is voor gear stats"""
-        print()
-        print("{:18}: {}".format(item_type, item_name))
-        for prop in args:
-            if prop.QUANTITY is not None:
-                print("{:18}: {}". format(prop.NAME, prop.QUANTITY))
-        print()

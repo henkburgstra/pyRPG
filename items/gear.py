@@ -36,10 +36,6 @@ class Gear(Item):
         self.DEXTERITY = Dexterity()
         self.STEALTH = Stealth()
 
-    def show_gear(self):
-        """Deze is voor hero stats"""
-        Output.equipment(self.RAW, self.TYPE, self.NAME)
-
     def show_gear_stats(self):
         """Deze is voor gear stats"""
         Output.gear(self.TYPE, self.NAME, self.WPN_SKILL,

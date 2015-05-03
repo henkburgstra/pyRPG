@@ -7,7 +7,7 @@ from output import Output
 class Hero(Character):
     def __init__(self, name, level, totalxp, stats, skills, equipment):
         super().__init__(name, level,         stats, skills, equipment)
-        self._totalxp = totalxp
+        self.totalxp = totalxp
 
     def count_equipment(self, gear_raw):
         """Deze is voor shop count"""
@@ -74,11 +74,6 @@ class Hero(Character):
             return self.skills.shd.quantity
         else:
             return 1
-
-    def show_hero_stats(self):
-        """ Deze is voor hero stats"""
-        Output.character(self.NAME, self.level, self.current_hp(), self.max_hp(), self._totalxp,
-                         self.stats.values(), self.skills.values(), self.equipment.values())
 
     # def level_up(self):
     #     self._level += 1

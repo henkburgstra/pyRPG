@@ -19,10 +19,6 @@ class GearContainer(Container):
                 return item.quantity
         return 0
 
-    def show_content(self):
-        """Deze is voor inv"""
-        Output.backpack_inventory(self)
-
     def add(self, gear, quantity=1, verbose=True):
         """Deze is voor purchase, equip en unequip"""
         if quantity < 1:

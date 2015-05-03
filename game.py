@@ -27,7 +27,6 @@
 # wx python onderzoeken
 
 
-
 import commands
 
 

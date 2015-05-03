@@ -7,9 +7,8 @@ class Skill(Stat):
     TRAININGSCOSTS = (200, 80, 120, 160, 200, 240, 280, 320, 360, 400, "Max")
     MAXIMUM = 10
 
-    def __init__(self, name, raw, upgrade, quantity, sort=0):
+    def __init__(self, name, raw, upgrade, quantity):
         super().__init__(name, raw, self.MAXIMUM, upgrade, quantity)
-        self.SORT = sort
 
     def positive_quantity(self):
         """ Deze is voor hero stats"""
@@ -80,29 +79,29 @@ class Warrior(Skill):
 
 class Hafted(Skill):
     def __init__(self, quantity):
-        super().__init__("Hafted", "haf", 320, quantity, sort=1)
+        super().__init__("Hafted", "haf", 320, quantity)
 
 
 class Missile(Skill):
     def __init__(self, quantity):
-        super().__init__("Missile", "mis", 480, quantity, sort=1)
+        super().__init__("Missile", "mis", 480, quantity)
 
 
 class Pole(Skill):
     def __init__(self, quantity):
-        super().__init__("Pole", "pol", 320, quantity, sort=1)
+        super().__init__("Pole", "pol", 320, quantity)
 
 
 class Shield(Skill):
     def __init__(self, quantity):
-        super().__init__("Shield", "shd", 400, quantity, sort=1)
+        super().__init__("Shield", "shd", 400, quantity)
 
 
 class Sword(Skill):
     def __init__(self, quantity):
-        super().__init__("Sword", "swd", 480, quantity, sort=1)
+        super().__init__("Sword", "swd", 480, quantity)
 
 
 class Thrown(Skill):
     def __init__(self, quantity):
-        super().__init__("Thrown", "thr", 320, quantity, sort=1)
+        super().__init__("Thrown", "thr", 320, quantity)

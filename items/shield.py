@@ -11,7 +11,6 @@ from items import Stealth
 
 class Shield(Gear):
     def __init__(self, name, value, shop, min_strength, protection, defense, dexterity, stealth):
-        self.SORT = 2
         super().__init__(name, value, shop)
         self.MIN_STRENGTH = MinStrength(min_strength)
         self.PROTECTION = Protection(protection)

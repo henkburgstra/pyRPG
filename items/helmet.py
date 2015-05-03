@@ -7,7 +7,6 @@ from items import Protection
 
 class Helmet(Gear):
     def __init__(self, name, value, shop, min_stamina, protection):
-        self.SORT = 3
         super().__init__(name, value, shop)
         self.MIN_STAMINA = MinStamina(min_stamina)
         self.PROTECTION = Protection(protection)

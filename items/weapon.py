@@ -11,7 +11,6 @@ from items import Damage
 
 class Weapon(Gear):
     def __init__(self, name, value, shop, wpn_skill, min_intelligence, min_strength, base_hit, damage):
-        self.SORT = 1
         super().__init__(name, value, shop)
         self.WPN_SKILL = WeaponSkill(wpn_skill)
         self.MIN_INTELLIGENCE = MinIntelligence(min_intelligence)

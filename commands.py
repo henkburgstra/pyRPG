@@ -22,7 +22,7 @@ def cmd_cls():
 
 def cmd_stats(*params):
     try:
-        data.party[params[0]].show_hero_stats()
+        Output.character(data.party[params[0]])
     except KeyError:
         try:
             item = data.inventory[params[0]]
