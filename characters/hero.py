@@ -42,17 +42,17 @@ class Hero(Character):
                 return True
 
     def _is_unable_to_equip(self, item):
-        if self._get_skill(item.TYPE, item.WPN_SKILL.QUANTITY) < 1:
+        if self._get_skill(item.TYPE, item.WPN_SKILL) < 1:
             Output.not_equipping_skl(self.NAME, item.NAME)
             return True
-        if item.MIN_INTELLIGENCE.QUANTITY is not None and item.MIN_INTELLIGENCE.QUANTITY > self.stats.int.quantity:
-            Output.not_equipping_int(self.NAME, item.NAME, item.MIN_INTELLIGENCE.QUANTITY)
+        if item.MIN_INT is not None and item.MIN_INT > self.stats.int.quantity:
+            Output.not_equipping_int(self.NAME, item.NAME, item.MIN_INT)
             return True
-        if item.MIN_STRENGTH.QUANTITY is not None and item.MIN_STRENGTH.QUANTITY > self.stats.str.quantity:
-            Output.not_equipping_str(self.NAME, item.NAME, item.MIN_STRENGTH.QUANTITY)
+        if item.MIN_STR is not None and item.MIN_STR > self.stats.str.quantity:
+            Output.not_equipping_str(self.NAME, item.NAME, item.MIN_STR)
             return True
-        if item.MIN_STAMINA.QUANTITY is not None and item.MIN_STAMINA.QUANTITY > self.stats.sta.quantity:
-            Output.not_equipping_sta(self.NAME, item.NAME, item.MIN_STAMINA.QUANTITY)
+        if item.MIN_STA is not None and item.MIN_STA > self.stats.sta.quantity:
+            Output.not_equipping_sta(self.NAME, item.NAME, item.MIN_STA)
             return True
         return False
 
@@ -76,7 +76,7 @@ class Hero(Character):
             return 1
 
     # def level_up(self):
-    #     self._level += 1
+    #     self.level += 1
 
     # def die(self, message="Game over!"):
     #     print(message)

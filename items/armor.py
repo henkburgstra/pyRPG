@@ -2,19 +2,14 @@
 
 from items.gear import Gear
 
-from items import MinStamina
-from items import Protection
-from items import Dexterity
-from items import Stealth
-
 
 class Armor(Gear):
     def __init__(self, name, value, shop, min_stamina, protection, dexterity, stealth):
         super().__init__(name, value, shop)
-        self.MIN_STAMINA = MinStamina(min_stamina)
-        self.PROTECTION = Protection(protection)
-        self.DEXTERITY = Dexterity(dexterity)
-        self.STEALTH = Stealth(stealth)
+        self.MIN_STA = min_stamina
+        self.PROTECTION = protection
+        self.DEXTERITY = dexterity
+        self.STEALTH = stealth
 
     @staticmethod
     def factory(armor_dict):

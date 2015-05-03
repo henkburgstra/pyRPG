@@ -1,19 +1,15 @@
 
 
-from items.item import Item
+class Item(object):
+    def __init__(self, name):
+        self.NAME = name
+        self.RAW = name.strip().lower().replace(" ", "")
+        self.TYPE = self.__class__.__name__
+        self.quantity = 1
 
-from items import WeaponSkill
-from items import MinIntelligence
-from items import MinStrength
-from items import MinStamina
-from items import Protection
-from items import Defense
-from items import BaseHit
-from items import Damage
-from items import Dexterity
-from items import Stealth
 
-from output import Output
+class PouchItem(Item):
+    pass
 
 
 class Gear(Item):
@@ -22,24 +18,21 @@ class Gear(Item):
         self.VALUE = value
         self.SHOP = shop
 
-        self.WPN_SKILL = WeaponSkill()
+        self.WPN_SKILL = None
 
-        self.MIN_INTELLIGENCE = MinIntelligence()
-        self.MIN_STRENGTH = MinStrength()
-        self.MIN_STAMINA = MinStamina()
+        self.MIN_INT = None
+        self.MIN_STR = None
+        self.MIN_STA = None
 
-        self.PROTECTION = Protection()
-        self.DEFENSE = Defense()
-        self.BASE_HIT = BaseHit()
-        self.DAMAGE = Damage()
+        self.PROTECTION = None
+        self.DEFENSE = None
+        self.BASE_HIT = None
+        self.DAMAGE = None
 
-        self.DEXTERITY = Dexterity()
-        self.STEALTH = Stealth()
+        self.DEXTERITY = None
+        self.STEALTH = None
 
-    def show_gear_stats(self):
-        """Deze is voor gear stats"""
-        Output.gear(self.TYPE, self.NAME, self.WPN_SKILL,
-                    self.MIN_INTELLIGENCE, self.MIN_STRENGTH, self.MIN_STAMINA,
-                    self.PROTECTION, self.DEFENSE, self.BASE_HIT, self.DAMAGE,
-                    self.DEXTERITY,
-                    self.STEALTH)
+    def __iter__(self):
+        """Hiermee kun je door bovenstaande variabelen loopen"""
+        for key, value in self.__dict__.items():
+            yield key, value

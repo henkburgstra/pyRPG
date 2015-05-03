@@ -22,22 +22,19 @@ def cmd_cls():
 
 def cmd_stats(*params):
     try:
-        Output.character(data.party[params[0]])
+        hero = data.party[params[0]]
+        Output.character(hero)
     except KeyError:
         try:
             item = data.inventory[params[0]]
-            item.show_gear_stats()
+            Output.gear(item)
         except KeyError:
             try:
                 hero = data.party.get_member_with_this_equipment(params[0])
                 item = hero.get_equipment(params[0])
-                item.show_gear_stats()
+                Output.gear(item)
             except AttributeError:
                 print('stats [hero_name_in_party/gear_name_without_spaces]')
-
-
-def cmd_pouch():
-    data.pouch.show_content()
 
 
 def cmd_find(*params):
@@ -226,7 +223,7 @@ def run_command(cmd, *params):
     elif cmd in ('backpack', 'inventory', 'inv'):
         Output.cmd_inventory()
     elif cmd == 'pouch':
-        cmd_pouch()
+        Output.cmd_pouch()
     elif cmd == 'find':
         cmd_find(*params)
     elif cmd in ('purchaselist', 'shoplist'):

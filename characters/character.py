@@ -7,16 +7,12 @@ class Character(object):
     def __init__(self, name, level, stats, skills, equipment):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
-        self._level = level
+        self.level = level
         self.stats = DotDict(stats)
         self.skills = DotDict(skills)
         self.equipment = DotDict(equipment)
 
         # self._dead = False
-
-    @property
-    def level(self):
-        return self._level.quantity
 
     def stats_update(self):
         self._set_dex()
@@ -24,10 +20,10 @@ class Character(object):
         self._set_total()
 
     def current_hp(self):
-        return self._level.current + self.stats.sta.current + self.stats.edu.current
+        return self.level.current + self.stats.sta.current + self.stats.edu.current
 
     def max_hp(self):
-        return self._level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
+        return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
 
     def _set_dex(self):
         self.stats.dex.extra = 0

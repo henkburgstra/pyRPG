@@ -8,10 +8,6 @@ class SmallContainer(Container):
     def __getitem__(self, key):
         return self.inside[key.RAW]
 
-    def show_content(self):
-        """Deze is voor pouch"""
-        Output.pouch(len(self), self)
-
     def add(self, item, quantity, verbose=True):
         """Deze is voor find en sell"""
         if quantity < 1:

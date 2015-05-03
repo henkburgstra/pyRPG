@@ -4,10 +4,6 @@ import data
 
 class Output(object):
 
-    stats = ['name', 'value', 'min_int', 'min_str', 'min_sta',
-             'protection', 'defense', 'base_hit', 'damage',
-             'dexterity', 'stealth']
-
     HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
                  'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
 
@@ -15,14 +11,13 @@ class Output(object):
 
     STAT_SORT = ['int', 'wil', 'dex', 'edu', 'str', 'sta']
 
-    # STAT_SORT = ['intelligence', 'willpower', 'dexterity', 'endurance', 'strength', 'stamina']
-
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
-    # SKILL_SORT = ['chemist', 'diplomat', 'loremaster', 'mechanic', 'medic', 'merchant',
-    #               'ranger', 'scientist', 'stealth', 'thief', 'troubadour', 'warrior',
-    #               'hafted', 'missile', 'pole', 'shield', 'sword', 'thrown']
+    PROP_SORT = ['min_int', 'min_str', 'min_sta',
+                 'protection', 'defense', 'base_hit', 'damage',
+                 'dexterity',
+                 'stealth']
 
     @staticmethod
     def cmd_help():
@@ -95,8 +90,19 @@ class Output(object):
                             available = "Party member"
                             if value1.RAW == "alagos":
                                 available = "Party leader"
-                    print("{:10}\t{:1}\t{}".format(value1.NAME, value1.level, available))
+                    print("{:10}\t{:1}\t{}".format(value1.NAME, value1.level.quantity, available))
                     break
+        print()
+
+    @staticmethod
+    def cmd_pouch():
+        """Deze is voor pouch"""
+        print()
+        if len(data.pouch) > 0:
+            for item in data.pouch:
+                print("{} x{}".format(item.NAME, item.quantity))
+        else:
+            print("Empty")
         print()
 
     @staticmethod
@@ -104,7 +110,7 @@ class Output(object):
         """Deze is voor hero stats"""
         print()
         print("Name: {},\tLevel: {},\tHitPoints: {}/{},\tTotal XP: {}".format(
-            character.NAME, character.level, character.current_hp(), character.max_hp(), character.totalxp))
+            character.NAME, character.level.quantity, character.current_hp(), character.max_hp(), character.totalxp))
         print("Stats:")
         for stat_from_const_list in Output.STAT_SORT:
             for value in character.stats.values():
@@ -136,37 +142,15 @@ class Output(object):
                         print("      {:13}: ".format(value.TYPE))
 
     @staticmethod
-    def gear(item_type, item_name, *args):
+    def gear(item):
         """Deze is voor gear stats"""
         print()
-        print("{:18}: {}".format(item_type, item_name))
-        for prop in args:
-            if prop.QUANTITY is not None:
-                print("{:18}: {}". format(prop.NAME, prop.QUANTITY))
-        print()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @staticmethod
-    def pouch(volume, inventory):
-        """Deze is voor pouch"""
-        print()
-        if volume > 0:
-            for item in inventory:
-                print("{} x{}".format(item.NAME, item.quantity))
-        else:
-            print("Empty")
+        print("{:13}: {}".format(item.TYPE, item.NAME))
+        for prop_from_const_list in Output.PROP_SORT:
+            for key, value in item:
+                if prop_from_const_list == key.lower():
+                    if value is not None:
+                        print("{:13}: {}". format(key.lower().title().replace("_", "."), value))
         print()
 
     @staticmethod
