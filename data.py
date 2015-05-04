@@ -6,6 +6,14 @@ import decorators
 import containers
 
 
+gear_dict = dict(
+    weapons=decorators.weapons,
+    shields=decorators.shields,
+    helmets=decorators.helmets,
+    armors=decorators.armors
+)
+
+
 def stats(int1, wil1, dex1, edu1, str1, sta1):
     return dict(
         int=characters.Intelligence(int1), wil=characters.Willpower(wil1), dex=characters.Dexterity(dex1),

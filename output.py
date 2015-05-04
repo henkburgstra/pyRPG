@@ -1,5 +1,6 @@
 
 import data
+import decorators
 
 
 class Output(object):
@@ -15,6 +16,11 @@ class Output(object):
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
     PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'min_sta',
+                 'protection', 'defense', 'base_hit', 'damage',
+                 'dexterity',
+                 'stealth']
+
+    SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'min_sta',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
                  'stealth']
@@ -152,6 +158,67 @@ class Output(object):
                     if value is not None:
                         print("{:13}: {}". format(key.lower().title().replace("_", "."), value))
         print()
+
+    @staticmethod
+    def _shop_count(key):
+        count = data.inventory.count_item(key) + data.party.count_equipment(key)
+        if count != 0:
+            return count
+        else:
+            return ""
+
+    @staticmethod
+    def shop_list(gear, weaponskill=0):
+        """Deze is voor purchaselist"""
+
+        if gear == decorators.weapons and weaponskill == "EoCMD":
+            raise ValueError
+
+        from texttable import Texttable
+
+        templist = []
+        for key1, value1 in gear.items():
+            for key2, value2 in value1.items():
+                if key2 in Output.SHOP_SORT:
+                    templist.append(key2)
+            break
+        columns = [x for x in Output.SHOP_SORT if x in templist]
+        headers = [item.title().replace("_", ".") for item in columns]
+        headers.append('Backpack')
+
+        tab = Texttable()
+        sortlist = []
+        for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
+            templist = []
+            if value1.shop:
+                if weaponskill == "EoCMD" or weaponskill == value1.skill.lower():
+                    for item in columns:
+                        for key2, value2 in value1.items():
+                            if item == key2:
+                                if value2 is None:
+                                    templist.append("")
+                                else:
+                                    templist.append(str(value2))
+                    templist.append(Output._shop_count(key1))
+                    sortlist.append(templist)
+        tab.add_rows(sortlist, header=False)
+
+        tab.header(headers)
+
+        align = []
+        width = []
+        align.append('l')   # vanwege owned erachter, extra kolom
+        width.append(20)
+        for _ in columns:
+            align.append('r')
+            width.append(10)
+        tab.set_cols_align(align)
+        tab.set_cols_width(width)
+
+        print()
+        print(tab.draw())
+        print()
+
 
     @staticmethod
     def is_equipping(character_name, item_name):

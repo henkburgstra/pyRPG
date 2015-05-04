@@ -45,73 +45,12 @@ def cmd_find(*params):
 
 
 def cmd_purchaselist(*params):
-
-    from decorators import weapons, shields, helmets, armors
-
-    if params[0] == "weapons" and params[1] in ("sword", "hafted", "pole", "missile", "thrown"):
-        shop_list(weapons, params[1])
-    elif params[0] == "shields":
-        shop_list(shields, 0)
-    elif params[0] == "helmets":
-        shop_list(helmets, 0)
-    elif params[0] == "armors":
-        shop_list(armors, 0)
-    else:
-        print("purchaselist [weapons/shields/helmets/armors] ([weaponskill: sword/hafted/pole/missile/thrown])")
-
-
-def shop_list(gear, weaponskill):
-
-    from texttable import Texttable
-
-    columns = ['name', 'value', 'min_int', 'min_str', 'min_sta',
-               'protection', 'defense', 'base_hit', 'damage',
-               'dexterity', 'stealth']
-
-    print()
-
-    templist = []
-    for key1, value1 in gear.items():
-        for key2, value2 in value1.items():
-            if key2 in columns:
-                templist.append(key2)
-        break
-    columns = [x for x in columns if x in templist]
-    headers = [item.title().replace("_", ".") for item in columns]
-    headers.append('Backpack')
-
-    tab = Texttable()
-    sortlist = []
-    for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
-        templist = []
-        if value1.shop:
-            if weaponskill == 0 or weaponskill == value1.skill.lower():
-                for item in columns:
-                    for key2, value2 in value1.items():
-                        if item == key2:
-                            if value2 is None:
-                                templist.append("")
-                            else:
-                                templist.append(str(value2))
-                templist.append(shop_count(key1))
-                sortlist.append(templist)
-    tab.add_rows(sortlist, header=False)
-
-    tab.header(headers)
-
-    align = []
-    width = []
-    align.append('l')   # vanwege owned erachter, extra kolom
-    width.append(20)
-    for _ in columns:
-        align.append('r')
-        width.append(10)
-    tab.set_cols_align(align)
-    tab.set_cols_width(width)
-
-    # tab.set_deco(Texttable.HEADER | Texttable.VLINES | Texttable.BORDER)
-    print(tab.draw())
-    print()
+    try:
+        Output.shop_list(data.gear_dict[params[0]], params[1])
+    except KeyError:
+        print("purchaselist [weapons/shields/helmets/armors]")
+    except ValueError:
+        print("purchaselist weapons [sword/hafted/pole/missile/thrown]")
 
 
 def cmd_purchase(*params):
@@ -273,11 +212,3 @@ def create_empty_gear(gear_type):
             return Helmet.factory(helmets.emptyhelmet)
         elif gear_type == "armor" or gear_type in armors:
             return Armor.factory(armors.emptyarmor)
-
-
-def shop_count(key):
-    count = data.inventory.count_item(key) + data.party.count_equipment(key)
-    if count != 0:
-        return count
-    else:
-        return ""
