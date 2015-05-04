@@ -13,9 +13,9 @@ class SmallContainer(Container):
         if item not in self:
             Output.quantity_not_enough(item.NAME, price, item.quantity - 1)
             return False
-        elif self[item].quantity < price:
+        elif self[item.RAW].quantity < price:
             Output.quantity_not_enough(item.NAME, price, item.quantity)
             return False
         else:
-            self[item].quantity -= price
+            self[item.RAW].quantity -= price
             return True

@@ -25,9 +25,6 @@ class Container(object):
     def __delitem__(self, key):
         del self.inside[key.RAW]
 
-    # def __getattr__(self, item):
-    #     return self[item]
-
     def add(self, item, quantity=1, verbose=True):
         """Deze is voor find, purchase, sell, equip en unequip"""
         if quantity < 1:
