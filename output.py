@@ -14,7 +14,7 @@ class Output(object):
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
-    PROP_SORT = ['min_int', 'min_str', 'min_sta',
+    PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'min_sta',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
                  'stealth']

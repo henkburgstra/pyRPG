@@ -19,8 +19,8 @@
 # purchase en createemptygear verbeteren in commands
 # idee om vanaf het begin af aan empty gear in de backpack te hebben?
 
-# sortering er uit, maar in de ouput
 # wx python onderzoeken
+# nog uitzoeken hoe het zit met de containers en __getitem__ en met de .raw en zonder .raw
 
 
 import commands

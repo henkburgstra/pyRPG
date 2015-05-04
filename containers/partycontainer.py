@@ -22,7 +22,7 @@ class PartyContainer(Container):
             if item is not None and item.RAW == gear_raw:
                 return character
 
-    def add(self, character, verbose=True):
+    def add(self, character, verbose=True, *args):  # args wordt niet gebruikt, maar is nodig voor overerving?
         """Deze is voor join"""
         if character in self:
             Output.character_double_join(character.NAME, self.NAME)

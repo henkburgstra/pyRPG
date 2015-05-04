@@ -1,4 +1,6 @@
 
+from output import Output
+
 
 class Container(object):
     def __init__(self, name):
@@ -25,3 +27,19 @@ class Container(object):
 
     # def __getattr__(self, item):
     #     return self[item]
+
+    def add(self, item, quantity=1, verbose=True):
+        """Deze is voor find, purchase, sell, equip en unequip"""
+        if quantity < 1:
+            Output.quantity_less_than_one()
+            raise ValueError
+        if "empty" in item.RAW:
+            return
+
+        if item in self:
+            self[item.RAW].quantity += quantity
+        else:
+            self[item] = item                           # self[item] bestaat uit zichzelf al uit quantity = 1
+            self[item.RAW].quantity += quantity - 1     # dus daarom, wanneer hij voor het eerst wordt toegevoegd: - 1
+        if verbose:
+            Output.add_item(quantity, item.NAME, self.NAME)
