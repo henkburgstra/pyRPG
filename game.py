@@ -1,6 +1,5 @@
 
 # simple json framework voor savegames
-# aan het einde, als property's geen special voorwaarden hebben, gewoon de lokale _variablen globaal maken, dus zonder _
 # misschien hoeft een enemy geen equipment te hebben of skills, maar raw stats. idee om over na te denken
 
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
@@ -13,12 +12,9 @@
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 # wel veel static methods... is dat de juiste manier?
+# hoe kan ik de 2 dicts aan het begin van data samenvoegen?
 
-# in shop, aanpassen naar output class
 # texttable gebruiken bij stats van hero
-# purchase en createemptygear verbeteren in commands
-# idee om vanaf het begin af aan empty gear in de backpack te hebben?
-
 # wx python onderzoeken
 
 

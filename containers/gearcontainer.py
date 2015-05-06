@@ -12,6 +12,12 @@ class GearContainer(Container):
                 return item.quantity
         return 0
 
+    def get_empty_of_this_type(self, gear_type):
+        """"Deze is voor sell en unequip"""
+        for item in self:
+            if item.TYPE == gear_type and "empty" in item.RAW:
+                return item
+
     def remove(self, gear, quantity=1, verbose=True):
         """Deze is voor sell en equip"""
         if gear not in self:

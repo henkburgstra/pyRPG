@@ -16,18 +16,17 @@ class Hero(Character):
                 return 1
         return 0
 
-    def get_same_type_equipment_of(self, item):
-        """Deze is voor equip en unequip"""
+    def get_same_type_from_equipment(self, item):
+        """Deze is voor equip"""
         for key, value in self.equipment.items():
             if isinstance(value, type(item)):
                 return self.equipment[key]
 
     def get_equipment(self, gear_raw):
-        """Deze is voor sell en stats"""
+        """Deze is voor stats, sell en unequip"""
         for value in self.equipment.values():
-            if value.RAW == gear_raw:
-                if "empty" not in value.RAW:
-                    return value
+            if value.RAW == gear_raw or (value.TYPE == gear_raw.title() and "empty" not in value.RAW):
+                return value
 
     def set_equipment(self, item, verbose=True):
         """Deze is voor sell, equip en unequip"""

@@ -6,11 +6,18 @@ import decorators
 import containers
 
 
-gear_dict = dict(
+list_gear_dict = dict(
     weapons=decorators.weapons,
     shields=decorators.shields,
     helmets=decorators.helmets,
     armors=decorators.armors
+)
+
+create_gear_dict = dict(
+    weapons=items.Weapon.factory,
+    shields=items.Shield.factory,
+    helmets=items.Helmet.factory,
+    armors=items.Armor.factory
 )
 
 
@@ -136,6 +143,12 @@ pouchitems = DotDict(dict(
 ))
 
 inventory = containers.GearContainer("Backpack")
+inventory.add(items.Weapon.factory(decorators.weapons.emptyweapon), verbose=False)
+inventory.add(items.Shield.factory(decorators.shields.emptyshield), verbose=False)
+inventory.add(items.Helmet.factory(decorators.helmets.emptyhelmet), verbose=False)
+inventory.add(items.Armor.factory(decorators.armors.emptyarmor), verbose=False)
+
 pouch = containers.SmallContainer("Pouch")
+
 party = containers.PartyContainer("Party", 5)
-party.add(heroes.alagos, False)
+party.add(heroes.alagos, verbose=False)

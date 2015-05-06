@@ -15,4 +15,3 @@ class Helmet(Gear):
                       helmet_dict.shop,
                       helmet_dict.min_sta,
                       helmet_dict.protection)
-

@@ -22,4 +22,3 @@ class Shield(Gear):
                       shield_dict.defense,
                       shield_dict.dexterity,
                       shield_dict.stealth)
-

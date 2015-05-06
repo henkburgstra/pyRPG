@@ -1,6 +1,5 @@
 
 import data
-import decorators
 
 
 class Output(object):
@@ -80,7 +79,8 @@ class Output(object):
         for gear_from_const_list in Output.GEAR_SORT:
             for value in sorted(data.inventory, key=lambda item: item.NAME):
                 if gear_from_const_list == value.TYPE.lower():
-                    print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
+                    if "empty" not in value.RAW:
+                        print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
         print()
 
     @staticmethod
@@ -146,6 +146,7 @@ class Output(object):
                         print("      {:13}: {}".format(value.TYPE, value.NAME))
                     else:
                         print("      {:13}: ".format(value.TYPE))
+        print()
 
     @staticmethod
     def gear(item):
@@ -170,12 +171,6 @@ class Output(object):
     @staticmethod
     def shop_list(gear, weaponskill=0):
         """Deze is voor purchaselist"""
-
-        if gear == decorators.weapons and weaponskill == "EoCMD":
-            raise ValueError
-
-        from texttable import Texttable
-
         templist = []
         for key1, value1 in gear.items():
             for key2, value2 in value1.items():
@@ -186,7 +181,6 @@ class Output(object):
         headers = [item.title().replace("_", ".") for item in columns]
         headers.append('Backpack')
 
-        tab = Texttable()
         sortlist = []
         for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
             templist = []
@@ -201,10 +195,11 @@ class Output(object):
                                     templist.append(str(value2))
                     templist.append(Output._shop_count(key1))
                     sortlist.append(templist)
+
+        from texttable import Texttable
+        tab = Texttable()
         tab.add_rows(sortlist, header=False)
-
         tab.header(headers)
-
         align = []
         width = []
         align.append('l')   # vanwege owned erachter, extra kolom
@@ -219,6 +214,20 @@ class Output(object):
         print(tab.draw())
         print()
 
+    @staticmethod
+    def buy(item_quantity, item_name, item_value):
+        """Deze is voor purchase"""
+        print("Purchased {} {} for {} gold.".format(item_quantity, item_name, item_value * item_quantity))
+
+    @staticmethod
+    def sold1(item_name):
+        """Deze is voor sell"""
+        print("Sold {}.".format(item_name))
+
+    @staticmethod
+    def sold2(item_name, character_name):
+        """Deze is voor sell"""
+        print("{} was equipped by {}.".format(item_name, character_name))
 
     @staticmethod
     def is_equipping(character_name, item_name):

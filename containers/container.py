@@ -30,8 +30,6 @@ class Container(object):
         if quantity < 1:
             Output.quantity_less_than_one()
             raise ValueError
-        if "empty" in item.RAW:
-            return
 
         if item in self:
             self[item.RAW].quantity += quantity
