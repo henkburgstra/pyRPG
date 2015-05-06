@@ -25,6 +25,9 @@
 # - movespeed en turns weergeven
 # - stamina gebruiken
 
+# geen min sta meer aan armor, helmet en andere armors
+# maar alleen een weight, zodat er geen minimum meer is, maar je moet gewoon genoeg stamina hebben om te dragen
+# weight heeft invloed op agility en stamina
 
 import commands
 

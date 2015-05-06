@@ -14,46 +14,6 @@ class Character(object):
 
         # self._dead = False
 
-    @property
-    def current_hp(self):
-        """Deze is voor hero stats"""
-        return self.level.current + self.stats.sta.current + self.stats.edu.current
-
-    @property
-    def max_hp(self):
-        """Deze is voor hero stats"""
-        return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
-
-    def stats_update(self):
-        """Deze is voor sell, equip en unequip"""
-        self._set_dex()
-        self._set_stealth()
-        self._set_total()
-
-    def _set_dex(self):
-        self.stats.dex.extra = 0
-        for value in self.equipment.values():
-            if value.DEXTERITY is not None:
-                self.stats.dex.extra += value.DEXTERITY
-        self.stats.dex.total = self.stats.dex.quantity + self.stats.dex.extra
-
-    def _set_stealth(self):
-        self.skills.stl.extra = 0
-        for value in self.equipment.values():
-            if value.STEALTH is not None:
-                self.skills.stl.extra += value.STEALTH
-        self.skills.stl.total = self.skills.stl.quantity + self.skills.stl.extra
-
-    def _set_total(self):
-        for value in self.stats.values():
-            if value.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
-                value.total = 1
-        for value in self.skills.values():
-            if value.total < 0 or value.quantity <= 0:
-                value.total = 0
-            if 0 > value.extra < value.quantity:
-                value.extra = -value.quantity
-
     # @staticmethod
     # def make_car_sound():
     #     print('Vrooom')

@@ -22,7 +22,7 @@ class Gear(Item):
 
         self.MIN_INT = None
         self.MIN_STR = None
-        self.MIN_STA = None
+        self.WEIGHT = None
 
         self.PROTECTION = None
         self.DEFENSE = None

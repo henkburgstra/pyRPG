@@ -14,12 +14,12 @@ class Output(object):
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
-    PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'min_sta',
+    PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
                  'stealth']
 
-    SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'min_sta',
+    SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
                  'stealth']
@@ -122,13 +122,14 @@ class Output(object):
         print("      Total XP     : {}".format(character.totalxp))
         print("      Next Level   : {}".format(character.nextlevel))
         print()
-        print("      Movepoints   : {}".format(0))
+        print("      Weight       : {}".format(character.weight))
+        print("      Movepoints   : {}\t\t({})".format(character.own_movepoints, character.total_movepoints))
         if character.skills.shd.quantity > 0:
             print("      Protection   : {}\t\t({})".format(character.protection, character.equipment.shd.PROTECTION))
         else:
             print("      Protection   : {}".format(character.protection))
         print("      Defense      : {}".format(character.equipment.shd.DEFENSE))
-        if character.skills.war.quantity > 0:
+        if character.skills.war.quantity > 0 and "empty" not in character.equipment.wpn.RAW:
             print("      Base Hit     : {}%\t(+{}%)".format(character.equipment.wpn.BASE_HIT, character.warrior_hit))
         else:
             print("      Base Hit     : {}%".format(character.equipment.wpn.BASE_HIT))
