@@ -7,7 +7,26 @@ from output import Output
 class Hero(Character):
     def __init__(self, name, level, totalxp, stats, skills, equipment):
         super().__init__(name, level,         stats, skills, equipment)
+        self.xpremaining = 0
         self.totalxp = totalxp
+
+    @property
+    def nextlevel(self):
+        return int((250 / 3) * (2 * self.level.quantity ** 3 +
+                                9 * self.level.quantity ** 2 +
+                                13 * self.level.quantity + 6) - self.totalxp)
+
+    @property
+    def protection(self):
+        total = 0
+        for value in self.equipment.values():
+            if value.PROTECTION is not None:
+                total += value.PROTECTION
+        return total
+
+    @property
+    def warrior_hit(self):
+        return round((47 - ((self.equipment.wpn.BASE_HIT / 10) * 5)) * (self.skills.war.total / 10))
 
     def count_equipment(self, gear_raw):
         """Deze is voor shop count"""

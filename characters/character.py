@@ -14,19 +14,21 @@ class Character(object):
 
         # self._dead = False
 
+    @property
+    def current_hp(self):
+        """Deze is voor hero stats"""
+        return self.level.current + self.stats.sta.current + self.stats.edu.current
+
+    @property
+    def max_hp(self):
+        """Deze is voor hero stats"""
+        return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
+
     def stats_update(self):
         """Deze is voor sell, equip en unequip"""
         self._set_dex()
         self._set_stealth()
         self._set_total()
-
-    def current_hp(self):
-        """Deze is voor hero stats"""
-        return self.level.current + self.stats.sta.current + self.stats.edu.current
-
-    def max_hp(self):
-        """Deze is voor hero stats"""
-        return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
 
     def _set_dex(self):
         self.stats.dex.extra = 0

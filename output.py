@@ -115,8 +115,25 @@ class Output(object):
     def character(character):
         """Deze is voor hero stats"""
         print()
-        print("Name: {},\tLevel: {},\tHitPoints: {}/{},\tTotal XP: {}".format(
-            character.NAME, character.level.quantity, character.current_hp(), character.max_hp(), character.totalxp))
+        print("Name: {},\tLevel: {},\tHitPoints: {}/{}".format(
+            character.NAME, character.level.quantity, character.current_hp, character.max_hp))
+        print()
+        print("      XP Remaining : {}".format(character.xpremaining))
+        print("      Total XP     : {}".format(character.totalxp))
+        print("      Next Level   : {}".format(character.nextlevel))
+        print()
+        print("      Movepoints   : {}".format(0))
+        if character.skills.shd.quantity > 0:
+            print("      Protection   : {}\t\t({})".format(character.protection, character.equipment.shd.PROTECTION))
+        else:
+            print("      Protection   : {}".format(character.protection))
+        print("      Defense      : {}".format(character.equipment.shd.DEFENSE))
+        if character.skills.war.quantity > 0:
+            print("      Base Hit     : {}%\t(+{}%)".format(character.equipment.wpn.BASE_HIT, character.warrior_hit))
+        else:
+            print("      Base Hit     : {}%".format(character.equipment.wpn.BASE_HIT))
+        print("      Damage       : {}".format(character.equipment.wpn.DAMAGE))
+        print()
         print("Stats:")
         for stat_from_const_list in Output.STAT_SORT:
             for value in character.stats.values():
@@ -124,9 +141,9 @@ class Output(object):
                     if value.extra == 0:
                         print("      {:13}: {}".format(value.NAME, value.quantity))
                     elif value.extra > 0:
-                        print("      {:13}: {} (+{})".format(value.NAME, value.quantity, value.extra))
+                        print("      {:13}: {}\t\t(+{})".format(value.NAME, value.quantity, value.extra))
                     else:
-                        print("      {:13}: {} ({})".format(value.NAME, value.quantity, value.extra))
+                        print("      {:13}: {}\t\t({})".format(value.NAME, value.quantity, value.extra))
         print("Skills:")
         for skill_from_const_list in Output.SKILL_SORT:
             for value in character.skills.values():
@@ -135,9 +152,9 @@ class Output(object):
                         if value.extra == 0:
                             print("      {:13}: {}".format(value.NAME, value.quantity))
                         elif value.extra > 0:
-                            print("      {:13}: {} (+{})".format(value.NAME, value.quantity, value.extra))
+                            print("      {:13}: {}\t\t(+{})".format(value.NAME, value.quantity, value.extra))
                         else:
-                            print("      {:13}: {} ({})".format(value.NAME, value.quantity, value.extra))
+                            print("      {:13}: {}\t\t({})".format(value.NAME, value.quantity, value.extra))
         print("Equipment:")
         for gear_from_const_list in Output.GEAR_SORT:
             for value in character.equipment.values():
