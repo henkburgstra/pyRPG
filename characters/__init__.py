@@ -7,6 +7,7 @@ from .stats import Level
 from .stats import Intelligence
 from .stats import Willpower
 from .stats import Dexterity
+from .stats import Agility
 from .stats import Endurance
 from .stats import Strength
 from .stats import Stamina

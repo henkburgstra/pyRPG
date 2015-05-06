@@ -32,6 +32,11 @@ class Dexterity(Stat):
         super().__init__("Dexterity", "dex", 30, 24, quantity)
 
 
+class Agility(Stat):
+    def __init__(self, quantity):
+        super().__init__("Agility", "agi", 30, 24, quantity)
+
+
 class Endurance(Stat):
     def __init__(self, quantity):
         super().__init__("Endurance", "edu", 40, 12, quantity)

@@ -21,26 +21,28 @@ create_gear_dict = dict(
 )
 
 
-def stats(int1, wil1, dex1, edu1, str1, sta1):
+def stats(int1, wil1, dex1, agi1, edu1, str1, sta1):
     return dict(
         int=characters.Intelligence(int1), wil=characters.Willpower(wil1), dex=characters.Dexterity(dex1),
+        agi=characters.Agility(agi1),
         edu=characters.Endurance(edu1),    str=characters.Strength(str1),  sta=characters.Stamina(sta1)
     )
 
-stats_alagos = stats(18,  12, 15, 15, 15, 30)
-stats_luana = stats(14,   10, 22, 10,  8, 20)
-stats_grindan = stats(10,  8, 25, 20, 20, 40)
-stats_rydalin = stats(22, 16, 20, 16, 10, 31)
-stats_codrif = stats(22,  18, 15, 15, 10, 20)
-stats_galen = stats(15,   15, 18, 20, 25, 40)
-stats_raiko = stats(6,    11, 14, 30, 30, 60)
-stats_kiara = stats(15,   10, 30, 20, 15, 40)
-stats_luthais = stats(30, 30, 20, 18,  8, 50)
-stats_elias = stats(30,   30, 25, 30, 20, 60)
-stats_onarr = stats(30,   25, 23, 30, 25, 60)
-stats_duilio = stats(25,  25, 30, 25, 25, 75)
-stats_iellwen = stats(30, 25, 30, 30, 20, 60)
-stats_faeron = stats(30,  30, 30, 25, 15, 80)
+#                                agi
+stats_alagos = stats(18,  12, 15, 15, 15, 15, 30)
+stats_luana = stats(14,   10, 22, 20, 10,  8, 20)
+stats_grindan = stats(10,  8, 25, 10, 20, 20, 40)
+stats_rydalin = stats(22, 16, 20, 15, 16, 10, 31)
+stats_codrif = stats(22,  18, 15, 12, 15, 10, 20)
+stats_galen = stats(15,   15, 18, 10, 20, 25, 40)
+stats_raiko = stats(6,    11, 14,  8, 30, 30, 60)
+stats_kiara = stats(15,   10, 30, 30, 20, 15, 40)
+stats_luthais = stats(30, 30, 20, 12, 18,  8, 50)
+stats_elias = stats(30,   30, 25, 18, 30, 20, 60)
+stats_onarr = stats(30,   25, 23, 15, 30, 25, 60)
+stats_duilio = stats(25,  25, 30, 25, 25, 25, 75)
+stats_iellwen = stats(30, 25, 30, 25, 30, 20, 60)
+stats_faeron = stats(30,  30, 30, 30, 25, 15, 80)
 
 
 def skills(chm1, dip1, lor1, mec1, med1, mer1, ran1, sci1, stl1, thf1, trb1, war1, haf1, mis1, pol1, shd1, swd1, thr1):

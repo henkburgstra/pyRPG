@@ -6,8 +6,6 @@
 
 # meer decorators
 # meer stats voor heroes
-# idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange
-# (denk dus ook aan het gevolg aan de items zoals shield met -dex, dat dat misschien -agi moet worden)
 # prijzen weapons hercaluleren. die van de shields en armors zijn een voorbeeld om zo te doen.
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
@@ -16,6 +14,16 @@
 
 # texttable gebruiken bij stats van hero
 # wx python onderzoeken
+
+
+# idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange
+# (denk dus ook aan het gevolg aan de items zoals shield met -dex, dat dat misschien -agi moet worden)
+# - movespeed komt van stamina
+# - stamina * strength = weight possible
+# - weight aan item toevoegen
+# - armor ed heeft dus invloed op movespeed
+# - movespeed en turns weergeven
+# - stamina gebruiken
 
 
 import commands

@@ -9,7 +9,7 @@ class Output(object):
 
     GEAR_SORT = ['weapon', 'shield', 'helmet', 'armor']
 
-    STAT_SORT = ['int', 'wil', 'dex', 'edu', 'str', 'sta']
+    STAT_SORT = ['int', 'wil', 'dex', 'agi', 'edu', 'str', 'sta']
 
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
