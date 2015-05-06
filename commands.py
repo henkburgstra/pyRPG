@@ -90,7 +90,7 @@ def cmd_sell(*params):
             item = data.inventory[params[1]]
             quantity = int(params[0])
 
-        data.inventory.remove(item, quantity, False)
+        data.inventory.remove(item, quantity, verbose=False)
         Output.sold1(item.NAME)
         data.pouch.add(data.pouchitems.gold, int((item.VALUE * quantity) / 2))
     except (KeyError, AttributeError, ValueError):
@@ -99,7 +99,7 @@ def cmd_sell(*params):
             item = hero.get_equipment(params[0])
             empty_item = data.inventory.get_empty_of_this_type(item.TYPE)
 
-            hero.set_equipment(empty_item, False)
+            hero.set_equipment(empty_item, verbose=False)
             Output.sold1(item.NAME)
             Output.sold2(item.NAME, hero.NAME)
             data.pouch.add(data.pouchitems.gold, int(item.VALUE / 2))
@@ -114,7 +114,7 @@ def cmd_equip(*params):
         equipped_item = hero.get_same_type_from_equipment(selected_item)
 
         if hero.set_equipment(selected_item):
-            data.inventory.add(equipped_item)
+            data.inventory.add(equipped_item, verbose=False if "empty" in equipped_item.RAW else True)
             data.inventory.remove(selected_item, verbose=False)
     except (KeyError, AttributeError):
         print("equip [hero_name_in_party] [gear_name_without_spaces]")
@@ -127,7 +127,7 @@ def cmd_unequip(*params):
         empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
 
         data.inventory.add(equipped_item)
-        hero.set_equipment(empty_item, False)
+        hero.set_equipment(empty_item, verbose=False)
     except (KeyError, AttributeError):
         print("unequip [hero_name_in_party] [weapon/shield/helmet/armor]")
 
