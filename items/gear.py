@@ -29,8 +29,15 @@ class Gear(Item):
         self.BASE_HIT = None
         self.DAMAGE = None
 
+        self.INTELLIGENCE = None
+        self.WILLPOWER = None
         self.DEXTERITY = None
+        self.DIPLOMAT = None
+        self.LOREMASTER = None
+        self.SCIENTIST = None
         self.STEALTH = None
+        self.THIEF = None
+        self.WARRIOR = None
 
     def __iter__(self):
         """Hiermee kun je door bovenstaande variabelen loopen"""

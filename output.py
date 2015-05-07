@@ -16,13 +16,13 @@ class Output(object):
 
     PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
-                 'dexterity',
-                 'stealth', 'thief']
+                 'intelligence', 'willpower', 'dexterity',
+                 'diplomat', 'loremaster', 'scientist', 'stealth', 'thief', 'warrior']
 
     SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
-                 'dexterity',
-                 'stealth', 'thief']
+                 'intelligence', 'willpower', 'dexterity',
+                 'diplomat', 'loremaster', 'scientist', 'stealth', 'thief', 'warrior']
 
     @staticmethod
     def cmd_help():
@@ -207,8 +207,8 @@ class Output(object):
                     for item in columns:
                         for key2, value2 in value1.items():
                             if item == key2:
-                                if value2 is None:
-                                    templist.append("")
+                                if value2 is None:  # or value2 == 0:
+                                    templist.append("")  # uitgezet, want het is op dit moment niet per se nodig.
                                 else:
                                     templist.append(str(value2))
                     templist.append(Output._shop_count(key1))
@@ -224,7 +224,7 @@ class Output(object):
         width.append(20)
         for _ in columns:
             align.append('r')
-            width.append(10)
+            width.append(12)
         tab.set_cols_align(align)
         tab.set_cols_width(width)
 
