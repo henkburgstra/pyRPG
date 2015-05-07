@@ -10,14 +10,16 @@ list_gear_dict = dict(
     weapons=decorators.weapons,
     shields=decorators.shields,
     helmets=decorators.helmets,
-    armors=decorators.armors
+    armors=decorators.armors,
+    cloaks=decorators.cloaks
 )
 
 create_gear_dict = dict(
     weapons=items.Weapon.factory,
     shields=items.Shield.factory,
     helmets=items.Helmet.factory,
-    armors=items.Armor.factory
+    armors=items.Armor.factory,
+    cloaks=items.Cloak.factory
 )
 
 
@@ -76,7 +78,8 @@ def equipment(wpn1='emptyweapon', shd1='emptyshield', arm1='emptyarmor'):
         wpn=items.Weapon.factory(decorators.weapons[wpn1]),
         shd=items.Shield.factory(decorators.shields[shd1]),
         hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
-        arm=items.Armor.factory(decorators.armors[arm1])
+        arm=items.Armor.factory(decorators.armors[arm1]),
+        clk=items.Cloak.factory(decorators.cloaks.emptycloak)
     )
 
 equipment_alagos = equipment(wpn1='bronzeshortsword',  shd1='woodenbuckler', arm1='lightleatherarmor')
@@ -149,6 +152,7 @@ inventory.add(items.Weapon.factory(decorators.weapons.emptyweapon), verbose=Fals
 inventory.add(items.Shield.factory(decorators.shields.emptyshield), verbose=False)
 inventory.add(items.Helmet.factory(decorators.helmets.emptyhelmet), verbose=False)
 inventory.add(items.Armor.factory(decorators.armors.emptyarmor), verbose=False)
+inventory.add(items.Cloak.factory(decorators.cloaks.emptycloak), verbose=False)
 
 pouch = containers.SmallContainer("Pouch")
 

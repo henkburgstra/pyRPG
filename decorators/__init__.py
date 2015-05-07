@@ -1,5 +1,6 @@
 
 from .weapon import weapons
+from .shield import shields
 from .armor import armors
 from .helmet import helmets
-from .shield import shields
+from .cloak import cloaks

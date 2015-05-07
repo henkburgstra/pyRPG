@@ -7,7 +7,7 @@ class Output(object):
     HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
                  'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
 
-    GEAR_SORT = ['weapon', 'shield', 'helmet', 'armor']
+    GEAR_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak']
 
     STAT_SORT = ['int', 'wil', 'dex', 'agi', 'edu', 'str', 'sta']
 
@@ -17,12 +17,12 @@ class Output(object):
     PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
-                 'stealth']
+                 'stealth', 'thief']
 
     SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
                  'dexterity',
-                 'stealth']
+                 'stealth', 'thief']
 
     @staticmethod
     def cmd_help():
@@ -38,11 +38,11 @@ class Output(object):
         print('inventory    []')
         print('pouch        []')
         print("find         [quantity] [gold/herbs/spices]")
-        print("purchaselist [weapons/shields/armors] ([weaponskill: sword/hafted/pole/missile/thrown])")
+        print("purchaselist [weapons/shields/helmets/armors/cloaks]")
         print("purchase     ([quantity]) [gear_name_without_spaces]")
         print("sell         ([quantity]) [gear_name_without_spaces]")
         print("equip        [hero_name_in_party] [gear_name_without_spaces]")
-        print("unequip      [hero_name_in_party] [weapon/shield/armor]")
+        print("unequip      [hero_name_in_party] [weapon/shield/armor/cloak]")
         print('heroes       []')
         print("join         [hero_name_outside_party]")
         print("leave        [hero_name_in_party]")

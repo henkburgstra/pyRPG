@@ -50,7 +50,7 @@ def cmd_purchaselist(*params):
             raise ValueError
         Output.shop_list(data.list_gear_dict[params[0]], params[1])
     except KeyError:
-        print("purchaselist [weapons/shields/helmets/armors]")
+        print("purchaselist [weapons/shields/helmets/armors/cloaks]")
     except ValueError:
         print("purchaselist weapons [sword/hafted/pole/missile/thrown]")
 
@@ -129,7 +129,7 @@ def cmd_unequip(*params):
         data.inventory.add(equipped_item)
         hero.set_equipment(empty_item, verbose=False)
     except (KeyError, AttributeError):
-        print("unequip [hero_name_in_party] [weapon/shield/helmet/armor]")
+        print("unequip [hero_name_in_party] [weapon/shield/helmet/armor/cloak]")
 
 
 def cmd_join(*params):
