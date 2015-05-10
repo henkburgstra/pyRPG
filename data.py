@@ -7,19 +7,11 @@ import containers
 
 
 list_gear_dict = dict(
-    weapons=decorators.weapons,
-    shields=decorators.shields,
-    helmets=decorators.helmets,
-    armors=decorators.armors,
-    cloaks=decorators.cloaks
-)
-
-create_gear_dict = dict(
-    weapons=items.Weapon.factory,
-    shields=items.Shield.factory,
-    helmets=items.Helmet.factory,
-    armors=items.Armor.factory,
-    cloaks=items.Cloak.factory
+    weapons=(decorators.weapons, items.Weapon.factory),
+    shields=(decorators.shields, items.Shield.factory),
+    helmets=(decorators.helmets, items.Helmet.factory),
+    armors=(decorators.armors, items.Armor.factory),
+    cloaks=(decorators.cloaks, items.Cloak.factory,)
 )
 
 

@@ -200,18 +200,17 @@ class Output(object):
         headers.append('Backpack')
 
         sortlist = []
-        for key1, value1 in sorted(gear.items(), key=lambda x: x[1].sort):
+        for value in sorted(gear.values(), key=lambda x: x.sort):
             templist = []
-            if value1.shop:
-                if weaponskill == "EoCMD" or weaponskill == value1.skill.lower():
+            if value.shop:
+                if weaponskill == "EoCMD" or weaponskill == value.skill.lower():
                     for item in columns:
-                        for key2, value2 in value1.items():
-                            if item == key2:
-                                if value2 is None:  # or value2 == 0:
-                                    templist.append("")  # uitgezet, want het is op dit moment niet per se nodig.
-                                else:
-                                    templist.append(str(value2))
-                    templist.append(Output._shop_count(key1))
+                        if item in value:
+                            if value[item] is None:  # or value1[item] == 0:
+                                templist.append("")   # uitgezet, want het is op dit moment niet per se nodig.
+                            else:
+                                templist.append(str(value[item]))
+                    templist.append(Output._shop_count(value.raw))
                     sortlist.append(templist)
 
         from texttable import Texttable

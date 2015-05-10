@@ -48,7 +48,7 @@ def cmd_purchaselist(*params):
     try:
         if params[0] == "weapons" and params[1] == "EoCMD":
             raise ValueError
-        Output.shop_list(data.list_gear_dict[params[0]], params[1])
+        Output.shop_list(data.list_gear_dict[params[0]][0], params[1])
     except KeyError:
         print("purchaselist [weapons/shields/helmets/armors/cloaks]")
     except ValueError:
@@ -64,14 +64,10 @@ def cmd_purchase(*params):
             gear_raw = params[1]
             quantity = int(params[0])
 
-        # zie in data de 2 dicts
         item = None
-        for key1, value1 in data.list_gear_dict.items():
-            for key2, value2 in value1.items():
-                if key2 == gear_raw:
-                    for key3, value3 in data.create_gear_dict.items():
-                        if key3 == key1:
-                            item = value3(value2)
+        for value in data.list_gear_dict.values():
+            if gear_raw in value[0]:
+                item = value[1](value[0][gear_raw])
 
         if item.SHOP:
             if data.pouch.remove(data.pouchitems.gold, item.VALUE * quantity):
