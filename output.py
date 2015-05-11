@@ -88,16 +88,13 @@ class Output(object):
         """Deze is voor heroes"""
         print()
         for herolist_item in Output.HERO_SORT:
-            for value1 in data.heroes.values():
-                if herolist_item == value1.RAW:
-                    available = "Available"
-                    for value2 in data.party:
-                        if value1.RAW == value2.RAW:
-                            available = "Party member"
-                            if value1.RAW == "alagos":
-                                available = "Party leader"
-                    print("{:10}\t{:1}\t{}".format(value1.NAME, value1.level.quantity, available))
-                    break
+            hero = data.heroes[herolist_item]
+            available = "Available"
+            if hero in data.party:
+                available = "Party member"
+            if hero.RAW == "alagos":
+                available = "Party leader"
+            print("{:10}\t{:1}\t{}".format(hero.NAME, hero.level.quantity, available))
         print()
 
     @staticmethod
