@@ -30,6 +30,7 @@
 # weight heeft invloed op agility en stamina
 
 # gebruik van dictionary doornemen, aanpassen zoals in cmd_heroes en cmd_party
+# of iig value en key duidelijkere namen geven
 # suggestie van kasper's mail bekijken
 
 import commands

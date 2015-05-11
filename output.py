@@ -7,12 +7,14 @@ class Output(object):
     HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
                  'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
 
-    GEAR_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak']
-
     STAT_SORT = ['int', 'wil', 'dex', 'agi', 'edu', 'str', 'sta']
 
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
+
+    GEAR_SORT = ['wpn', 'shd', 'hlm', 'arm', 'clk']
+
+    INV_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak']
 
     PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
@@ -66,20 +68,20 @@ class Output(object):
         print()
         # hero volgorde
         for hero_raw in Output.HERO_SORT:
-            for character in data.party:
-                if hero_raw == character.RAW:
-                    # equipment volgorde
-                    for gear_from_const_list in Output.GEAR_SORT:
-                        for value in sorted(character.equipment.values(), key=lambda equipment: equipment.NAME):
-                            if gear_from_const_list == value.TYPE.lower():
-                                if "empty" not in value.RAW:
-                                    print("{:30} {:15} x1 {}".format(value.NAME, value.TYPE, character.NAME))
+            hero = data.heroes[hero_raw]
+            if hero in data.party:
+                # equipment volgorde
+                for gear_group in Output.GEAR_SORT:
+                    equipment_item = hero.equipment[gear_group]
+                    if "empty" not in equipment_item.RAW:
+                        print("{:30} {:15} x1 {}".format(equipment_item.NAME, equipment_item.TYPE, hero.NAME))
         # rest van unequipped volgorde
-        for gear_from_const_list in Output.GEAR_SORT:
-            for value in sorted(data.inventory, key=lambda item: item.NAME):
-                if gear_from_const_list == value.TYPE.lower():
-                    if "empty" not in value.RAW:
-                        print("{:30} {:15} x{}".format(value.NAME, value.TYPE, value.quantity))
+        for gear_group in Output.INV_SORT:
+            for inventory_item in sorted(data.inventory, key=lambda x: x.NAME):
+                if gear_group == inventory_item.TYPE.lower():
+                    if "empty" not in inventory_item.RAW:
+                        print("{:30} {:15} x{}".format(
+                            inventory_item.NAME, inventory_item.TYPE, inventory_item.quantity))
         print()
 
     @staticmethod
@@ -132,34 +134,31 @@ class Output(object):
         print("      Damage       : {}".format(character.equipment.wpn.DAMAGE))
         print()
         print("Stats:")
-        for stat_from_const_list in Output.STAT_SORT:
-            for value in character.stats.values():
-                if stat_from_const_list == value.RAW:
-                    if value.extra == 0:
-                        print("      {:13}: {}".format(value.NAME, value.quantity))
-                    elif value.extra > 0:
-                        print("      {:13}: {}\t\t(+{})".format(value.NAME, value.quantity, value.extra))
-                    else:
-                        print("      {:13}: {}\t\t({})".format(value.NAME, value.quantity, value.extra))
+        for stat_type_raw in Output.STAT_SORT:
+            stat = character.stats[stat_type_raw]
+            if stat.extra == 0:
+                print("      {:13}: {}".format(stat.NAME, stat.quantity))
+            elif stat.extra > 0:
+                print("      {:13}: {}\t\t(+{})".format(stat.NAME, stat.quantity, stat.extra))
+            else:
+                print("      {:13}: {}\t\t({})".format(stat.NAME, stat.quantity, stat.extra))
         print("Skills:")
-        for skill_from_const_list in Output.SKILL_SORT:
-            for value in character.skills.values():
-                if skill_from_const_list == value.RAW:
-                    if value.positive_quantity():
-                        if value.extra == 0:
-                            print("      {:13}: {}".format(value.NAME, value.quantity))
-                        elif value.extra > 0:
-                            print("      {:13}: {}\t\t(+{})".format(value.NAME, value.quantity, value.extra))
-                        else:
-                            print("      {:13}: {}\t\t({})".format(value.NAME, value.quantity, value.extra))
+        for skill_type_raw in Output.SKILL_SORT:
+            skill = character.skills[skill_type_raw]
+            if skill.positive_quantity():
+                if skill.extra == 0:
+                    print("      {:13}: {}".format(skill.NAME, skill.quantity))
+                elif skill.extra > 0:
+                    print("      {:13}: {}\t\t(+{})".format(skill.NAME, skill.quantity, skill.extra))
+                else:
+                    print("      {:13}: {}\t\t({})".format(skill.NAME, skill.quantity, skill.extra))
         print("Equipment:")
-        for gear_from_const_list in Output.GEAR_SORT:
-            for value in character.equipment.values():
-                if gear_from_const_list == value.TYPE.lower():
-                    if "empty" not in value.RAW:
-                        print("      {:13}: {}".format(value.TYPE, value.NAME))
-                    else:
-                        print("      {:13}: ".format(value.TYPE))
+        for gear_group in Output.GEAR_SORT:
+            equipment_item = character.equipment[gear_group]
+            if "empty" not in equipment_item.RAW:
+                print("      {:13}: {}".format(equipment_item.TYPE, equipment_item.NAME))
+            else:
+                print("      {:13}: ".format(equipment_item.TYPE))
         print()
 
     @staticmethod
