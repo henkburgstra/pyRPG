@@ -29,6 +29,9 @@
 # maar alleen een weight, zodat er geen minimum meer is, maar je moet gewoon genoeg stamina hebben om te dragen
 # weight heeft invloed op agility en stamina
 
+# gebruik van dictionary doornemen, aanpassen zoals in cmd_heroes en cmd_party
+# suggestie van kasper's mail bekijken
+
 import commands
 
 

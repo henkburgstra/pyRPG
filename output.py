@@ -54,11 +54,10 @@ class Output(object):
         print()
         print(str(len(data.party)) + "/" + str(data.party.MAXIMUM))
         print()
-        for hero_from_const_list in Output.HERO_SORT:
-            for character in data.party:
-                if hero_from_const_list == character.RAW:
-                    print(character.NAME)
-                    break
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
+            if hero in data.party:
+                print(hero.NAME)
         print()
 
     @staticmethod
@@ -66,9 +65,9 @@ class Output(object):
         """Deze is voor inv"""
         print()
         # hero volgorde
-        for hero_from_const_list in Output.HERO_SORT:
+        for hero_raw in Output.HERO_SORT:
             for character in data.party:
-                if hero_from_const_list == character.RAW:
+                if hero_raw == character.RAW:
                     # equipment volgorde
                     for gear_from_const_list in Output.GEAR_SORT:
                         for value in sorted(character.equipment.values(), key=lambda equipment: equipment.NAME):
@@ -87,8 +86,8 @@ class Output(object):
     def cmd_heroes():
         """Deze is voor heroes"""
         print()
-        for herolist_item in Output.HERO_SORT:
-            hero = data.heroes[herolist_item]
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
             available = "Available"
             if hero in data.party:
                 available = "Party member"
