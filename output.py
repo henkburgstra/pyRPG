@@ -16,15 +16,14 @@ class Output(object):
 
     INV_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak']
 
-    PROP_SORT = ['wpn_skill', 'min_int', 'min_str', 'weight',
+    BASE_SORT = ['min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
                  'intelligence', 'willpower', 'dexterity',
                  'diplomat', 'loremaster', 'scientist', 'stealth', 'thief', 'warrior']
 
-    SHOP_SORT = ['name', 'value', 'min_int', 'min_str', 'weight',
-                 'protection', 'defense', 'base_hit', 'damage',
-                 'intelligence', 'willpower', 'dexterity',
-                 'diplomat', 'loremaster', 'scientist', 'stealth', 'thief', 'warrior']
+    PROP_SORT = ['wpn_skill'] + BASE_SORT
+
+    SHOP_SORT = ['name', 'value'] + BASE_SORT
 
     @staticmethod
     def cmd_help():
@@ -166,11 +165,15 @@ class Output(object):
         """Deze is voor gear stats"""
         print()
         print("{:13}: {}".format(item.TYPE, item.NAME))
-        for prop_from_const_list in Output.PROP_SORT:
-            for key, value in item:
-                if prop_from_const_list == key.lower():
-                    if value is not None:
-                        print("{:13}: {}". format(key.lower().title().replace("_", "."), value))
+        print(item)
+        for gear_property in Output.PROP_SORT:
+            print(item['WPN_SKILL'])
+
+            # if gear_property.upper() in item:
+            # for key, value in item:
+            #     if gear_property == key.lower():
+            # if item[gear_property] is not None:
+            #     print("{:13}: {}". format(gear_property.title().replace("_", "."), item[gear_property]))
         print()
 
     @staticmethod
