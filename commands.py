@@ -46,13 +46,13 @@ def cmd_find(*params):
 
 def cmd_purchaselist(*params):
     try:
-        if params[0] == "weapons" and params[1] == "EoCMD":
+        if params[0] == "weapons" and params[1] not in Output.WPN_SORT:
             raise ValueError
         Output.shop_list(data.list_gear_dict[params[0]][0], params[1])
     except KeyError:
-        print("purchaselist [weapons/shields/helmets/armors/cloaks]")
+        print("purchaselist [{}]".format("/".join(Output.DECO_SORT)))
     except ValueError:
-        print("purchaselist weapons [sword/hafted/pole/missile/thrown]")
+        print("purchaselist weapons [{}]".format("/".join(Output.WPN_SORT)))
 
 
 def cmd_purchase(*params):
@@ -125,7 +125,7 @@ def cmd_unequip(*params):
         data.inventory.add(equipped_item)
         hero.set_equipment(empty_item, verbose=False)
     except (KeyError, AttributeError):
-        print("unequip [hero_name_in_party] [weapon/shield/helmet/armor/cloak]")
+        print("unequip [hero_name_in_party] [{}]".format("/".join(Output.INV_SORT)))
 
 
 def cmd_join(*params):

@@ -13,8 +13,10 @@ class Output(object):
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
     GEAR_SORT = ['wpn', 'shd', 'hlm', 'arm', 'clk']
-
     INV_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak']
+    DECO_SORT = ['weapons', 'shields', 'helmets', 'armors', 'cloaks']
+
+    WPN_SORT = ['sword', 'hafted', 'pole', 'missile', 'thrown']
 
     BASE_SORT = ['min_int', 'min_str', 'weight',
                  'protection', 'defense', 'base_hit', 'damage',
@@ -39,11 +41,11 @@ class Output(object):
         print('inventory    []')
         print('pouch        []')
         print("find         [quantity] [gold/herbs/spices]")
-        print("purchaselist [weapons/shields/helmets/armors/cloaks]")
+        print("purchaselist [{}]".format("/".join(Output.DECO_SORT)))
         print("purchase     ([quantity]) [gear_name_without_spaces]")
         print("sell         ([quantity]) [gear_name_without_spaces]")
         print("equip        [hero_name_in_party] [gear_name_without_spaces]")
-        print("unequip      [hero_name_in_party] [weapon/shield/armor/cloak]")
+        print("unequip      [hero_name_in_party] [{}]".format("/".join(Output.INV_SORT)))
         print('heroes       []')
         print("join         [hero_name_outside_party]")
         print("leave        [hero_name_in_party]")
