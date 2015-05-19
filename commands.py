@@ -21,14 +21,14 @@ def cmd_cls():
 
 
 def cmd_stats(*params):
-    try:
-        hero = data.party[params[0]]
-        Output.character(hero)
-    except KeyError:
-        try:
-            item = data.inventory[params[0]]
-            Output.gear(item)
-        except KeyError:
+    # try:
+    #     hero = data.party[params[0]]
+    #     Output.character(hero)
+    # except KeyError:
+    #     try:
+    #         item = data.inventory[params[0]]
+    #         Output.gear(item)
+    #     except KeyError:
             try:
                 hero = data.party.get_member_with_this_equipment(params[0])
                 item = hero.get_equipment(params[0])

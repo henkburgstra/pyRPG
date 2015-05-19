@@ -165,7 +165,6 @@ class Output(object):
         """Deze is voor gear stats"""
         print()
         print("{:13}: {}".format(item.TYPE, item.NAME))
-        print(item)
         for gear_property in Output.PROP_SORT:
             print(item['WPN_SKILL'])
 
