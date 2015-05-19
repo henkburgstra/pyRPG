@@ -18,4 +18,3 @@ class Armor(Gear):
                      armor_dict.weight,
                      armor_dict.protection,
                      armor_dict.stealth)
-
