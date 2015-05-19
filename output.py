@@ -165,14 +165,10 @@ class Output(object):
         """Deze is voor gear stats"""
         print()
         print("{:13}: {}".format(item.TYPE, item.NAME))
-        for gear_property in Output.PROP_SORT:
-            print(item['WPN_SKILL'])
-
-            # if gear_property.upper() in item:
-            # for key, value in item:
-            #     if gear_property == key.lower():
-            # if item[gear_property] is not None:
-            #     print("{:13}: {}". format(gear_property.title().replace("_", "."), item[gear_property]))
+        for gear_property_name in Output.PROP_SORT:
+            gear_property_value = item.__getattribute__(gear_property_name.upper())
+            if gear_property_value is not None:
+                print("{:13}: {}". format(gear_property_name.title().replace("_", "."), gear_property_value))
         print()
 
     @staticmethod

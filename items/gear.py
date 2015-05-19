@@ -39,7 +39,7 @@ class Gear(Item):
         self.THIEF = None
         self.WARRIOR = None
 
-    def __iter__(self):
-        """Hiermee kun je door bovenstaande variabelen loopen"""
-        for key, value in self.__dict__.items():
-            yield key, value
+    # def __iter__(self):   # niet meer nodig volgens mij
+    #     """Hiermee kun je door bovenstaande variabelen loopen"""
+    #     for key, value in self.__dict__.items():
+    #         yield key, value
