@@ -182,30 +182,27 @@ class Output(object):
             return ""
 
     @staticmethod
-    def shop_list(gear, weaponskill=0):
+    def shop_list(all_gear, weaponskill=0):
         """Deze is voor purchaselist"""
-        templist = []
-        for key1, value1 in gear.items():
-            for key2, value2 in value1.items():
-                if key2 in Output.SHOP_SORT:
-                    templist.append(key2)
-            break
-        columns = [x for x in Output.SHOP_SORT if x in templist]
+        columns = []
+        for gear_item in Output.SHOP_SORT:
+            if gear_item in next(iter(all_gear.values())):
+                columns.append(gear_item)
         headers = [item.title().replace("_", ".") for item in columns]
         headers.append('Backpack')
 
         sortlist = []
-        for value in sorted(gear.values(), key=lambda x: x.sort):
+        for gear_item in sorted(all_gear.values(), key=lambda x: x.sort):
             templist = []
-            if value.shop:
-                if weaponskill == "EoCMD" or weaponskill == value.skill.lower():
-                    for item in columns:
-                        if item in value:
-                            if value[item] is None:  # or value1[item] == 0:
+            if gear_item.shop:
+                if weaponskill == "EoCMD" or weaponskill == gear_item.skill.lower():
+                    for column_name in columns:
+                        if column_name in gear_item:
+                            if gear_item[column_name] is None:  # or value1[item] == 0:
                                 templist.append("")   # uitgezet, want het is op dit moment niet per se nodig.
                             else:
-                                templist.append(str(value[item]))
-                    templist.append(Output._shop_count(value.raw))
+                                templist.append(str(gear_item[column_name]))
+                    templist.append(Output._shop_count(gear_item.raw))
                     sortlist.append(templist)
 
         from texttable import Texttable
