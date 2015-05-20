@@ -168,7 +168,7 @@ class Output(object):
         print()
         print("{:13}: {}".format(item.TYPE, item.NAME))
         for gear_property_name in Output.PROP_SORT:
-            gear_property_value = item.__getattribute__(gear_property_name.upper())
+            gear_property_value = getattr(item, gear_property_name.upper())
             if gear_property_value is not None:
                 print("{:13}: {}". format(gear_property_name.title().replace("_", "."), gear_property_value))
         print()
