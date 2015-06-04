@@ -65,9 +65,10 @@ def cmd_purchase(*params):
             quantity = int(params[0])
 
         item = None
-        for value in data.list_gear_dict.values():
-            if gear_raw in value[0]:
-                item = value[1](value[0][gear_raw])
+        for combo in data.list_gear_dict.values():
+            if gear_raw in combo[0]:
+                item = combo[1](combo[0][gear_raw])
+                break
 
         if item.SHOP:
             if data.pouch.remove(data.pouchitems.gold, item.VALUE * quantity):
@@ -143,8 +144,8 @@ def cmd_leave(*params):
 
 
 def run_command(cmd, *params):
-    for value in params:
-        if 'empty' in value:
+    for param in params:
+        if 'empty' in param:
             return
     if cmd == 'help':
         Output.cmd_help()

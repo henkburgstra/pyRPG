@@ -29,9 +29,9 @@ class Hero(Character):
     @property
     def weight(self):
         total = 0
-        for value in self.equipment.values():
-            if value.WEIGHT is not None:
-                total += value.WEIGHT
+        for equipment_item in self.equipment.values():
+            if equipment_item.WEIGHT is not None:
+                total += equipment_item.WEIGHT
         return total
 
     @property
@@ -48,9 +48,9 @@ class Hero(Character):
     @property
     def protection(self):
         total = 0
-        for value in self.equipment.values():
-            if value.PROTECTION is not None:
-                total += value.PROTECTION
+        for equipment_item in self.equipment.values():
+            if equipment_item.PROTECTION is not None:
+                total += equipment_item.PROTECTION
         return total
 
     @property
@@ -59,30 +59,31 @@ class Hero(Character):
 
     def count_equipment(self, gear_raw):
         """Deze is voor shop count"""
-        for key, value in self.equipment.items():
-            if value.RAW == gear_raw:
+        for equipment_item in self.equipment.values():
+            if equipment_item.RAW == gear_raw:
                 return 1
         return 0
 
     def get_same_type_from_equipment(self, item):
         """Deze is voor equip"""
-        for key, value in self.equipment.items():
-            if isinstance(value, type(item)):
-                return self.equipment[key]
+        for equipment_type, equipment_item in self.equipment.items():
+            if isinstance(equipment_item, type(item)):
+                return self.equipment[equipment_type]  # equipment_type, bijv: 'clk'
 
     def get_equipment(self, gear_raw):
         """Deze is voor stats, sell en unequip"""
-        for value in self.equipment.values():
-            if value.RAW == gear_raw or (value.TYPE == gear_raw.title() and "empty" not in value.RAW):
-                return value
+        for equipment_item in self.equipment.values():
+            if equipment_item.RAW == gear_raw or \
+                    (equipment_item.TYPE == gear_raw.title() and "empty" not in equipment_item.RAW):
+                return equipment_item
 
     def set_equipment(self, item, verbose=True):
         """Deze is voor sell, equip en unequip"""
-        for key, value in self.equipment.items():
-            if isinstance(value, type(item)):
+        for equipment_type, equipment_item in self.equipment.items():
+            if isinstance(equipment_item, type(item)):
                 if self._is_unable_to_equip(item):
                     return False
-                self.equipment[key] = item
+                self.equipment[equipment_type] = item
                 self.stats_update()
                 if verbose:
                     Output.is_equipping(self.NAME, item.NAME)
@@ -131,9 +132,9 @@ class Hero(Character):
 
     def _set_dex(self):
         self.stats.dex.extra = 0
-        for value in self.equipment.values():
-            if value.DEXTERITY is not None:
-                self.stats.dex.extra += value.DEXTERITY
+        for equipment_item in self.equipment.values():
+            if equipment_item.DEXTERITY is not None:
+                self.stats.dex.extra += equipment_item.DEXTERITY
         self.stats.dex.total = self.stats.dex.quantity + self.stats.dex.extra
 
     def _set_agi(self):
@@ -142,20 +143,20 @@ class Hero(Character):
 
     def _set_stealth(self):
         self.skills.stl.extra = 0
-        for value in self.equipment.values():
-            if value.STEALTH is not None:
-                self.skills.stl.extra += value.STEALTH
+        for equipment_item in self.equipment.values():
+            if equipment_item.STEALTH is not None:
+                self.skills.stl.extra += equipment_item.STEALTH
         self.skills.stl.total = self.skills.stl.quantity + self.skills.stl.extra
 
     def _set_total(self):
-        for value in self.stats.values():
-            if value.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
-                value.total = 1
-        for value in self.skills.values():
-            if value.total < 0 or value.quantity <= 0:
-                value.total = 0
-            if 0 > value.extra < value.quantity:
-                value.extra = -value.quantity
+        for hero_stat in self.stats.values():
+            if hero_stat.total < 1:  # het origineel uit vb.net is < 0, klopt dat?
+                hero_stat.total = 1
+        for hero_skill in self.skills.values():
+            if hero_skill.total < 0 or hero_skill.quantity <= 0:
+                hero_skill.total = 0
+            if 0 > hero_skill.extra < hero_skill.quantity:
+                hero_skill.extra = -hero_skill.quantity
 
     # def level_up(self):
     #     self.level += 1

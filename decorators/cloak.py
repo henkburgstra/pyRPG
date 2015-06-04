@@ -30,10 +30,10 @@ cloaks = DotDict({
     'thievescloak+': DotDict(dict(name="Thieves Cloak +",           raw="thievescloak+",      value=5500,  shop=False, weight=2, protection=1,  thief=2, sort=22)),
 })
 
-for value1 in cloaks.values():
-    if 'protection' not in value1:
-        value1.protection = None
-    if 'stealth' not in value1:
-        value1.stealth = None
-    if 'thief' not in value1:
-        value1.thief = None
+for cloak in cloaks.values():
+    if 'protection' not in cloak:
+        cloak.protection = None
+    if 'stealth' not in cloak:
+        cloak.stealth = None
+    if 'thief' not in cloak:
+        cloak.thief = None

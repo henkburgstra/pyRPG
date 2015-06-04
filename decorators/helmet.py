@@ -25,16 +25,16 @@ helmets = DotDict({
     'helmoftempests+': DotDict(dict(name="Helm of Tempests +",     raw="helmoftempests+",   value=9680,  shop=False, weight=3, protection=2, warrior=1,      sort=18))
 })
 
-for value1 in helmets.values():
-    if 'intelligence' not in value1:
-        value1.intelligence = None
-    if 'willpower' not in value1:
-        value1.willpower = None
-    if 'diplomat' not in value1:
-        value1.diplomat = None
-    if 'loremaster' not in value1:
-        value1.loremaster = None
-    if 'scientist' not in value1:
-        value1.scientist = None
-    if 'warrior' not in value1:
-        value1.warrior = None
+for helmet in helmets.values():
+    if 'intelligence' not in helmet:
+        helmet.intelligence = None
+    if 'willpower' not in helmet:
+        helmet.willpower = None
+    if 'diplomat' not in helmet:
+        helmet.diplomat = None
+    if 'loremaster' not in helmet:
+        helmet.loremaster = None
+    if 'scientist' not in helmet:
+        helmet.scientist = None
+    if 'warrior' not in helmet:
+        helmet.warrior = None
