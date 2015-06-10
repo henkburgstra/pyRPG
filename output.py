@@ -41,6 +41,7 @@ class Output(object):
         print('inventory    []')
         print('pouch        []')
         print("find         [quantity] [gold/herbs/spices]")
+        print("xp           [hero_name_in_party] [quantity]")
         print("purchaselist [{}]".format("/".join(Output.DECO_SORT)))
         print("purchase     ([quantity]) [gear_name_without_spaces]")
         print("sell         ([quantity]) [gear_name_without_spaces]")
@@ -293,6 +294,11 @@ class Output(object):
     def quantity_less_than_one():
         """Deze is voor find, purchase, sell, equip en unequip"""
         print("That is not possible.")
+
+    @staticmethod
+    def character_gain_level(character_name, character_level):
+        """Deze is xp"""
+        print("{} went up to level {}!".format(character_name, character_level))
 
     @staticmethod
     def character_join_party(character_name, party_name):

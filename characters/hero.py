@@ -57,6 +57,19 @@ class Hero(Character):
     def warrior_hit(self):
         return round((47 - ((self.equipment.wpn.BASE_HIT / 10) * 5)) * (self.skills.war.total / 10))
 
+    def gain_experience(self, xp):
+        """Deze is voor xp"""
+        if xp < 1:
+            Output.quantity_less_than_one()
+            raise ValueError
+
+        self.xpremaining += xp
+        self.totalxp += xp
+        while self.nextlevel <= 0:
+            self.level.quantity += 1
+            self.level.current += 1
+            Output.character_gain_level(self.NAME, self.level.quantity)
+
     def count_equipment(self, gear_raw):
         """Deze is voor shop count"""
         for equipment_item in self.equipment.values():

@@ -1,5 +1,4 @@
 
-
 import data
 from output import Output
 
@@ -42,6 +41,14 @@ def cmd_find(*params):
         data.pouch.add(data.pouchitems[params[1]], int(params[0]))
     except (KeyError, ValueError):
         print("find [quantity] [gold/herbs/spices]")
+
+
+def cmd_xp(*params):
+    try:
+        hero = data.party[params[0]]
+        hero.gain_experience(int(params[1]))
+    except (KeyError, ValueError):
+        print("xp [hero_name_in_party] [quantity]")
 
 
 def cmd_purchaselist(*params):
@@ -163,6 +170,8 @@ def run_command(cmd, *params):
         Output.cmd_pouch()
     elif cmd == 'find':
         cmd_find(*params)
+    elif cmd == 'xp':
+        cmd_xp(*params)
     elif cmd in ('purchaselist', 'shoplist'):
         cmd_purchaselist(*params)
     elif cmd in ('purchase', 'shop'):
