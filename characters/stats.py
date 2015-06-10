@@ -5,7 +5,7 @@ class Stat(object):
         self.NAME = name
         self.RAW = raw
         self.MAXIMUM = maximum     # maximum mogelijk, bijv 30
-        self.UPGRADE = upgrade     # upgrade forumule constante
+        self.UPGRADE = upgrade     # upgrade formule constante
         self.quantity = quantity   # standaard hoeveelheid op te waarderen stat (tot bijv 30)
         self.extra = 0             # wat geeft gear voor pos/neg extra
         self.total = quantity      # quantity + extra
