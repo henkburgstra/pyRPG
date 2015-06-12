@@ -65,6 +65,7 @@ class Hero(Character):
 
         self.xpremaining += xp
         self.totalxp += xp
+        Output.character_gain_xp(self.NAME, xp)
         while self.nextlevel <= 0:
             self.level.quantity += 1
             self.level.current += 1

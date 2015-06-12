@@ -296,8 +296,13 @@ class Output(object):
         print("That is not possible.")
 
     @staticmethod
+    def character_gain_xp(character_name, xp):
+        """Deze is voor xp"""
+        print("{} earned {} XP.".format(character_name, xp))
+
+    @staticmethod
     def character_gain_level(character_name, character_level):
-        """Deze is xp"""
+        """Deze is voor xp"""
         print("{} went up to level {}!".format(character_name, character_level))
 
     @staticmethod
