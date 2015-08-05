@@ -6,7 +6,9 @@ from output import Output
 
 
 def cmd_exit():
-    quit("Thanks for playing!")
+    import sys
+    print("Thanks for playing!")
+    sys.exit()
     # player.die("Thanks for playing!")
 
 
