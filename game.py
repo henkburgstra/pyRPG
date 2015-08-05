@@ -2,7 +2,8 @@
 # misschien hoeft een enemy geen equipment te hebben of skills, maar raw stats. idee om over na te denken
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
 
-# meer decorators
+# meer decorators (accessory, gloves, necklace)
+# een reset commando
 # meer stats voor heroes
 # prijzen weapons hercalculeren. die van de shields en armors zijn een voorbeeld om zo te doen.
 
