@@ -169,7 +169,8 @@ class Hero(Character):
         for hero_skill in self.skills.values():
             if hero_skill.total < 0 or hero_skill.quantity <= 0:
                 hero_skill.total = 0
-            if 0 > hero_skill.extra < hero_skill.quantity:
+            # visueel aanpassen als het negatieve van de item groter is dan de skill van de hero
+            if hero_skill.extra < 0 and hero_skill.extra < -hero_skill.quantity and hero_skill.quantity > 0:
                 hero_skill.extra = -hero_skill.quantity
 
     # def level_up(self):
