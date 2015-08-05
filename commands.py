@@ -23,13 +23,13 @@ def cmd_cls():
 
 def cmd_save(*params):
 
-    base_dir = os.path.dirname(__file__)
-    filename = os.path.join(base_dir, 'savegames', params[0] + '.dat')
+    if not os.path.exists('savegame'):
+        os.makedirs('savegame')
+    filename = os.path.join('savegame', params[0] + '.dat')
     savedata = data.heroes.to_json()
 
     with open(filename, "w") as f:
         f.write(savedata)
-        f.close()
 
 
 def cmd_stats(*params):
