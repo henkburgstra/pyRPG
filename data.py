@@ -12,6 +12,7 @@ list_gear_dict = dict(
     helmets=(decorators.helmets, items.Helmet.factory),
     armors=(decorators.armors, items.Armor.factory),
     cloaks=(decorators.cloaks, items.Cloak.factory),
+    belts=(decorators.belts, items.Belt.factory),
     boots=(decorators.boots, items.Boots.factory)
 )
 
@@ -73,6 +74,7 @@ def equipment(wpn1='emptyweapon', shd1='emptyshield', arm1='emptyarmor'):
         hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
         arm=items.Armor.factory(decorators.armors[arm1]),
         clk=items.Cloak.factory(decorators.cloaks.emptycloak),
+        blt=items.Belt.factory(decorators.belts.emptybelt),
         bts=items.Boots.factory(decorators.boots.emptyboots)
     )
 
@@ -147,6 +149,7 @@ inventory.add(items.Shield.factory(decorators.shields.emptyshield), verbose=Fals
 inventory.add(items.Helmet.factory(decorators.helmets.emptyhelmet), verbose=False)
 inventory.add(items.Armor.factory(decorators.armors.emptyarmor), verbose=False)
 inventory.add(items.Cloak.factory(decorators.cloaks.emptycloak), verbose=False)
+inventory.add(items.Belt.factory(decorators.belts.emptybelt), verbose=False)
 inventory.add(items.Boots.factory(decorators.boots.emptyboots), verbose=False)
 
 pouch = containers.SmallContainer("Pouch")
