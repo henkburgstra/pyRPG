@@ -1,6 +1,5 @@
 
 import os
-import json
 
 import data
 from output import Output
@@ -20,18 +19,15 @@ def cmd_cls():
         print('\n' * 100)
 
 
-# def cmd_save(*params):
-#
-#     base_dir = os.path.dirname(__file__)
-#     filename = os.path.join(base_dir, 'savegames', params[0] + '.dat')
-#     d = {}
-#     # savedata = json.dumps(data.heroes.__dict__, indent=4)
-#     for key, value in data.heroes.items():
-#         d[key] = value.__dict__
-#
-#     with open(filename, "wb") as f:
-#         f.write(d)
-#         f.close()
+def cmd_save(*params):
+
+    base_dir = os.path.dirname(__file__)
+    filename = os.path.join(base_dir, 'savegames', params[0] + '.dat')
+    savedata = data.heroes.to_json()
+
+    with open(filename, "w") as f:
+        f.write(savedata)
+        f.close()
 
 
 def cmd_stats(*params):
@@ -175,8 +171,8 @@ def run_command(cmd, *params):
         cmd_exit()
     elif cmd in ('cls', 'clear'):
         cmd_cls()
-    # elif cmd == 'save':
-    #     cmd_save(*params)
+    elif cmd == 'save':
+        cmd_save(*params)
     elif cmd == 'party':
         Output.cmd_party()
     elif cmd == 'stats':
