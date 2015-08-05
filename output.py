@@ -5,7 +5,7 @@ import data
 class Output(object):
 
     HERO_SORT = ['alagos', 'luana', 'grindan', 'rydalin', 'codrif', 'galen', 'raiko',
-                 'kiara', 'luthais', 'elias', 'onarr', 'duillio', 'iellwen', 'faeron']
+                 'kiara', 'luthais', 'elias', 'onarr', 'duilio', 'iellwen', 'faeron']
 
     STAT_SORT = ['int', 'wil', 'dex', 'agi', 'edu', 'str', 'sta']
 
@@ -36,6 +36,8 @@ class Output(object):
         print('help         []')
         print('exit         []')
         print('cls          []')
+        print('save         [name_savegame]')
+        print('load         [name_savegame]')
         print('party        []')
         print('stats        [hero_name_in_party/gear_name_without_spaces]')
         print('inventory    []')
@@ -51,6 +53,16 @@ class Output(object):
         print("join         [hero_name_outside_party]")
         print("leave        [hero_name_in_party]")
         print()
+
+    @staticmethod
+    def cmd_save():
+        """Deze is voor save"""
+        print("Saving gamedata...")
+
+    @staticmethod
+    def cmd_load():
+        """Deze is voor load"""
+        print("Loading gamedata...")
 
     @staticmethod
     def cmd_party():
