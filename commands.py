@@ -74,7 +74,9 @@ def cmd_load(*params):
                 data.pouch, \
                 data.party = pickle.load(f)
     except (OSError, FileNotFoundError):
-        print('load [name_savegame')
+        print('load [name_savegame]')
+    except EOFError:
+        print('This is not a PyRPG save file.')
 
 
 def cmd_stats(*params):
