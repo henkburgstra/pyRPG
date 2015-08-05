@@ -5,4 +5,4 @@ import os
 
 base_dir = os.path.dirname(__file__)
 
-setup(console=[os.path.join(base_dir, 'game.py')])
+setup(console=[os.path.join(base_dir, 'game.py')], requires=['texttable'])
