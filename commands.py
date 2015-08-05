@@ -22,14 +22,21 @@ def cmd_cls():
 
 
 def cmd_save(*params):
-
     if not os.path.exists('savegame'):
         os.makedirs('savegame')
     filename = os.path.join('savegame', params[0] + '.dat')
     savedata = data.heroes.to_json()
-
     with open(filename, "w") as f:
         f.write(savedata)
+
+
+def cmd_load(*params):
+    import json
+    from util import DotDict
+    filename = os.path.join('savegame', params[0] + '.dat')
+    with open(filename, 'r') as f:
+        data.heroes = DotDict(json.load(f))
+        f.close()
 
 
 def cmd_stats(*params):
@@ -175,6 +182,8 @@ def run_command(cmd, *params):
         cmd_cls()
     elif cmd == 'save':
         cmd_save(*params)
+    elif cmd == 'load':
+        cmd_load(*params)
     elif cmd == 'party':
         Output.cmd_party()
     elif cmd == 'stats':
