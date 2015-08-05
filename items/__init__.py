@@ -6,3 +6,4 @@ from .shield import Shield
 from .helmet import Helmet
 from .armor import Armor
 from .cloak import Cloak
+from .boots import Boots
