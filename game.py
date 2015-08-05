@@ -1,12 +1,10 @@
 
-# simple json framework voor savegames
 # misschien hoeft een enemy geen equipment te hebben of skills, maar raw stats. idee om over na te denken
-
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
 
 # meer decorators
 # meer stats voor heroes
-# prijzen weapons hercaluleren. die van de shields en armors zijn een voorbeeld om zo te doen.
+# prijzen weapons hercalculeren. die van de shields en armors zijn een voorbeeld om zo te doen.
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 # wel veel static methods... is dat de juiste manier?

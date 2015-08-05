@@ -27,7 +27,7 @@ def cmd_save(*params):
     if not os.path.exists('savegame'):
         os.makedirs('savegame')
     try:
-        if params[0] == "EoCMD" or not re.match("^[a-z0-9]{1,15}$", params[0]):
+        if not re.match("^[a-z0-9]{1,15}$", params[0]):
             raise OSError
         filename = os.path.join('savegame', params[0] + '.dat')
         Output.cmd_save()

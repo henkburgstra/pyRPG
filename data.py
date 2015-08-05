@@ -62,7 +62,7 @@ skills_kiara = skills(0,    0,  0,  0,  1,  4,  0,  4,  5,  8,  0,  0, -1,  7,  
 skills_luthais = skills(7,  0,  9,  6,  8,  0,  0, 10,  5,  0,  0,  0,  0, -1,  8, -1,  0,  8)
 skills_elias = skills(0,    8,  0,  0,  0,  0,  0,  7,  0,  0,  0,  7,  5, -1,  5, -1,  7, -1)
 skills_onarr = skills(-1,   0,  6,  0,  4,  0,  0, -1,  0,  0,  7,  9,  8, -1,  8,  9,  5,  8)
-skills_duilio = skills(5, 10,  5,  0,  0,  5,  5, 10,  5,  5, 10, 10, 10, -1, 10, 10, 10, 10)
+skills_duilio = skills(5,  10,  5,  0,  0,  5,  5, 10,  5,  5, 10, 10, 10, -1, 10, 10, 10, 10)
 skills_iellwen = skills(0,  0,  0,  0, 10,  0,  6,  8,  6,  0,  0, 10,  5,  7,  0, -1, 10, -1)
 skills_faeron = skills(10, 10, 10,  0,  0, 10, 10, -1, 10, 10, 10, 10, 10,  0,  0,  0, 10,  0)
 
@@ -89,7 +89,7 @@ equipment_kiara = equipment(wpn1='silverdagger',                             arm
 equipment_luthais = equipment(wpn1='bronzestaff',                            arm1='lightironarmor')
 equipment_elias = equipment(wpn1='steellongsword',                           arm1='mediumironarmor')
 equipment_onarr = equipment(wpn1='steelpoleaxe',       shd1='steelkite',     arm1='heavyironarmor')
-equipment_duilio = equipment(wpn1='silvershortsword', shd1='silvertarge',   arm1='mediumsteelarmor')
+equipment_duilio = equipment(wpn1='silvershortsword',  shd1='silvertarge',   arm1='mediumsteelarmor')
 equipment_iellwen = equipment(wpn1='steellongsword',                         arm1='mediumironarmor')
 equipment_faeron = equipment(wpn1='titaniummace',                            arm1='lighttitaniumarmor')
 
