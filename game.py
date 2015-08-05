@@ -10,7 +10,7 @@
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 # wel veel static methods... is dat de juiste manier?
-# hoe kan ik de 2 dicts aan het begin van data samenvoegen?
+# hoe kan ik de 2 dicts aan het begin van data samenvoegen? (fixed?)
 
 # texttable gebruiken bij stats van hero
 # wx python onderzoeken
@@ -20,18 +20,18 @@
 # (denk dus ook aan het gevolg aan de items zoals shield met -dex, dat dat misschien -agi moet worden)
 # - movespeed komt van stamina
 # - stamina * strength = weight possible
-# - weight aan item toevoegen
+# - weight aan item toevoegen (fixed)
 # - armor ed heeft dus invloed op movespeed
 # - movespeed en turns weergeven
 # - stamina gebruiken
 
-# geen min sta meer aan armor, helmet en andere armors
+# geen min sta meer aan armor, helmet en andere armors (fixed)
 # maar alleen een weight, zodat er geen minimum meer is, maar je moet gewoon genoeg stamina hebben om te dragen
 # weight heeft invloed op agility en stamina
 
-# gebruik van dictionary doornemen, aanpassen zoals in cmd_heroes en cmd_party
-# of iig value en key duidelijkere namen geven
-# suggestie van kasper's mail bekijken
+# gebruik van dictionary doornemen, aanpassen zoals in cmd_heroes en cmd_party (fixed?)
+# of iig value en key duidelijkere namen geven (fixed?)
+# suggestie van kasper's mail bekijken (onnodig?)
 
 import commands
 
