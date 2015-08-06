@@ -3,7 +3,6 @@
 # de pouchvraag verwijderen bij buy, (misschien toch niet)
 
 # meer decorators (accessory, gloves, necklace)
-# een reset commando
 # meer stats voor heroes
 # prijzen weapons hercalculeren. die van de shields en armors zijn een voorbeeld om zo te doen.
 

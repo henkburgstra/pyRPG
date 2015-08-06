@@ -36,6 +36,7 @@ class Output(object):
         print('help         []')
         print('exit         []')
         print('cls          []')
+        print('reset        []')
         print('save         [name_savegame]')
         print('load         [name_savegame]')
         print('party        []')

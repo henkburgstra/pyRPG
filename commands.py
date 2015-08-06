@@ -23,6 +23,10 @@ def cmd_cls():
         print('\n' * 100)
 
 
+def cmd_reset():
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
+
 def cmd_save(*params):
     if not os.path.exists('savegame'):
         os.makedirs('savegame')
@@ -220,6 +224,8 @@ def run_command(cmd, *params):
         cmd_exit()
     elif cmd in ('cls', 'clear'):
         cmd_cls()
+    elif cmd == 'reset':
+        cmd_reset()
     elif cmd == 'save':
         cmd_save(*params)
     elif cmd == 'load':
