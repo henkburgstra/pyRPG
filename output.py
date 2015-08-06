@@ -12,9 +12,9 @@ class Output(object):
     SKILL_SORT = ['chm', 'dip', 'lor', 'mec', 'med', 'mer', 'ran', 'sci', 'stl', 'thf', 'trb', 'war',
                   'haf', 'mis', 'pol', 'shd', 'swd', 'thr']
 
-    GEAR_SORT = ['wpn', 'shd', 'hlm', 'arm', 'clk', 'blt', 'bts']
-    INV_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak', 'belt', 'boots']
-    DECO_SORT = ['weapons', 'shields', 'helmets', 'armors', 'cloaks', 'belts', 'boots']
+    GEAR_SORT = ['wpn', 'shd', 'hlm', 'arm', 'clk', 'glv', 'blt', 'bts']
+    INV_SORT = ['weapon', 'shield', 'helmet', 'armor', 'cloak', 'gloves', 'belt', 'boots']
+    DECO_SORT = ['weapons', 'shields', 'helmets', 'armors', 'cloaks', 'gloves', 'belts', 'boots']
 
     WPN_SORT = ['sword', 'hafted', 'pole', 'missile', 'thrown']
 
