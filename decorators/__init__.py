@@ -8,3 +8,4 @@ from .cloak import cloaks
 from .gloves import gloves
 from .belt import belts
 from .boots import boots
+from .accessory import accessories

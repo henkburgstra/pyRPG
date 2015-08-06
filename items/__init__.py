@@ -10,3 +10,4 @@ from .cloak import Cloak
 from .gloves import Gloves
 from .belt import Belt
 from .boots import Boots
+from .accessory import Accessory
