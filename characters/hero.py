@@ -141,7 +141,7 @@ class Hero(Character):
         """Deze is voor sell, equip en unequip"""
         self._set_dex()
         self._set_agi()
-        self._set_stealth()
+        self._set_skills()
         self._set_total()
 
     def _set_dex(self):
@@ -155,12 +155,17 @@ class Hero(Character):
         self.stats.agi.extra = -round(self.weight / 3)
         self.stats.agi.total = self.stats.agi.quantity + self.stats.agi.extra
 
-    def _set_stealth(self):
+    def _set_skills(self):
         self.skills.stl.extra = 0
+        self.skills.thf.update()
+        # self.skills.thf.extra = 0
         for equipment_item in self.equipment.values():
             if equipment_item.STEALTH is not None:
                 self.skills.stl.extra += equipment_item.STEALTH
+            if equipment_item.THIEF is not None:
+                self.skills.thf.extra += equipment_item.THIEF
         self.skills.stl.total = self.skills.stl.quantity + self.skills.stl.extra
+        self.skills.thf.total = self.skills.thf.quantity + self.skills.thf.extra
 
     def _set_total(self):
         for hero_stat in self.stats.values():
