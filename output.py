@@ -19,10 +19,10 @@ class Output(object):
 
     WPN_SORT = ['sword', 'hafted', 'pole', 'missile', 'thrown']
 
-    BASE_SORT = ['min_int', 'min_str', 'weight',
+    BASE_SORT = ['min_int', 'min_str', 'weight', 'movepoints',
                  'protection', 'defense', 'base_hit', 'damage',
                  'intelligence', 'willpower', 'dexterity',
-                 'diplomat', 'loremaster', 'scientist', 'stealth', 'thief', 'warrior']
+                 'diplomat', 'loremaster', 'ranger', 'scientist', 'stealth', 'thief', 'warrior']
 
     PROP_SORT = ['wpn_skill'] + BASE_SORT
 
