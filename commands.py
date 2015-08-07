@@ -36,7 +36,7 @@ def cmd_save(*params):
         filename = os.path.join('savegame', params[0] + '.dat')
         Output.cmd_save()
         with open(filename, 'wb') as f:
-            pickle.dump([data.heroes, data.pouchitems, data.inventory, data.pouch, data.party], f)
+            pickle.dump([data.heroes, data.inventory, data.pouch, data.party], f)
     except OSError:
         print('save [name_savegame]')
 
@@ -46,7 +46,7 @@ def cmd_load(*params):
         filename = os.path.join('savegame', params[0] + '.dat')
         Output.cmd_load()
         with open(filename, 'rb') as f:
-            data.heroes, data.pouchitems, data.inventory, data.pouch, data.party = pickle.load(f)
+            data.heroes, data.inventory, data.pouch, data.party = pickle.load(f)
     except (OSError, FileNotFoundError):
         print('load [name_savegame]')
     except EOFError:
