@@ -36,22 +36,7 @@ def cmd_save(*params):
         filename = os.path.join('savegame', params[0] + '.dat')
         Output.cmd_save()
         with open(filename, 'wb') as f:
-            pickle.dump([data.stats_alagos, data.stats_luana, data.stats_grindan, data.stats_rydalin, data.stats_codrif,
-                         data.stats_galen, data.stats_raiko, data.stats_kiara, data.stats_luthais, data.stats_elias,
-                         data.stats_onarr, data.stats_duilio, data.stats_iellwen, data.stats_faeron,
-                         data.skills_alagos, data.skills_luana, data.skills_grindan, data.skills_rydalin,
-                         data.skills_codrif, data.skills_galen, data.skills_raiko, data.skills_kiara,
-                         data.skills_luthais, data.skills_elias, data.skills_onarr, data.skills_duilio,
-                         data.skills_iellwen, data.skills_faeron,
-                         data.equipment_alagos, data.equipment_luana, data.equipment_grindan, data.equipment_rydalin,
-                         data.equipment_codrif, data.equipment_galen, data.equipment_raiko, data.equipment_kiara,
-                         data.equipment_luthais, data.equipment_elias, data.equipment_onarr, data.equipment_duilio,
-                         data.equipment_iellwen, data.equipment_faeron,
-                         data.heroes,
-                         data.pouchitems,
-                         data.inventory,
-                         data.pouch,
-                         data.party], f)
+            pickle.dump([data.heroes, data.pouchitems, data.inventory, data.pouch, data.party], f)
     except OSError:
         print('save [name_savegame]')
 
@@ -61,22 +46,7 @@ def cmd_load(*params):
         filename = os.path.join('savegame', params[0] + '.dat')
         Output.cmd_load()
         with open(filename, 'rb') as f:
-            data.stats_alagos, data.stats_luana, data.stats_grindan, data.stats_rydalin, data.stats_codrif, \
-                data.stats_galen, data.stats_raiko, data.stats_kiara, data.stats_luthais, data.stats_elias, \
-                data.stats_onarr, data.stats_duilio, data.stats_iellwen, data.stats_faeron, \
-                data.skills_alagos, data.skills_luana, data.skills_grindan, data.skills_rydalin, \
-                data.skills_codrif, data.skills_galen, data.skills_raiko, data.skills_kiara, \
-                data.skills_luthais, data.skills_elias, data.skills_onarr, data.skills_duilio, \
-                data.skills_iellwen, data.skills_faeron, \
-                data.equipment_alagos, data.equipment_luana, data.equipment_grindan, data.equipment_rydalin, \
-                data.equipment_codrif, data.equipment_galen, data.equipment_raiko, data.equipment_kiara, \
-                data.equipment_luthais, data.equipment_elias, data.equipment_onarr, data.equipment_duilio, \
-                data.equipment_iellwen, data.equipment_faeron, \
-                data.heroes, \
-                data.pouchitems, \
-                data.inventory, \
-                data.pouch, \
-                data.party = pickle.load(f)
+            data.heroes, data.pouchitems, data.inventory, data.pouch, data.party = pickle.load(f)
     except (OSError, FileNotFoundError):
         print('load [name_savegame]')
     except EOFError:
