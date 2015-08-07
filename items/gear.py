@@ -3,7 +3,7 @@
 class Item(object):
     def __init__(self, name):
         self.NAME = name
-        self.RAW = name.strip().lower().replace(" ", "")
+        self.RAW = name.strip().lower().replace(" ", "")  # .replace("'", "")
         self.TYPE = self.__class__.__name__
         self.quantity = 1
 
@@ -13,8 +13,9 @@ class PouchItem(Item):
 
 
 class Gear(Item):
-    def __init__(self, name, value, shop):
+    def __init__(self, name, raw, value, shop):
         super().__init__(name)
+        self.RAW = raw
         self.VALUE = value
         self.SHOP = shop
 
@@ -23,6 +24,8 @@ class Gear(Item):
         self.MIN_INT = None
         self.MIN_STR = None
         self.WEIGHT = None
+
+        self.MOVEPOINTS = None
 
         self.PROTECTION = None
         self.DEFENSE = None
@@ -34,6 +37,7 @@ class Gear(Item):
         self.DEXTERITY = None
         self.DIPLOMAT = None
         self.LOREMASTER = None
+        self.RANGER = None
         self.SCIENTIST = None
         self.STEALTH = None
         self.THIEF = None
