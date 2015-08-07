@@ -76,6 +76,9 @@ class Warrior(Skill):
     def __init__(self, quantity):
         super().__init__("Warrior", "war", 800, quantity)
 
+    def bonus(self, wpn_base_hit):
+        return round((47 - ((wpn_base_hit / 10) * 5)) * (self.total / 10))
+
 
 class Hafted(Skill):
     def __init__(self, quantity):

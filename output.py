@@ -134,7 +134,7 @@ class Output(object):
         print()
         print("      XP Remaining : {}".format(character.xpremaining))
         print("      Total XP     : {}".format(character.totalxp))
-        print("      Next Level   : {}".format(character.nextlevel))
+        print("      Next Level   : {}".format(character.next_level))
         print()
         print("      Weight       : {}".format(character.weight))
         print("      Movepoints   : {}\t\t({})".format(character.own_movepoints, character.total_movepoints))
@@ -143,11 +143,13 @@ class Output(object):
         else:
             print("      Protection   : {}".format(character.protection))
         print("      Defense      : {}".format(character.equipment.shd.DEFENSE))
-        if character.skills.war.quantity > 0 and "empty" not in character.equipment.wpn.RAW:
-            print("      Base Hit     : {}%\t(+{}%)".format(character.equipment.wpn.BASE_HIT, character.warrior_hit))
+        curr_wpn = character.equipment.wpn
+        if character.skills.war.quantity > 0 and "empty" not in curr_wpn.RAW:
+            print("      Base Hit     : {}%\t(+{}%)".format(curr_wpn.BASE_HIT,
+                                                            character.skills.war.bonus(curr_wpn.BASE_HIT)))
         else:
-            print("      Base Hit     : {}%".format(character.equipment.wpn.BASE_HIT))
-        print("      Damage       : {}".format(character.equipment.wpn.DAMAGE))
+            print("      Base Hit     : {}%".format(curr_wpn.BASE_HIT))
+        print("      Damage       : {}".format(curr_wpn.DAMAGE))
         print()
         print("Stats:")
         for stat_type_raw in Output.STAT_SORT:

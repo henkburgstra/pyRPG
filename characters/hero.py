@@ -21,10 +21,8 @@ class Hero(Character):
         return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
 
     @property
-    def nextlevel(self):
-        return int((250 / 3) * (2 * self.level.quantity ** 3 +
-                                9 * self.level.quantity ** 2 +
-                                13 * self.level.quantity + 6) - self.totalxp)
+    def next_level(self):
+        return self.level.calc_next_level(self.totalxp)
 
     @property
     def weight(self):
@@ -53,10 +51,6 @@ class Hero(Character):
                 total += equipment_item.PROTECTION
         return total
 
-    @property
-    def warrior_hit(self):
-        return round((47 - ((self.equipment.wpn.BASE_HIT / 10) * 5)) * (self.skills.war.total / 10))
-
     def gain_experience(self, xp):
         """Deze is voor xp"""
         if xp < 1:
@@ -66,7 +60,7 @@ class Hero(Character):
         self.xpremaining += xp
         self.totalxp += xp
         Output.character_gain_xp(self.NAME, xp)
-        while self.nextlevel <= 0:
+        while self.next_level <= 0:
             self.level.quantity += 1
             self.level.current += 1
             Output.character_gain_level(self.NAME, self.level.quantity)
@@ -138,7 +132,7 @@ class Hero(Character):
             return 1
 
     def stats_update(self):
-        """Deze is voor sell, equip en unequip"""
+        """Deze is voor startup en sell, equip en unequip"""
         self._set_dex()
         self._set_agi()
         self._set_skills()

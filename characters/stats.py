@@ -16,6 +16,9 @@ class Level(Stat):
     def __init__(self, quantity):
         super().__init__("Level", "lev", 40, None, quantity)
 
+    def calc_next_level(self, totalxp):
+        return int((250 / 3) * (2 * self.quantity ** 3 + 9 * self.quantity ** 2 + 13 * self.quantity + 6) - totalxp)
+
 
 class Intelligence(Stat):
     def __init__(self, quantity):
