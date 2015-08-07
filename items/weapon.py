@@ -4,8 +4,8 @@ from items.gear import Gear
 
 
 class Weapon(Gear):
-    def __init__(self, name, value, shop, wpn_skill, min_intelligence, min_strength, base_hit, damage):
-        super().__init__(name, value, shop)
+    def __init__(self, name, raw, value, shop, wpn_skill, min_intelligence, min_strength, base_hit, damage):
+        super().__init__(name, raw, value, shop)
         self.WPN_SKILL = wpn_skill
         self.MIN_INT = min_intelligence
         self.MIN_STR = min_strength
@@ -20,6 +20,7 @@ class Weapon(Gear):
     @staticmethod
     def factory(weapon_dict):
         return Weapon(weapon_dict.name,
+                      weapon_dict.raw,
                       weapon_dict.value,
                       weapon_dict.shop,
                       weapon_dict.skill,

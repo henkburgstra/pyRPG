@@ -4,8 +4,8 @@ from items.gear import Gear
 
 
 class Shield(Gear):
-    def __init__(self, name, value, shop, min_strength, protection, defense, dexterity, stealth):
-        super().__init__(name, value, shop)
+    def __init__(self, name, raw, value, shop, min_strength, protection, defense, dexterity, stealth):
+        super().__init__(name, raw, value, shop)
         self.MIN_STR = min_strength
         self.PROTECTION = protection
         self.DEFENSE = defense
@@ -15,6 +15,7 @@ class Shield(Gear):
     @staticmethod
     def factory(shield_dict):
         return Shield(shield_dict.name,
+                      shield_dict.raw,
                       shield_dict.value,
                       shield_dict.shop,
                       shield_dict.min_str,

@@ -3,8 +3,8 @@ from items.gear import Gear
 
 
 class Helmet(Gear):
-    def __init__(self, name, value, shop, weight, prt, intell, wil, dip, lor, sci, war):
-        super().__init__(name, value, shop)
+    def __init__(self, name, raw, value, shop, weight, prt, intell, wil, dip, lor, sci, war):
+        super().__init__(name, raw, value, shop)
         self.WEIGHT = weight
         self.PROTECTION = prt
         self.INTELLIGENCE = intell
@@ -17,6 +17,7 @@ class Helmet(Gear):
     @staticmethod
     def factory(helmet_dict):
         return Helmet(helmet_dict.name,
+                      helmet_dict.raw,
                       helmet_dict.value,
                       helmet_dict.shop,
                       helmet_dict.weight,

@@ -3,8 +3,8 @@ from items.gear import Gear
 
 
 class Cloak(Gear):
-    def __init__(self, name, value, shop, weight, protection, stealth, thief):
-        super().__init__(name, value, shop)
+    def __init__(self, name, raw, value, shop, weight, protection, stealth, thief):
+        super().__init__(name, raw, value, shop)
         self.WEIGHT = weight
         self.PROTECTION = protection
         self.STEALTH = stealth
@@ -13,6 +13,7 @@ class Cloak(Gear):
     @staticmethod
     def factory(cloak_dict):
         return Cloak(cloak_dict.name,
+                     cloak_dict.raw,
                      cloak_dict.value,
                      cloak_dict.shop,
                      cloak_dict.weight,
