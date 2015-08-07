@@ -75,7 +75,7 @@ def equipment(wpn1='emptyweapon', shd1='emptyshield', arm1='emptyarmor'):
         wpn=items.Weapon.factory(decorators.weapons[wpn1]),
         shd=items.Shield.factory(decorators.shields[shd1]),
         hlm=items.Helmet.factory(decorators.helmets.emptyhelmet),
-        nkl=items.Necklace.factory(decorators.necklaces.emptynecklace),
+        nlc=items.Necklace.factory(decorators.necklaces.emptynecklace),
         arm=items.Armor.factory(decorators.armors[arm1]),
         clk=items.Cloak.factory(decorators.cloaks.emptycloak),
         glv=items.Gloves.factory(decorators.gloves.emptygloves),

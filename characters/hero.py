@@ -156,16 +156,19 @@ class Hero(Character):
         self.stats.agi.total = self.stats.agi.quantity + self.stats.agi.extra
 
     def _set_skills(self):
-        self.skills.stl.extra = 0
-        self.skills.thf.update()
-        # self.skills.thf.extra = 0
-        for equipment_item in self.equipment.values():
-            if equipment_item.STEALTH is not None:
-                self.skills.stl.extra += equipment_item.STEALTH
-            if equipment_item.THIEF is not None:
-                self.skills.thf.extra += equipment_item.THIEF
-        self.skills.stl.total = self.skills.stl.quantity + self.skills.stl.extra
-        self.skills.thf.total = self.skills.thf.quantity + self.skills.thf.extra
+        for skill in self.skills.values():
+            skill.extra = 0
+            for equipment_item in self.equipment.values():
+                if skill.NAME.upper() in equipment_item:
+                    if equipment_item[skill.NAME.upper()] is not None:
+                        skill.extra += equipment_item[skill.NAME.upper()]
+            skill.total = skill.quantity + skill.extra
+
+        # dit hierboven vervangt hieronder * alle skills
+        # if equipment_item.STEALTH is not None:
+        #     self.skills.stl.extra += equipment_item.STEALTH
+        # if equipment_item.THIEF is not None:
+        #     self.skills.thf.extra += equipment_item.THIEF
 
     def _set_total(self):
         for hero_stat in self.stats.values():

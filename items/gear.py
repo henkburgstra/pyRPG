@@ -35,6 +35,7 @@ class Gear(Item):
         self.INTELLIGENCE = None
         self.WILLPOWER = None
         self.DEXTERITY = None
+
         self.DIPLOMAT = None
         self.LOREMASTER = None
         self.RANGER = None
@@ -43,7 +44,13 @@ class Gear(Item):
         self.THIEF = None
         self.WARRIOR = None
 
-    # def __iter__(self):   # niet meer nodig volgens mij
-    #     """Hiermee kun je door bovenstaande variabelen loopen"""
+    # def __iter__(self):
+    #     """Hiermee kun je door bovenstaande variabelen (atributen) loopen"""
     #     for key, value in self.__dict__.items():
     #         yield key, value
+
+    def __contains__(self, key):
+        return key in self.__dict__
+
+    def __getitem__(self, key):
+        return self.__dict__[key]

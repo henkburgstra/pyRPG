@@ -16,10 +16,6 @@ class Skill(Stat):
             return True
         return False
 
-    def update(self):
-        self.extra = 0
-        pass
-
 
 class Chemist(Skill):
     def __init__(self, quantity):
