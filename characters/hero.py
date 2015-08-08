@@ -5,10 +5,10 @@ from output import Output
 
 
 class Hero(Character):
-    def __init__(self, name, level, totalxp, stats, skills, equipment):
-        super().__init__(name, level,         stats, skills, equipment)
+    def __init__(self, name, cond, stats, skills, equipment):
+        super().__init__(name, cond, stats, skills, equipment)
         self.xpremaining = 0
-        self.totalxp = totalxp
+        self.totalxp = cond.txp
 
     @property
     def current_hp(self):

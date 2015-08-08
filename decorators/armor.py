@@ -27,8 +27,8 @@ armor_upgraded = {
 }
 # hoogste protection mogelijk is 15: Heavy Silver/Titanium Armor /+/++
 
-armors = DotDict(dict(
-    emptyarmor=DotDict(dict(
+armors = DotDict(
+    emptyarmor=DotDict(
         name="Empty Armor",
         raw="emptyarmor",
         value=0,
@@ -37,7 +37,7 @@ armors = DotDict(dict(
         protection=0,
         stealth=0,
         sort=0
-    ))))
+    ))
 
 for key_material, value_material in armor_material.items():
     for key_type, value_type in armor_type.items():
@@ -46,7 +46,7 @@ for key_material, value_material in armor_material.items():
             raw_key_name = (key_type + key_material + key_upgraded).strip().lower().replace(" ", "")
             price = (value_material[0] + value_type[0]) * (value_material[0] + value_type[0]) / 400
 
-            armors[raw_key_name] = DotDict(dict(
+            armors[raw_key_name] = DotDict(
                 name=(key_type + " " + key_material + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
@@ -65,7 +65,7 @@ for key_material, value_material in armor_material.items():
 
                 # puur voor sortering
                 sort=value_material[4] + value_type[4] + value_upgraded[4]
-            ))
+            )
 
 # shop uitzetten voor sommige armors
 for key, value in armors.items():

@@ -46,8 +46,8 @@ weapon_upgraded = {
 }
 # hoogste damage mogelijk is 30: Silver/Titanium Maul ++
 
-weapons = DotDict(dict(
-    emptyweapon=DotDict(dict(
+weapons = DotDict(
+    emptyweapon=DotDict(
         name="Empty Weapon",
         raw="emptyweapon",
         value=0,
@@ -58,7 +58,7 @@ weapons = DotDict(dict(
         base_hit=0,
         damage=0,
         sort=0
-    ))))
+    ))
 
 for key_material, value_material in weapon_material.items():
     for key_type, value_type in weapon_type.items():
@@ -66,7 +66,7 @@ for key_material, value_material in weapon_material.items():
 
             raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
 
-            weapons[raw_key_name] = DotDict(dict(
+            weapons[raw_key_name] = DotDict(
                 name=(key_material + " " + key_type + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
@@ -87,7 +87,7 @@ for key_material, value_material in weapon_material.items():
 
                 # puur voor sortering
                 sort=value_material[3] + value_type[7] + value_upgraded[3]
-            ))
+            )
 
 # min_int op 0 zetten voor close weapons
 # min_str op 0 zetten voor range weapons

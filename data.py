@@ -7,17 +7,38 @@ import containers
 
 
 list_gear_dict = dict(
-    weapons=(decorators.weapons, items.Weapon.factory),
-    shields=(decorators.shields, items.Shield.factory),
-    helmets=(decorators.helmets, items.Helmet.factory),
-    necklaces=(decorators.necklaces, items.Necklace.factory),
-    armors=(decorators.armors, items.Armor.factory),
-    cloaks=(decorators.cloaks, items.Cloak.factory),
-    gloves=(decorators.gloves, items.Gloves.factory),
-    belts=(decorators.belts, items.Belt.factory),
-    boots=(decorators.boots, items.Boots.factory),
+    weapons=(decorators.weapons,         items.Weapon.factory),
+    shields=(decorators.shields,         items.Shield.factory),
+    helmets=(decorators.helmets,         items.Helmet.factory),
+    necklaces=(decorators.necklaces,     items.Necklace.factory),
+    armors=(decorators.armors,           items.Armor.factory),
+    cloaks=(decorators.cloaks,           items.Cloak.factory),
+    gloves=(decorators.gloves,           items.Gloves.factory),
+    belts=(decorators.belts,             items.Belt.factory),
+    boots=(decorators.boots,             items.Boots.factory),
     accessories=(decorators.accessories, items.Accessory.factory)
 )
+
+
+def cond(lev1, txp1):
+    return DotDict(
+        lev=characters.Level(lev1), txp=txp1
+    )
+
+cond_alagos = cond(1,       500)
+cond_luana = cond(1,        500)
+cond_grindan = cond(8,   102000)
+cond_rydalin = cond(3,     7000)
+cond_codrif = cond(2,      2500)
+cond_galen = cond(4,      15000)
+cond_raiko = cond(12,    325000)
+cond_kiara = cond(12,    325000)
+cond_luthais = cond(20, 1435000)
+cond_elias = cond(18,   1054500)
+cond_onarr = cond(18,   1054500)
+cond_duilio = cond(22,  1897500)
+cond_iellwen = cond(20, 1435000)
+cond_faeron = cond(25,  2762500)
 
 
 def stats(int1, wil1, dex1, agi1, edu1, str1, sta1):
@@ -100,22 +121,22 @@ equipment_iellwen = equipment(wpn1='steellongsword',                         arm
 equipment_faeron = equipment(wpn1='titaniummace',                            arm1='lighttitaniumarmor')
 
 
-heroes = DotDict(dict(
-    alagos=characters.Hero('Alagos',   characters.Level(1),      500, stats_alagos,  skills_alagos,  equipment_alagos),
-    luana=characters.Hero('Luana',     characters.Level(1),      500, stats_luana,   skills_luana,   equipment_luana),
-    grindan=characters.Hero('Grindan', characters.Level(8),   102000, stats_grindan, skills_grindan, equipment_grindan),
-    rydalin=characters.Hero('Rydalin', characters.Level(3),     7000, stats_rydalin, skills_rydalin, equipment_rydalin),
-    codrif=characters.Hero('Codrif',   characters.Level(2),     2500, stats_codrif,  skills_codrif,  equipment_codrif),
-    galen=characters.Hero('Galen',     characters.Level(4),    15000, stats_galen,   skills_galen,   equipment_galen),
-    raiko=characters.Hero('Raiko',     characters.Level(12),  325000, stats_raiko,   skills_raiko,   equipment_raiko),
-    kiara=characters.Hero('Kiara',     characters.Level(12),  325000, stats_kiara,   skills_kiara,   equipment_kiara),
-    luthais=characters.Hero('Luthais', characters.Level(20), 1435000, stats_luthais, skills_luthais, equipment_luthais),
-    elias=characters.Hero('Elias',     characters.Level(18), 1054500, stats_elias,   skills_elias,   equipment_elias),
-    onarr=characters.Hero('Onarr',     characters.Level(18), 1054500, stats_onarr,   skills_onarr,   equipment_onarr),
-    duilio=characters.Hero('Duilio',   characters.Level(22), 1897500, stats_duilio,  skills_duilio,  equipment_duilio),
-    iellwen=characters.Hero('Iellwen', characters.Level(20), 1435000, stats_iellwen, skills_iellwen, equipment_iellwen),
-    faeron=characters.Hero('Faeron',   characters.Level(25), 2762500, stats_faeron,  skills_faeron,  equipment_faeron)
-))
+heroes = DotDict(
+    alagos=characters.Hero('Alagos',   cond_alagos,  stats_alagos,  skills_alagos,  equipment_alagos),
+    luana=characters.Hero('Luana',     cond_luana,   stats_luana,   skills_luana,   equipment_luana),
+    grindan=characters.Hero('Grindan', cond_grindan, stats_grindan, skills_grindan, equipment_grindan),
+    rydalin=characters.Hero('Rydalin', cond_rydalin, stats_rydalin, skills_rydalin, equipment_rydalin),
+    codrif=characters.Hero('Codrif',   cond_codrif,  stats_codrif,  skills_codrif,  equipment_codrif),
+    galen=characters.Hero('Galen',     cond_galen,   stats_galen,   skills_galen,   equipment_galen),
+    raiko=characters.Hero('Raiko',     cond_raiko,   stats_raiko,   skills_raiko,   equipment_raiko),
+    kiara=characters.Hero('Kiara',     cond_kiara,   stats_kiara,   skills_kiara,   equipment_kiara),
+    luthais=characters.Hero('Luthais', cond_luthais, stats_luthais, skills_luthais, equipment_luthais),
+    elias=characters.Hero('Elias',     cond_elias,   stats_elias,   skills_elias,   equipment_elias),
+    onarr=characters.Hero('Onarr',     cond_onarr,   stats_onarr,   skills_onarr,   equipment_onarr),
+    duilio=characters.Hero('Duilio',   cond_duilio,  stats_duilio,  skills_duilio,  equipment_duilio),
+    iellwen=characters.Hero('Iellwen', cond_iellwen, stats_iellwen, skills_iellwen, equipment_iellwen),
+    faeron=characters.Hero('Faeron',   cond_faeron,  stats_faeron,  skills_faeron,  equipment_faeron)
+)
 
 heroes.alagos.stats_update()
 heroes.luana.stats_update()
@@ -138,16 +159,16 @@ heroes.faeron.stats_update()
 # stats_darkbat = dict(
 #     int=Intelligence(4), wil=Willpower(3), dex=Dexterity(12), edu=Endurance(5), str=Strength(9), sta=Stamina(14))
 
-# villains = DotDict(dict(
+# villains = DotDict(
 #     brownbat=Villain('Brown Bat', Level(2), stats_brownbat),
 #     darkbat=Villain('Dark Bat',   Level(2), stats_darkbat)
-# ))
+# )
 
-pouchitems = DotDict(dict(
+pouchitems = DotDict(
     gold=items.PouchItem("Gold"),
     herbs=items.PouchItem("Herbs"),
     spices=items.PouchItem("Spices")
-))
+)
 
 inventory = containers.GearContainer("Backpack")
 inventory.add(items.Weapon.factory(decorators.weapons.emptyweapon), verbose=False)

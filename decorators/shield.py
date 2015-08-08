@@ -29,8 +29,8 @@ shield_upgraded = {
 }
 # de hoogste protection/defense mogelijk is 15/30: Large Silver/Titanium Scutum /+/++
 
-shields = DotDict(dict(
-    emptyshield=DotDict(dict(
+shields = DotDict(
+    emptyshield=DotDict(
         name="Empty Shield",
         raw="emptyshield",
         value=0,
@@ -41,7 +41,7 @@ shields = DotDict(dict(
         dexterity=0,
         stealth=0,
         sort=0
-    ))))
+    ))
 
 for key_material, value_material in shield_material.items():
     for key_type, value_type in shield_type.items():
@@ -50,7 +50,7 @@ for key_material, value_material in shield_material.items():
             raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
             price = (value_material[0] + value_type[0]) * (value_material[0] + value_type[0]) / 900
 
-            shields[raw_key_name] = DotDict(dict(
+            shields[raw_key_name] = DotDict(
                 name=(key_material + " " + key_type + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
@@ -75,7 +75,7 @@ for key_material, value_material in shield_material.items():
 
                 # puur voor sortering
                 sort=value_material[6] + value_type[6] + value_upgraded[6]
-            ))
+            )
 
 # shop uitzetten voor sommige armors
 for key, value in shields.items():

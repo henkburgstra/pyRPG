@@ -4,10 +4,10 @@ from util import DotDict
 
 
 class Character(object):
-    def __init__(self, name, level, stats, skills, equipment):
+    def __init__(self, name, cond, stats, skills, equipment):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
-        self.level = level
+        self.level = cond.lev
         self.stats = DotDict(stats)
         self.skills = DotDict(skills)
         self.equipment = DotDict(equipment)
