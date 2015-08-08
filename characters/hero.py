@@ -21,10 +21,6 @@ class Hero(Character):
         return self.level.quantity + self.stats.sta.quantity + self.stats.edu.quantity
 
     @property
-    def next_level(self):
-        return self.level.calc_next_level(self.totalxp)
-
-    @property
     def weight(self):
         total = 0
         for equipment_item in self.equipment.values():
@@ -57,10 +53,12 @@ class Hero(Character):
             Output.quantity_less_than_one()
             raise ValueError
 
-        self.xpremaining += xp
-        self.totalxp += xp
-        Output.character_gain_xp(self.NAME, xp)
-        while self.next_level <= 0:
+        if self.level.quantity < self.level.MAXIMUM:
+            self.xpremaining += xp
+            self.totalxp += xp
+            Output.character_gain_xp(self.NAME, xp)
+
+        while self.level.next(self.totalxp) <= 0:
             self.level.quantity += 1
             self.level.current += 1
             Output.character_gain_level(self.NAME, self.level.quantity)

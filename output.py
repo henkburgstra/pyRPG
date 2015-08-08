@@ -133,8 +133,14 @@ class Output(object):
             character.NAME, character.level.quantity, character.current_hp, character.max_hp))
         print()
         print("      XP Remaining : {}".format(character.xpremaining))
-        print("      Total XP     : {}".format(character.totalxp))
-        print("      Next Level   : {}".format(character.next_level))
+        if character.level.quantity >= character.level.MAXIMUM:
+            totalxp = "Max"
+            nextlevel = "Max"
+        else:
+            totalxp = character.totalxp
+            nextlevel = character.level.next(character.totalxp)
+        print("      Total XP     : {}".format(totalxp))
+        print("      Next Level   : {}".format(nextlevel))
         print()
         print("      Weight       : {}".format(character.weight))
         print("      Movepoints   : {}\t\t({})".format(character.own_movepoints, character.total_movepoints))
