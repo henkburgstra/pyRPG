@@ -1,16 +1,13 @@
 
 
-from util import DotDict
-
-
 class Character(object):
     def __init__(self, name, cond, stats, skills, equipment):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
         self.level = cond.lev
-        self.stats = DotDict(stats)
-        self.skills = DotDict(skills)
-        self.equipment = DotDict(equipment)
+        self.stats = stats
+        self.skills = skills
+        self.equipment = equipment
 
         # self._dead = False
 
