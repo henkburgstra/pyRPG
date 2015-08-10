@@ -1,13 +1,9 @@
 
 
 class Character(object):
-    def __init__(self, name, cond, stats, skills, equipment):
+    def __init__(self, name):
         self.NAME = name
         self.RAW = name.strip().lower().replace(" ", "")
-        self.level = cond.lev
-        self.stats = stats
-        self.skills = skills
-        self.equipment = equipment
 
         # self._dead = False
 

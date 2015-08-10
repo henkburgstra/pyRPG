@@ -6,9 +6,13 @@ from output import Output
 
 class Hero(Character):
     def __init__(self, name, cond, stats, skills, equipment):
-        super().__init__(name, cond, stats, skills, equipment)
+        super().__init__(name)
+        self.level = cond.lev
         self.xpremaining = 0
         self.totalxp = cond.txp
+        self.stats = stats
+        self.skills = skills
+        self.equipment = equipment
 
     @property
     def current_hp(self):
