@@ -132,13 +132,13 @@ class Output(object):
         print("Name: {},\tLevel: {},\tHitPoints: {}/{}".format(
             character.NAME, character.level.quantity, character.current_hp, character.max_hp))
         print()
-        print("      XP Remaining : {}".format(character.xpremaining))
+        print("      XP Remaining : {}".format(character.experience.remaining))
         if character.level.quantity >= character.level.MAXIMUM:
             totalxp = "Max"
             nextlevel = "Max"
         else:
-            totalxp = character.totalxp
-            nextlevel = character.level.next(character.totalxp)
+            totalxp = character.experience.total
+            nextlevel = character.level.next(character.experience.total)
         print("      Total XP     : {}".format(totalxp))
         print("      Next Level   : {}".format(nextlevel))
         print()

@@ -3,6 +3,7 @@ from .hero import Hero
 from .villain import Villain
 
 from .stats import Level
+from .stats import Experience
 
 from .stats import Intelligence
 from .stats import Willpower

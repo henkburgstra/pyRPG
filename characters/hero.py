@@ -8,8 +8,7 @@ class Hero(Character):
     def __init__(self, name, cond, stats, skills, equipment):
         super().__init__(name)
         self.level = cond.lev
-        self.xpremaining = 0
-        self.totalxp = cond.txp
+        self.experience = cond.txp
         self.stats = stats
         self.skills = skills
         self.equipment = equipment
@@ -58,11 +57,11 @@ class Hero(Character):
             raise ValueError
 
         if self.level.quantity < self.level.MAXIMUM:
-            self.xpremaining += xp
-            self.totalxp += xp
+            self.experience.remaining += xp
+            self.experience.total += xp
             Output.character_gain_xp(self.NAME, xp)
 
-        while self.level.next(self.totalxp) <= 0:
+        while self.level.next(self.experience.total) <= 0:
             self.level.quantity += 1
             self.level.current += 1
             Output.character_gain_level(self.NAME, self.level.quantity)

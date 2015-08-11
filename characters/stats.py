@@ -23,9 +23,10 @@ class Level(Stat):
             return int((250 / 3) * (2 * self.quantity ** 3 + 9 * self.quantity ** 2 + 13 * self.quantity + 6) - totalxp)
 
 
-# class Experience(Stat):
-#     def __init__(self, total):
-#         super().__init__("XP", "xp", None, None, total)
+class Experience(object):
+    def __init__(self, total):
+        self.total = total
+        self.remaining = 0
 
 
 class Intelligence(Stat):

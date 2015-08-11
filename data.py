@@ -22,7 +22,7 @@ list_gear_dict = dict(
 
 def build_cond(lev1, txp1):
     return DotDict(
-        lev=characters.Level(lev1), txp=txp1
+        lev=characters.Level(lev1), txp=characters.Experience(txp1)
     )
 
 all_cond = DotDict(
@@ -69,8 +69,8 @@ all_stats = DotDict(
 )
 
 
-def build_skills(chm1, dip1, lor1, mec1, med1, mer1, ran1, sci1, stl1, thf1, trb1, war1, haf1, mis1, pol1, shd1, swd1,
-                 thr1):
+def build_skills(chm1, dip1, lor1, mec1, med1, mer1, ran1, sci1, stl1, thf1, trb1, war1,
+                 haf1, mis1, pol1, shd1, swd1, thr1):
     return DotDict(
         chm=characters.Chemist(chm1),  dip=characters.Diplomat(dip1),   lor=characters.Loremaster(lor1),
         mec=characters.Mechanic(mec1), med=characters.Medic(med1),      mer=characters.Merchant(mer1),
