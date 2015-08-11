@@ -8,11 +8,8 @@
 
 # wat is beter in de output class, pushen naar de output, of vanuit de output getten?
 # wel veel static methods... is dat de juiste manier?
-# hoe kan ik de 2 dicts aan het begin van data samenvoegen? (fixed?)
 
-# texttable gebruiken bij stats van hero
-# wx python onderzoeken
-
+# tkinter en pygame gebruiken (http://usingpython.com)
 
 # idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange
 # (denk dus ook aan het gevolg aan de items zoals shield met -dex, dat dat misschien -agi moet worden)

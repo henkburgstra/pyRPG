@@ -50,16 +50,16 @@ class Hero(Character):
                 total += equipment_item.PROTECTION
         return total
 
-    def gain_experience(self, xp):
+    def gain_experience(self, xp_input):
         """Deze is voor xp"""
-        if xp < 1:
+        if xp_input < 1:
             Output.quantity_less_than_one()
             raise ValueError
 
         if self.level.quantity < self.level.MAXIMUM:
-            self.experience.remaining += xp
-            self.experience.total += xp
-            Output.character_gain_xp(self.NAME, xp)
+            self.experience.remaining += xp_input
+            self.experience.total += xp_input
+            Output.character_gain_xp(self.NAME, xp_input)
 
         while self.level.next(self.experience.total) <= 0:
             self.level.quantity += 1
