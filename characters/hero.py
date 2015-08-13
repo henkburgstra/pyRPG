@@ -150,6 +150,13 @@ class Hero(Character):
         self.stats.agi.extra = -round(self.weight / 3)
         self.stats.agi.total = self.stats.agi.quantity + self.stats.agi.extra
 
+    # def calc_skill(self, skillname):
+    #     total_skill_boost = 0
+    #     for item in self.equipment.values():
+    #         total_skill_boost += item.get_boost(skillname)
+    #     total_skill = total_skill_boost + self.skills[skillname].quantity
+    #     return total_skill
+
     def _set_skills(self):
         for skill in self.skills.values():
             skill.extra = 0

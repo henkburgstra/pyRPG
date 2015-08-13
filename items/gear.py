@@ -12,12 +12,24 @@ class PouchItem(Item):
     pass
 
 
+# class StatSkillBoosts(object):
+#     def __init__(self, boostdict):
+#         self.boostdict = boostdict
+#
+#     def get_boost(self, stat_or_skill_name):
+#         if stat_or_skill_name in self.boostdict:
+#             return self.boostdict[stat_or_skill_name]
+#         else:
+#             return 0
+
+
 class Gear(Item):
-    def __init__(self, name, raw, value, shop):
+    def __init__(self, name, raw, value, shop):  # , boostdict):
         super().__init__(name)
         self.RAW = raw
         self.VALUE = value
         self.SHOP = shop
+        # self.boostdict = boostdict
 
         self.WPN_SKILL = None
 
@@ -43,6 +55,9 @@ class Gear(Item):
         self.STEALTH = None
         self.THIEF = None
         self.WARRIOR = None
+
+    # def get_boost(self, stat_or_skill_name):
+    #     return self.boostdict.get_boost(stat_or_skill_name)
 
     # def __iter__(self):
     #     """Hiermee kun je door bovenstaande variabelen (atributen) loopen"""
