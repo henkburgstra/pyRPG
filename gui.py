@@ -197,12 +197,12 @@ class PartyDialog ( wx.Dialog ):
 		
 		szr_hero1 = wx.BoxSizer( wx.VERTICAL )
 		
-		fgSizer1 = wx.FlexGridSizer( 0, 2, 0, 0 )
+		fgSizer1 = wx.FlexGridSizer( 3, 2, 0, 20 )
 		fgSizer1.SetFlexibleDirection( wx.BOTH )
 		fgSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 		
-		self.bmp_p1 = wx.StaticBitmap( self.pnl_hero1, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		fgSizer1.Add( self.bmp_p1, 0, wx.ALL, 10 )
+		self.bmp_p1 = wx.StaticBitmap( self.pnl_hero1, wx.ID_ANY, wx.NullBitmap, wx.Point( -1,-1 ), wx.Size( -1,-1 ), 0 )
+		fgSizer1.Add( self.bmp_p1, 0, wx.ALL|wx.EXPAND, 10 )
 		
 		self.lbl_nam1 = wx.StaticText( self.pnl_hero1, wx.ID_ANY, u"p1nam", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_nam1.Wrap( -1 )
@@ -244,9 +244,12 @@ class PartyDialog ( wx.Dialog ):
 		
 		bSizer33 = wx.BoxSizer( wx.HORIZONTAL )
 		
-		self.m_gauge1 = wx.Gauge( self.pnl_hero1, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
-		self.m_gauge1.SetValue( 0 ) 
-		bSizer33.Add( self.m_gauge1, 1, wx.ALL, 5 )
+		self.gau_p1 = wx.Gauge( self.pnl_hero1, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.gau_p1.SetValue( 0 ) 
+		self.gau_p1.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.gau_p1.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		bSizer33.Add( self.gau_p1, 1, wx.ALL, 5 )
 		
 		
 		szr_hero1.Add( bSizer33, 0, wx.EXPAND, 5 )
@@ -260,14 +263,14 @@ class PartyDialog ( wx.Dialog ):
 		self.pnl_hero2 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		szr_hero2 = wx.BoxSizer( wx.VERTICAL )
 		
-		fgSizer11 = wx.FlexGridSizer( 0, 2, 0, 0 )
+		fgSizer11 = wx.FlexGridSizer( 0, 2, 0, 20 )
 		fgSizer11.SetFlexibleDirection( wx.BOTH )
 		fgSizer11.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 		
-		self.bmp_p2 = wx.StaticBitmap( self.pnl_hero2, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		fgSizer11.Add( self.bmp_p2, 0, wx.ALL, 10 )
+		self.bmp_p2 = wx.StaticBitmap( self.pnl_hero2, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		fgSizer11.Add( self.bmp_p2, 0, wx.ALL|wx.EXPAND, 10 )
 		
-		self.lbl_nam2 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"p1nam", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_nam2 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"p2nam", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_nam2.Wrap( -1 )
 		self.lbl_nam2.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_nam2.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
@@ -307,9 +310,9 @@ class PartyDialog ( wx.Dialog ):
 		
 		bSizer331 = wx.BoxSizer( wx.HORIZONTAL )
 		
-		self.m_gauge11 = wx.Gauge( self.pnl_hero2, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
-		self.m_gauge11.SetValue( 0 ) 
-		bSizer331.Add( self.m_gauge11, 1, wx.ALL, 5 )
+		self.gau_p2 = wx.Gauge( self.pnl_hero2, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.gau_p2.SetValue( 0 ) 
+		bSizer331.Add( self.gau_p2, 1, wx.ALL, 5 )
 		
 		
 		szr_hero2.Add( bSizer331, 0, wx.EXPAND, 5 )
@@ -321,12 +324,207 @@ class PartyDialog ( wx.Dialog ):
 		szr_heroes.Add( self.pnl_hero2, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_hero3 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		self.pnl_hero3.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		szr_hero3 = wx.BoxSizer( wx.VERTICAL )
+		
+		fgSizer12 = wx.FlexGridSizer( 3, 2, 0, 20 )
+		fgSizer12.SetFlexibleDirection( wx.BOTH )
+		fgSizer12.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		
+		self.bmp_p3 = wx.StaticBitmap( self.pnl_hero3, wx.ID_ANY, wx.NullBitmap, wx.Point( -1,-1 ), wx.Size( -1,-1 ), 0 )
+		fgSizer12.Add( self.bmp_p3, 0, wx.ALL|wx.EXPAND, 10 )
+		
+		self.lbl_nam3 = wx.StaticText( self.pnl_hero3, wx.ID_ANY, u"p3nam", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_nam3.Wrap( -1 )
+		self.lbl_nam3.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_nam3.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer12.Add( self.lbl_nam3, 0, wx.ALL, 5 )
+		
+		self.lbl_lev30 = wx.StaticText( self.pnl_hero3, wx.ID_ANY, u"Level", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev30.Wrap( -1 )
+		self.lbl_lev30.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev30.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer12.Add( self.lbl_lev30, 0, wx.ALL, 5 )
+		
+		self.lbl_lev3 = wx.StaticText( self.pnl_hero3, wx.ID_ANY, u"%%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev3.Wrap( -1 )
+		self.lbl_lev3.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev3.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer12.Add( self.lbl_lev3, 0, wx.ALL, 5 )
+		
+		self.lbl_hp30 = wx.StaticText( self.pnl_hero3, wx.ID_ANY, u"HitPoints", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp30.Wrap( -1 )
+		self.lbl_hp30.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp30.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer12.Add( self.lbl_hp30, 0, wx.ALL, 5 )
+		
+		self.lbl_hp3 = wx.StaticText( self.pnl_hero3, wx.ID_ANY, u"%% / %%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp3.Wrap( -1 )
+		self.lbl_hp3.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp3.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer12.Add( self.lbl_hp3, 0, wx.ALL, 5 )
+		
+		
+		szr_hero3.Add( fgSizer12, 0, wx.EXPAND|wx.LEFT, 5 )
+		
+		bSizer332 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.gau_p3 = wx.Gauge( self.pnl_hero3, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.gau_p3.SetValue( 0 ) 
+		self.gau_p3.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.gau_p3.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		bSizer332.Add( self.gau_p3, 1, wx.ALL, 5 )
+		
+		
+		szr_hero3.Add( bSizer332, 0, wx.EXPAND, 5 )
+		
+		
+		self.pnl_hero3.SetSizer( szr_hero3 )
+		self.pnl_hero3.Layout()
+		szr_hero3.Fit( self.pnl_hero3 )
 		szr_heroes.Add( self.pnl_hero3, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_hero4 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		self.pnl_hero4.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		szr_hero4 = wx.BoxSizer( wx.VERTICAL )
+		
+		fgSizer13 = wx.FlexGridSizer( 3, 2, 0, 20 )
+		fgSizer13.SetFlexibleDirection( wx.BOTH )
+		fgSizer13.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		
+		self.bmp_p4 = wx.StaticBitmap( self.pnl_hero4, wx.ID_ANY, wx.NullBitmap, wx.Point( -1,-1 ), wx.Size( -1,-1 ), 0 )
+		fgSizer13.Add( self.bmp_p4, 0, wx.ALL|wx.EXPAND, 10 )
+		
+		self.lbl_nam4 = wx.StaticText( self.pnl_hero4, wx.ID_ANY, u"p4nam", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_nam4.Wrap( -1 )
+		self.lbl_nam4.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_nam4.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer13.Add( self.lbl_nam4, 0, wx.ALL, 5 )
+		
+		self.lbl_lev40 = wx.StaticText( self.pnl_hero4, wx.ID_ANY, u"Level", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev40.Wrap( -1 )
+		self.lbl_lev40.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev40.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer13.Add( self.lbl_lev40, 0, wx.ALL, 5 )
+		
+		self.lbl_lev4 = wx.StaticText( self.pnl_hero4, wx.ID_ANY, u"%%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev4.Wrap( -1 )
+		self.lbl_lev4.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev4.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer13.Add( self.lbl_lev4, 0, wx.ALL, 5 )
+		
+		self.lbl_hp40 = wx.StaticText( self.pnl_hero4, wx.ID_ANY, u"HitPoints", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp40.Wrap( -1 )
+		self.lbl_hp40.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp40.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer13.Add( self.lbl_hp40, 0, wx.ALL, 5 )
+		
+		self.lbl_hp4 = wx.StaticText( self.pnl_hero4, wx.ID_ANY, u"%% / %%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp4.Wrap( -1 )
+		self.lbl_hp4.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp4.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer13.Add( self.lbl_hp4, 0, wx.ALL, 5 )
+		
+		
+		szr_hero4.Add( fgSizer13, 0, wx.EXPAND|wx.LEFT, 5 )
+		
+		bSizer333 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.gau_p4 = wx.Gauge( self.pnl_hero4, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.gau_p4.SetValue( 0 ) 
+		self.gau_p4.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.gau_p4.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		bSizer333.Add( self.gau_p4, 1, wx.ALL, 5 )
+		
+		
+		szr_hero4.Add( bSizer333, 0, wx.EXPAND, 5 )
+		
+		
+		self.pnl_hero4.SetSizer( szr_hero4 )
+		self.pnl_hero4.Layout()
+		szr_hero4.Fit( self.pnl_hero4 )
 		szr_heroes.Add( self.pnl_hero4, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_hero5 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		self.pnl_hero5.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		szr_hero5 = wx.BoxSizer( wx.VERTICAL )
+		
+		fgSizer14 = wx.FlexGridSizer( 3, 2, 0, 20 )
+		fgSizer14.SetFlexibleDirection( wx.BOTH )
+		fgSizer14.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		
+		self.bmp_p5 = wx.StaticBitmap( self.pnl_hero5, wx.ID_ANY, wx.NullBitmap, wx.Point( -1,-1 ), wx.Size( -1,-1 ), 0 )
+		fgSizer14.Add( self.bmp_p5, 0, wx.ALL|wx.EXPAND, 10 )
+		
+		self.lbl_nam5 = wx.StaticText( self.pnl_hero5, wx.ID_ANY, u"p5nam", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_nam5.Wrap( -1 )
+		self.lbl_nam5.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_nam5.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer14.Add( self.lbl_nam5, 0, wx.ALL, 5 )
+		
+		self.lbl_lev50 = wx.StaticText( self.pnl_hero5, wx.ID_ANY, u"Level", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev50.Wrap( -1 )
+		self.lbl_lev50.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev50.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer14.Add( self.lbl_lev50, 0, wx.ALL, 5 )
+		
+		self.lbl_lev5 = wx.StaticText( self.pnl_hero5, wx.ID_ANY, u"%%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev5.Wrap( -1 )
+		self.lbl_lev5.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev5.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer14.Add( self.lbl_lev5, 0, wx.ALL, 5 )
+		
+		self.lbl_hp50 = wx.StaticText( self.pnl_hero5, wx.ID_ANY, u"HitPoints", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp50.Wrap( -1 )
+		self.lbl_hp50.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp50.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer14.Add( self.lbl_hp50, 0, wx.ALL, 5 )
+		
+		self.lbl_hp5 = wx.StaticText( self.pnl_hero5, wx.ID_ANY, u"%% / %%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp5.Wrap( -1 )
+		self.lbl_hp5.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp5.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer14.Add( self.lbl_hp5, 0, wx.ALL, 5 )
+		
+		
+		szr_hero5.Add( fgSizer14, 0, wx.EXPAND|wx.LEFT, 5 )
+		
+		bSizer334 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.gau_p5 = wx.Gauge( self.pnl_hero5, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.gau_p5.SetValue( 0 ) 
+		self.gau_p5.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.gau_p5.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		
+		bSizer334.Add( self.gau_p5, 1, wx.ALL, 5 )
+		
+		
+		szr_hero5.Add( bSizer334, 0, wx.EXPAND, 5 )
+		
+		
+		self.pnl_hero5.SetSizer( szr_hero5 )
+		self.pnl_hero5.Layout()
+		szr_hero5.Fit( self.pnl_hero5 )
 		szr_heroes.Add( self.pnl_hero5, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_btns = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
@@ -342,7 +540,7 @@ class PartyDialog ( wx.Dialog ):
 		self.btn_close.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.btn_close.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		gSizer1.Add( self.btn_close, 0, wx.ALL, 5 )
+		gSizer1.Add( self.btn_close, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 		
 		self.btn_next = wx.Button( self.pnl_btns, wx.ID_ANY, u"Next", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_next.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
@@ -365,7 +563,7 @@ class PartyDialog ( wx.Dialog ):
 		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		szr_info.Add( self.pnl_skills, 1, wx.EXPAND |wx.ALL, 5 )
+		szr_info.Add( self.pnl_skills, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.pnl_inventory = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		szr_info.Add( self.pnl_inventory, 1, wx.EXPAND |wx.ALL, 5 )
