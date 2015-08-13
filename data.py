@@ -26,9 +26,9 @@ pouch = containers.SmallContainer("Pouch")
 party = containers.PartyContainer("Party", 5)
 
 
-def build_cond(lev1, txp1):
+def build_cond(bmp1, lev1, txp1):
     return DotDict(
-        lev=characters.Level(lev1), txp=characters.Experience(txp1)
+        bmp=bmp1, lev=characters.Level(lev1), txp=characters.Experience(txp1)
     )
 
 
@@ -72,21 +72,22 @@ def load_all_data():
     global heroes
     global pouchitems
 
+    path = 'resources/sprites_heroes/'
     all_cond = DotDict(
-        ala=build_cond(1,      500),
-        lua=build_cond(1,      500),
-        gri=build_cond(8,   102000),
-        ryd=build_cond(3,     7000),
-        cod=build_cond(2,     2500),
-        gal=build_cond(4,    15000),
-        rai=build_cond(12,  325000),
-        kia=build_cond(12,  325000),
-        lut=build_cond(20, 1435000),
-        eli=build_cond(18, 1054500),
-        ona=build_cond(18, 1054500),
-        dui=build_cond(22, 1897500),
-        iel=build_cond(20, 1435000),
-        fae=build_cond(25, 2762500)
+        ala=build_cond(path + '01_Alagos.png',   1,     500),
+        lua=build_cond(path + '02_Luana.png',    1,     500),
+        gri=build_cond(path + '03_Grindan.png',  8,  102000),
+        ryd=build_cond(path + '04_Rydalin.png',  3,    7000),
+        cod=build_cond(path + '05_Codrif.png',   2,    2500),
+        gal=build_cond(path + '06_Galen.png',    4,   15000),
+        rai=build_cond(path + '07_Raiko.png',   12,  325000),
+        kia=build_cond(path + '08_Kiara.png',   12,  325000),
+        lut=build_cond(path + '09_Luthais.png', 20, 1435000),
+        eli=build_cond(path + '10_Elias.png',   18, 1054500),
+        ona=build_cond(path + '11_Onarr.png',   18, 1054500),
+        dui=build_cond(path + '12_Duilio.png',  22, 1897500),
+        iel=build_cond(path + '13_Iellwen.png', 20, 1435000),
+        fae=build_cond(path + '14_Faeron.png',  25, 2762500)
     )
 
     #                               agi

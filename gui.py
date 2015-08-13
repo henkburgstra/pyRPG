@@ -258,6 +258,66 @@ class PartyDialog ( wx.Dialog ):
 		szr_heroes.Add( self.pnl_hero1, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_hero2 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		szr_hero2 = wx.BoxSizer( wx.VERTICAL )
+		
+		fgSizer11 = wx.FlexGridSizer( 0, 2, 0, 0 )
+		fgSizer11.SetFlexibleDirection( wx.BOTH )
+		fgSizer11.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		
+		self.bmp_p2 = wx.StaticBitmap( self.pnl_hero2, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		fgSizer11.Add( self.bmp_p2, 0, wx.ALL, 10 )
+		
+		self.lbl_nam2 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"p1nam", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_nam2.Wrap( -1 )
+		self.lbl_nam2.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_nam2.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer11.Add( self.lbl_nam2, 0, wx.ALL, 5 )
+		
+		self.lbl_lev20 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"Level", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev20.Wrap( -1 )
+		self.lbl_lev20.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev20.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer11.Add( self.lbl_lev20, 0, wx.ALL, 5 )
+		
+		self.lbl_lev2 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"%%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_lev2.Wrap( -1 )
+		self.lbl_lev2.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_lev2.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer11.Add( self.lbl_lev2, 0, wx.ALL, 5 )
+		
+		self.lbl_hp20 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"HitPoints", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp20.Wrap( -1 )
+		self.lbl_hp20.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp20.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer11.Add( self.lbl_hp20, 0, wx.ALL, 5 )
+		
+		self.lbl_hp2 = wx.StaticText( self.pnl_hero2, wx.ID_ANY, u"%% / %%", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_hp2.Wrap( -1 )
+		self.lbl_hp2.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_hp2.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		fgSizer11.Add( self.lbl_hp2, 0, wx.ALL, 5 )
+		
+		
+		szr_hero2.Add( fgSizer11, 0, wx.EXPAND|wx.LEFT, 5 )
+		
+		bSizer331 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.m_gauge11 = wx.Gauge( self.pnl_hero2, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_gauge11.SetValue( 0 ) 
+		bSizer331.Add( self.m_gauge11, 1, wx.ALL, 5 )
+		
+		
+		szr_hero2.Add( bSizer331, 0, wx.EXPAND, 5 )
+		
+		
+		self.pnl_hero2.SetSizer( szr_hero2 )
+		self.pnl_hero2.Layout()
+		szr_hero2.Fit( self.pnl_hero2 )
 		szr_heroes.Add( self.pnl_hero2, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_hero3 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )

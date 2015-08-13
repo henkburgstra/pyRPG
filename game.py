@@ -88,14 +88,21 @@ class PartyWindow(gui.PartyDialog):
     def __init__(self, parent):
         gui.PartyDialog.__init__(self, parent)
 
-        self.bmp_p1.Bitmap = wx.Bitmap('resources/sprites_heroes/01_Alagos.png')
-
+        hero_list = []
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                self.lbl_nam1.LabelText = hero.NAME
-                self.lbl_lev1.LabelText = str(hero.level.quantity)
-                self.lbl_hp1.LabelText = str(hero.current_hp) + " / " + str(hero.max_hp)
+                hero_list.append(hero)
+
+        self.bmp_p1.Bitmap = wx.Bitmap(hero_list[0].BMP)
+        self.lbl_nam1.LabelText = hero_list[0].NAME
+        self.lbl_lev1.LabelText = str(hero_list[0].level.quantity)
+        self.lbl_hp1.LabelText = str(hero_list[0].current_hp) + " / " + str(hero_list[0].max_hp)
+
+        self.bmp_p2.Bitmap = wx.Bitmap(hero_list[1].BMP)
+        self.lbl_nam2.LabelText = hero_list[1].NAME
+        self.lbl_lev2.LabelText = str(hero_list[1].level.quantity)
+        self.lbl_hp2.LabelText = str(hero_list[1].current_hp) + " / " + str(hero_list[1].max_hp)
 
     def OnBtnCloseClick(self, event):
         self.Close()

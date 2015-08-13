@@ -7,6 +7,7 @@ from output import Output
 class Hero(Character):
     def __init__(self, name, cond, stats, skills, equipment):
         super().__init__(name)
+        self.BMP = cond.bmp
         self.level = cond.lev
         self.experience = cond.txp
         self.stats = stats
