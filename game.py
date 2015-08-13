@@ -34,6 +34,7 @@ def todo():
     """
 
 import commands
+from output import Output
 import data
 import wx
 import gui
@@ -55,7 +56,7 @@ class MainWindow(gui.MainFrame):
         self.btn_boss.Disable()
         self.btn_enemies.Disable()
         self.btn_next.Disable()
-        self.btn_previous.Disable()
+        self.btn_prev.Disable()
         self.btn_save.Disable()
 
     def enable_buttons(self):
@@ -69,15 +70,35 @@ class MainWindow(gui.MainFrame):
         self.btn_boss.Enable()
         self.btn_enemies.Enable()
         self.btn_next.Enable()
-        self.btn_previous.Enable()
+        self.btn_prev.Enable()
         self.btn_save.Enable()
 
-    def BtnNewClick(self, event):
+    def OnBtnNewClick(self, event):
         self.enable_buttons()
         data.load_all_data()
 
-    def BtnExitClick(self, event):
+    def OnBtnPartyClick(self, event):
+        PartyWindow(None).ShowModal()
+
+    def OnBtnExitClick(self, event):
         commands.cmd_exit()
+
+
+class PartyWindow(gui.PartyDialog):
+    def __init__(self, parent):
+        gui.PartyDialog.__init__(self, parent)
+
+        self.bmp_p1.Bitmap = wx.Bitmap('resources/sprites_heroes/01_Alagos.png')
+
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
+            if hero in data.party:
+                self.lbl_nam1.LabelText = hero.NAME
+                self.lbl_lev1.LabelText = str(hero.level.quantity)
+                self.lbl_hp1.LabelText = str(hero.current_hp) + " / " + str(hero.max_hp)
+
+    def OnBtnCloseClick(self, event):
+        self.Close()
 
 
 def create_name():
@@ -110,8 +131,7 @@ def play():
 
 if __name__ == "__main__":
     app = wx.App(False)
-    root = MainWindow(None)
-    root.Show(True)
+    MainWindow(None).Show()
     app.MainLoop()
 
     play()
