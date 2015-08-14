@@ -70,7 +70,7 @@ class Output(object):
     def cmd_party():
         """Deze is voor party"""
         print()
-        print(str(len(data.party)) + "/" + str(data.party.MAXIMUM))
+        print(str(len(data.party))+"/"+str(data.party.MAXIMUM))
         print()
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]

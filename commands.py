@@ -33,7 +33,7 @@ def cmd_save(*params):
     try:
         if not re.match("^[a-z0-9]{1,15}$", params[0]):
             raise OSError
-        filename = os.path.join('savegame', params[0] + '.dat')
+        filename = os.path.join('savegame', params[0]+'.dat')
         Output.cmd_save()
         with open(filename, 'wb') as f:
             pickle.dump([data.heroes, data.pouchitems, data.inventory, data.pouch, data.party], f)
@@ -43,7 +43,7 @@ def cmd_save(*params):
 
 def cmd_load(*params):
     try:
-        filename = os.path.join('savegame', params[0] + '.dat')
+        filename = os.path.join('savegame', params[0]+'.dat')
         Output.cmd_load()
         with open(filename, 'rb') as f:
             data.heroes, data.pouchitems, data.inventory, data.pouch, data.party = pickle.load(f)
