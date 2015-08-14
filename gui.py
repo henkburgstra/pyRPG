@@ -592,7 +592,7 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_stats.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_stats.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_stats.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
-		bSizer17.Add( self.grid_stats, 0, wx.EXPAND|wx.ALL, 30 )
+		bSizer17.Add( self.grid_stats, 0, wx.ALL|wx.EXPAND, 30 )
 		
 		
 		self.pnl_stats.SetSizer( bSizer17 )
@@ -601,12 +601,25 @@ class PartyDialog ( wx.Dialog ):
 		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		bSizer20 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		bSizer22 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.bmp_chm = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		bSizer22.Add( self.bmp_chm, 0, wx.ALL, 0 )
+		
+		self.bmp_dip = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		bSizer22.Add( self.bmp_dip, 0, wx.ALL, 0 )
+		
+		
+		bSizer20.Add( bSizer22, 0, wx.EXPAND, 5 )
+		
 		bSizer18 = wx.BoxSizer( wx.VERTICAL )
 		
 		self.grid_skills = wx.grid.Grid( self.pnl_skills, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_skills.CreateGrid( 18, 5 )
+		self.grid_skills.CreateGrid( 18, 4 )
 		self.grid_skills.EnableEditing( False )
 		self.grid_skills.EnableGridLines( True )
 		self.grid_skills.EnableDragGridSize( False )
@@ -635,9 +648,12 @@ class PartyDialog ( wx.Dialog ):
 		bSizer18.Add( self.grid_skills, 0, wx.ALL|wx.EXPAND, 30 )
 		
 		
-		self.pnl_skills.SetSizer( bSizer18 )
+		bSizer20.Add( bSizer18, 1, wx.EXPAND, 5 )
+		
+		
+		self.pnl_skills.SetSizer( bSizer20 )
 		self.pnl_skills.Layout()
-		bSizer18.Fit( self.pnl_skills )
+		bSizer20.Fit( self.pnl_skills )
 		szr_info.Add( self.pnl_skills, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.pnl_inventory = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )

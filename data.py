@@ -192,3 +192,7 @@ def load_all_data():
     inventory.add(items.Accessory.factory(decorators.accessories.emptyaccessory), verbose=False)
 
     party.add(heroes.alagos, verbose=False)
+    party.add(heroes.luana, verbose=False)
+    party.add(heroes.faeron, verbose=False)
+    party.add(heroes.onarr, verbose=False)
+    party.add(heroes.kiara, verbose=False)

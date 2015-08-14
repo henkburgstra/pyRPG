@@ -285,6 +285,24 @@ class PartyWindow(gui.PartyDialog):
         hero = self.hero_list[self._hc]
         value = self.grid_skills.SetCellValue
 
+        # skill_list = []
+        # for skill_type_raw in Output.SKILL_SORT:
+        #     skill = hero.skills[skill_type_raw]
+        #     if skill.positive_quantity():
+        #         skill_list.append(skill)
+
+        skill_list = [hero.skills.chm, hero.skills.dip]
+        bmp_list = [self.bmp_chm, self.bmp_dip]
+
+        self.bmp_chm.Bitmap = wx.Bitmap(hero.skills.chm.BMP)
+        self.bmp_dip.Bitmap = wx.Bitmap(hero.skills.dip.BMP)
+
+        for i in range(0, 1):
+            if not skill_list[i].positive_quantity:
+                bmp_list[i].Hide()
+
+        self.bmp_dip.Hide()
+
         self.grid_skills.SetColSize(0, 32)
         # value(0, 0, wx.Image(hero.skills.chm.BMP))
 
