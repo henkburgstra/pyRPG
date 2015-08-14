@@ -9,6 +9,7 @@
 
 import wx
 import wx.xrc
+import wx.grid
 
 ###########################################################################
 ## Class MainFrame
@@ -560,9 +561,83 @@ class PartyDialog ( wx.Dialog ):
 		szr_info = wx.BoxSizer( wx.HORIZONTAL )
 		
 		self.pnl_stats = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		bSizer17 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.grid_stats = wx.grid.Grid( self.pnl_stats, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		
+		# Grid
+		self.grid_stats.CreateGrid( 18, 5 )
+		self.grid_stats.EnableEditing( False )
+		self.grid_stats.EnableGridLines( True )
+		self.grid_stats.EnableDragGridSize( False )
+		self.grid_stats.SetMargins( 0, 0 )
+		
+		# Columns
+		self.grid_stats.AutoSizeColumns()
+		self.grid_stats.EnableDragColMove( False )
+		self.grid_stats.EnableDragColSize( True )
+		self.grid_stats.SetColLabelSize( 0 )
+		self.grid_stats.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Rows
+		self.grid_stats.AutoSizeRows()
+		self.grid_stats.EnableDragRowSize( False )
+		self.grid_stats.SetRowLabelSize( 0 )
+		self.grid_stats.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Label Appearance
+		
+		# Cell Defaults
+		self.grid_stats.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.grid_stats.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.grid_stats.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
+		self.grid_stats.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
+		bSizer17.Add( self.grid_stats, 0, wx.EXPAND|wx.ALL, 30 )
+		
+		
+		self.pnl_stats.SetSizer( bSizer17 )
+		self.pnl_stats.Layout()
+		bSizer17.Fit( self.pnl_stats )
 		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		bSizer18 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.grid_skills = wx.grid.Grid( self.pnl_skills, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		
+		# Grid
+		self.grid_skills.CreateGrid( 18, 5 )
+		self.grid_skills.EnableEditing( False )
+		self.grid_skills.EnableGridLines( True )
+		self.grid_skills.EnableDragGridSize( False )
+		self.grid_skills.SetMargins( 0, 0 )
+		
+		# Columns
+		self.grid_skills.AutoSizeColumns()
+		self.grid_skills.EnableDragColMove( False )
+		self.grid_skills.EnableDragColSize( True )
+		self.grid_skills.SetColLabelSize( 0 )
+		self.grid_skills.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Rows
+		self.grid_skills.AutoSizeRows()
+		self.grid_skills.EnableDragRowSize( False )
+		self.grid_skills.SetRowLabelSize( 0 )
+		self.grid_skills.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Label Appearance
+		
+		# Cell Defaults
+		self.grid_skills.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.grid_skills.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.grid_skills.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
+		self.grid_skills.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
+		bSizer18.Add( self.grid_skills, 0, wx.ALL|wx.EXPAND, 30 )
+		
+		
+		self.pnl_skills.SetSizer( bSizer18 )
+		self.pnl_skills.Layout()
+		bSizer18.Fit( self.pnl_skills )
 		szr_info.Add( self.pnl_skills, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.pnl_inventory = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
@@ -581,14 +656,22 @@ class PartyDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 		
 		# Connect Events
+		self.btn_prev.Bind( wx.EVT_BUTTON, self.OnBtnPrevClick )
 		self.btn_close.Bind( wx.EVT_BUTTON, self.OnBtnCloseClick )
+		self.btn_next.Bind( wx.EVT_BUTTON, self.OnBtnNextClick )
 	
 	def __del__( self ):
 		pass
 	
 	
 	# Virtual event handlers, overide them in your derived class
+	def OnBtnPrevClick( self, event ):
+		event.Skip()
+	
 	def OnBtnCloseClick( self, event ):
+		event.Skip()
+	
+	def OnBtnNextClick( self, event ):
 		event.Skip()
 	
 

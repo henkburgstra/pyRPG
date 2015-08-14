@@ -38,10 +38,14 @@ class Hero(Character):
 
     @property
     def total_movepoints(self):
-        total = round(self.own_movepoints - (self.weight / 2))
+        total = self.own_movepoints - round(self.weight / 2)
         if total < 1:
             return 1
         return total
+
+    @property
+    def diff_movepoints(self):
+        return self.total_movepoints - self.own_movepoints
 
     @property
     def protection(self):
@@ -135,17 +139,26 @@ class Hero(Character):
 
     def stats_update(self):
         """Deze is voor startup en sell, equip en unequip"""
-        self._set_dex()
+        self._set_stats()
         self._set_agi()
         self._set_skills()
         self._set_total()
 
-    def _set_dex(self):
-        self.stats.dex.extra = 0
-        for equipment_item in self.equipment.values():
-            if equipment_item.DEXTERITY is not None:
-                self.stats.dex.extra += equipment_item.DEXTERITY
-        self.stats.dex.total = self.stats.dex.quantity + self.stats.dex.extra
+    def _set_stats(self):
+        for stat in self.stats.values():
+            stat.extra = 0
+            for equipment_item in self.equipment.values():
+                if stat.NAME.upper() in equipment_item:
+                    if equipment_item[stat.NAME.upper()] is not None:
+                        stat.extra += equipment_item[stat.NAME.upper()]
+            stat.total = stat.quantity + stat.extra
+
+        # dit hierboven vervangt dit hieronder maal elke stat
+        # self.stats.int.extra = 0
+        # for equipment_item in self.equipment.values():
+        #     if equipment_item.INTELLIGENCE is not None:
+        #         self.stats.int.extra += equipment_item.INTELLIGENCE
+        # self.stats.int.total = self.stats.int.quantity + self.stats.int.extra
 
     def _set_agi(self):
         self.stats.agi.extra = -round(self.weight / 3)
