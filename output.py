@@ -144,13 +144,13 @@ class Output(object):
         print()
         print("      Weight       : {}".format(character.weight))
         print("      Movepoints   : {}\t\t({})".format(character.own_movepoints, character.total_movepoints))
-        if character.skills.shd.quantity > 0:
+        if character.skills.shd.positive_quantity():
             print("      Protection   : {}\t\t({})".format(character.protection, character.equipment.shd.PROTECTION))
         else:
             print("      Protection   : {}".format(character.protection))
         print("      Defense      : {}".format(character.equipment.shd.DEFENSE))
         curr_wpn = character.equipment.wpn
-        if character.skills.war.quantity > 0 and "empty" not in curr_wpn.RAW:
+        if character.skills.war.positive_quantity() and "empty" not in curr_wpn.RAW:
             print("      Base Hit     : {}%\t(+{}%)".format(curr_wpn.BASE_HIT,
                                                             character.skills.war.bonus(curr_wpn.BASE_HIT)))
         else:

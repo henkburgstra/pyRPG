@@ -250,12 +250,12 @@ class PartyWindow(gui.PartyDialog):
         value(3, 2, "")
         value(4, 2, "")
         self._show_stats2(5, 2, hero.diff_movepoints)
-        if hero.skills.shd.quantity > 0:
+        if hero.skills.shd.positive_quantity():
             value(6, 2, "("+str(hero.equipment.shd.PROTECTION)+")")
         else:
             value(6, 2, "")
         value(7, 2, "")
-        if hero.skills.war.quantity > 0 and "empty" not in hero.equipment.wpn.RAW:
+        if hero.skills.war.positive_quantity() and "empty" not in hero.equipment.wpn.RAW:
             self._show_stats2(8, 2, hero.skills.war.bonus(hero.equipment.wpn.BASE_HIT))
         else:
             value(8, 2, "")
