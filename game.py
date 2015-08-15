@@ -109,6 +109,7 @@ class PartyWindow(gui.PartyDialog):
         self._show_skills()
         self.Refresh()
 
+    # noinspection PyPep8Naming
     def _show_partymembers(self):
         img_list = []
         for hero in self.hero_list:
@@ -116,88 +117,35 @@ class PartyWindow(gui.PartyDialog):
             start_image.Resize((32, 32), (-32, 0))
             img_list.append(wx.Bitmap(start_image))
 
-        self.bmp_p1.Bitmap = img_list[0]
-        self.lbl_nam1.LabelText = self.hero_list[0].NAME
-        self.lbl_lev1.LabelText = str(self.hero_list[0].level.quantity)
-        self.lbl_hp1.LabelText = str(self.hero_list[0].current_hp)+" / "+str(self.hero_list[0].max_hp)
-        self.gau_p1.Range = self.hero_list[0].max_hp
-        self.gau_p1.Value = self.hero_list[0].current_hp
+        pnl_list = [self.pnl_hero1, self.pnl_hero2, self.pnl_hero3, self.pnl_hero4, self.pnl_hero5]
+        bmp_list = [self.bmp_p1,    self.bmp_p2,    self.bmp_p3,    self.bmp_p4,    self.bmp_p5]
+        nam_list = [self.lbl_nam1,  self.lbl_nam2,  self.lbl_nam3,  self.lbl_nam4,  self.lbl_nam5]
+        lev_list = [self.lbl_lev1,  self.lbl_lev2,  self.lbl_lev3,  self.lbl_lev4,  self.lbl_lev5]
+        hp_list = [self.lbl_hp1,    self.lbl_hp2,   self.lbl_hp3,   self.lbl_hp4,   self.lbl_hp5]
+        gau_list = [self.gau_p1,    self.gau_p2,    self.gau_p3,    self.gau_p4,    self.gau_p5]
 
-        if len(data.party) >= 2:
-            self.pnl_hero2.Show()
-            self.bmp_p2.Bitmap = img_list[1]
-            self.lbl_nam2.LabelText = self.hero_list[1].NAME
-            self.lbl_lev2.LabelText = str(self.hero_list[1].level.quantity)
-            self.lbl_hp2.LabelText = str(self.hero_list[1].current_hp)+" / "+str(self.hero_list[1].max_hp)
-            self.gau_p2.Range = self.hero_list[1].max_hp
-            self.gau_p2.Value = self.hero_list[1].current_hp
-        else:
-            self.pnl_hero2.Hide()
+        for i in range(5):
+            if len(data.party) >= i + 1:
+                pnl_list[i].Show()
+                bmp_list[i].Bitmap = img_list[i]
+                nam_list[i].LabelText = self.hero_list[i].NAME
+                lev_list[i].LabelText = str(self.hero_list[i].level.quantity)
+                hp_list[i].LabelText = str(self.hero_list[i].current_hp)+" / "+str(self.hero_list[i].max_hp)
+                gau_list[i].Range = self.hero_list[i].max_hp
+                gau_list[i].Value = self.hero_list[i].current_hp
+            else:
+                pnl_list[i].Hide()
 
-        if len(data.party) >= 3:
-            self.pnl_hero3.Show()
-            self.bmp_p3.Bitmap = img_list[2]
-            self.lbl_nam3.LabelText = self.hero_list[2].NAME
-            self.lbl_lev3.LabelText = str(self.hero_list[2].level.quantity)
-            self.lbl_hp3.LabelText = str(self.hero_list[2].current_hp)+" / "+str(self.hero_list[2].max_hp)
-            self.gau_p3.Range = self.hero_list[2].max_hp
-            self.gau_p3.Value = self.hero_list[2].current_hp
-        else:
-            self.pnl_hero3.Hide()
-
-        if len(data.party) >= 4:
-            self.pnl_hero4.Show()
-            self.bmp_p4.Bitmap = img_list[3]
-            self.lbl_nam4.LabelText = self.hero_list[3].NAME
-            self.lbl_lev4.LabelText = str(self.hero_list[3].level.quantity)
-            self.lbl_hp4.LabelText = str(self.hero_list[3].current_hp)+" / "+str(self.hero_list[3].max_hp)
-            self.gau_p4.Range = self.hero_list[3].max_hp
-            self.gau_p4.Value = self.hero_list[3].current_hp
-        else:
-            self.pnl_hero4.Hide()
-
-        if len(data.party) == 5:
-            self.pnl_hero5.Show()
-            self.bmp_p5.Bitmap = img_list[4]
-            self.lbl_nam5.LabelText = self.hero_list[4].NAME
-            self.lbl_lev5.LabelText = str(self.hero_list[4].level.quantity)
-            self.lbl_hp5.LabelText = str(self.hero_list[4].current_hp)+" / "+str(self.hero_list[4].max_hp)
-            self.gau_p5.Range = self.hero_list[4].max_hp
-            self.gau_p5.Value = self.hero_list[4].current_hp
-        else:
-            self.pnl_hero5.Hide()
-
+    # noinspection PyPep8Naming
     def _select_partymember(self):
-        if self._hc == 0:
-            self.pnl_hero1.BackgroundColour = (32, 32, 32)
-            self.pnl_hero2.BackgroundColour = "Black"
-            self.pnl_hero3.BackgroundColour = "Black"
-            self.pnl_hero4.BackgroundColour = "Black"
-            self.pnl_hero5.BackgroundColour = "Black"
-        elif self._hc == 1:
-            self.pnl_hero1.BackgroundColour = "Black"
-            self.pnl_hero2.BackgroundColour = (32, 32, 32)
-            self.pnl_hero3.BackgroundColour = "Black"
-            self.pnl_hero4.BackgroundColour = "Black"
-            self.pnl_hero5.BackgroundColour = "Black"
-        elif self._hc == 2:
-            self.pnl_hero1.BackgroundColour = "Black"
-            self.pnl_hero2.BackgroundColour = "Black"
-            self.pnl_hero3.BackgroundColour = (32, 32, 32)
-            self.pnl_hero4.BackgroundColour = "Black"
-            self.pnl_hero5.BackgroundColour = "Black"
-        elif self._hc == 3:
-            self.pnl_hero1.BackgroundColour = "Black"
-            self.pnl_hero2.BackgroundColour = "Black"
-            self.pnl_hero3.BackgroundColour = "Black"
-            self.pnl_hero4.BackgroundColour = (32, 32, 32)
-            self.pnl_hero5.BackgroundColour = "Black"
-        elif self._hc == 4:
-            self.pnl_hero1.BackgroundColour = "Black"
-            self.pnl_hero2.BackgroundColour = "Black"
-            self.pnl_hero3.BackgroundColour = "Black"
-            self.pnl_hero4.BackgroundColour = "Black"
-            self.pnl_hero5.BackgroundColour = (32, 32, 32)
+
+        pnl_list = [self.pnl_hero1, self.pnl_hero2, self.pnl_hero3, self.pnl_hero4, self.pnl_hero5]
+
+        for i in range(5):
+            if self._hc == i:
+                pnl_list[i].BackgroundColour = (32, 32, 32)
+            else:
+                pnl_list[i].BackgroundColour = "Black"
 
     def _show_stats(self):
         hero = self.hero_list[self._hc]
@@ -281,30 +229,35 @@ class PartyWindow(gui.PartyDialog):
             self.grid_stats.SetCellTextColour(x, y, "Red")
             self.grid_stats.SetCellValue(x, y, "("+str(value)+")")
 
+    # noinspection PyPep8Naming
     def _show_skills(self):
         hero = self.hero_list[self._hc]
         value = self.grid_skills.SetCellValue
 
-        # skill_list = []
-        # for skill_type_raw in Output.SKILL_SORT:
-        #     skill = hero.skills[skill_type_raw]
-        #     if skill.positive_quantity():
-        #         skill_list.append(skill)
+        skill_list = []
+        for skill_type_raw in Output.SKILL_SORT:
+            skill_list.append(hero.skills[skill_type_raw])
 
-        skill_list = [hero.skills.chm, hero.skills.dip]
-        bmp_list = [self.bmp_chm, self.bmp_dip]
+        bmp_list = [self.bmp_chm, self.bmp_dip, self.bmp_lor, self.bmp_mec, self.bmp_med, self.bmp_mer,
+                    self.bmp_ran, self.bmp_sci, self.bmp_stl, self.bmp_thf, self.bmp_trb, self.bmp_war,
+                    self.bmp_haf, self.bmp_mis, self.bmp_pol, self.bmp_shd, self.bmp_swd, self.bmp_thr]
 
-        self.bmp_chm.Bitmap = wx.Bitmap(hero.skills.chm.BMP)
-        self.bmp_dip.Bitmap = wx.Bitmap(hero.skills.dip.BMP)
+        for i in range(18):
+            bmp_list[i].Hide()
+            self.Layout()
+            value(i, 0, "")
 
-        for i in range(0, 1):
-            if not skill_list[i].positive_quantity:
-                bmp_list[i].Hide()
+        j = 0
+        for i in range(18):
+            if skill_list[i].positive_quantity():
+                bmp_list[i].Bitmap = wx.Bitmap(skill_list[i].BMP)
+                bmp_list[i].Show()
+                self.Layout()
+                value(j, 0, str(skill_list[i].NAME))
+                j += 1
 
-        self.bmp_dip.Hide()
+        self.grid_skills.SetColSize(0, 100)
 
-        self.grid_skills.SetColSize(0, 32)
-        # value(0, 0, wx.Image(hero.skills.chm.BMP))
 
     def OnBtnCloseClick(self, event):
         self.Close()
