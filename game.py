@@ -12,6 +12,7 @@ def todo():
     wat is beter in de output class, pushen naar de output, of vanuit de output getten?
     wel veel static methods... is dat de juiste manier?
 
+    titels in de party panels
     pygame gebruiken (http://usingpython.com)
 
     idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange
@@ -152,6 +153,11 @@ class PartyWindow(gui.PartyDialog):
         value = self.grid_stats.SetCellValue
 
         self.grid_stats.SetColSize(0, 100)
+        self.grid_stats.SetColSize(1, 45)
+        self.grid_stats.SetColSize(2, 45)
+        self.grid_stats.SetColSize(3, 45)
+        self.grid_stats.SetColSize(4, 45)
+
         value(0, 0, "XP Remaining:")
         value(1, 0, "Total XP:")
         value(2, 0, "Next Level:")
@@ -163,13 +169,7 @@ class PartyWindow(gui.PartyDialog):
         value(8, 0, "Base Hit:")
         value(9, 0, "Damage:")
         value(10, 0, "")
-        i = 11
-        for stat_type_raw in Output.STAT_SORT:
-            stat = hero.stats[stat_type_raw]
-            value(i, 0, str(stat.NAME))
-            i += 1
 
-        self.grid_stats.SetColSize(1, 45)
         value(0, 1, str(hero.experience.remaining))
         if hero.level.quantity >= hero.level.MAXIMUM:
             value(1, 1, "Max")
@@ -185,13 +185,7 @@ class PartyWindow(gui.PartyDialog):
         value(8, 1, str(hero.equipment.wpn.BASE_HIT)+"%")
         value(9, 1, str(hero.equipment.wpn.DAMAGE))
         value(10, 1, "")
-        i = 11
-        for stat_type_raw in Output.STAT_SORT:
-            stat = hero.stats[stat_type_raw]
-            value(i, 1, str(stat.quantity))
-            i += 1
 
-        self.grid_stats.SetColSize(2, 45)
         value(0, 2, "")
         value(1, 2, "")
         value(2, 2, "")
@@ -209,15 +203,14 @@ class PartyWindow(gui.PartyDialog):
             value(8, 2, "")
         value(9, 2, "")
         value(10, 2, "")
+
         i = 11
         for stat_type_raw in Output.STAT_SORT:
             stat = hero.stats[stat_type_raw]
+            value(i, 0, str(stat.NAME))
+            value(i, 1, str(stat.quantity))
             self._show_stats2(i, 2, stat.extra)
             i += 1
-
-        self.grid_stats.SetColSize(3, 45)
-
-        self.grid_stats.SetColSize(4, 45)
 
     def _show_stats2(self, x, y, value):
         if value == 0:
@@ -246,6 +239,8 @@ class PartyWindow(gui.PartyDialog):
             bmp_list[i].Hide()
             self.Layout()
             value(i, 0, "")
+            value(i, 1, "")
+            value(i, 2, "")
 
         j = 0
         for i in range(18):
@@ -254,10 +249,24 @@ class PartyWindow(gui.PartyDialog):
                 bmp_list[i].Show()
                 self.Layout()
                 value(j, 0, str(skill_list[i].NAME))
+                value(j, 1, str(skill_list[i].quantity))
+                self._show_skills2(j, 2, skill_list[i].extra)
                 j += 1
 
-        self.grid_skills.SetColSize(0, 100)
+        self.grid_skills.SetColSize(0, 90)
+        self.grid_skills.SetColSize(1, 45)
+        self.grid_skills.SetColSize(2, 45)
+        self.grid_skills.SetColSize(3, 45)
 
+    def _show_skills2(self, x, y, value):
+        if value == 0:
+            self.grid_skills.SetCellValue(x, y, "")
+        elif value > 0:
+            self.grid_skills.SetCellTextColour(x, y, "Green")
+            self.grid_skills.SetCellValue(x, y, "(+"+str(value)+")")
+        elif value < 0:
+            self.grid_skills.SetCellTextColour(x, y, "Red")
+            self.grid_skills.SetCellValue(x, y, "("+str(value)+")")
 
     def OnBtnCloseClick(self, event):
         self.Close()

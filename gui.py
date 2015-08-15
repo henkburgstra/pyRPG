@@ -568,7 +568,7 @@ class PartyDialog ( wx.Dialog ):
 		# Grid
 		self.grid_stats.CreateGrid( 18, 5 )
 		self.grid_stats.EnableEditing( False )
-		self.grid_stats.EnableGridLines( True )
+		self.grid_stats.EnableGridLines( False )
 		self.grid_stats.EnableDragGridSize( False )
 		self.grid_stats.SetMargins( 0, 0 )
 		
@@ -662,6 +662,15 @@ class PartyDialog ( wx.Dialog ):
 		
 		bSizer20.Add( bSizer22, 0, wx.TOP|wx.LEFT, 30 )
 		
+		bSizer19 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.lbl_spacer = wx.StaticText( self.pnl_skills, wx.ID_ANY, u"XX", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_spacer.Wrap( -1 )
+		bSizer19.Add( self.lbl_spacer, 0, 0, 5 )
+		
+		
+		bSizer20.Add( bSizer19, 0, wx.EXPAND, 5 )
+		
 		bSizer18 = wx.BoxSizer( wx.VERTICAL )
 		
 		self.grid_skills = wx.grid.Grid( self.pnl_skills, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -669,7 +678,7 @@ class PartyDialog ( wx.Dialog ):
 		# Grid
 		self.grid_skills.CreateGrid( 18, 4 )
 		self.grid_skills.EnableEditing( False )
-		self.grid_skills.EnableGridLines( True )
+		self.grid_skills.EnableGridLines( False )
 		self.grid_skills.EnableDragGridSize( False )
 		self.grid_skills.SetMargins( 0, 0 )
 		

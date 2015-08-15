@@ -19,6 +19,7 @@ list_gear_dict = dict(
     accessories=(decorators.accessories, items.Accessory.factory)
 )
 
+# er moet een leegmaker in load_all_data, want anders gaat het niet goed bij de knop 'new'
 heroes = {}
 pouchitems = {}
 inventory = containers.GearContainer("Backpack")
@@ -193,6 +194,7 @@ def load_all_data():
 
     party.add(heroes.alagos, verbose=False)
     party.add(heroes.luana, verbose=False)
+    party.add(heroes.elias, verbose=False)
     party.add(heroes.faeron, verbose=False)
     party.add(heroes.onarr, verbose=False)
-    party.add(heroes.kiara, verbose=False)
+    party.add(heroes.codrif, verbose=False)
