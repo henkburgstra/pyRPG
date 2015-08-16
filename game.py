@@ -12,7 +12,6 @@ def todo():
     wat is beter in de output class, pushen naar de output, of vanuit de output getten?
     wel veel static methods... is dat de juiste manier?
 
-    titels in de party panels
     pygame gebruiken (http://usingpython.com)
 
     idee om agility erin te stoppen, ter ontlasting van dexterity. bijv movespeed, en moverange

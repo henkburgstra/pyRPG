@@ -19,12 +19,11 @@ list_gear_dict = dict(
     accessories=(decorators.accessories, items.Accessory.factory)
 )
 
-# er moet een leegmaker in load_all_data, want anders gaat het niet goed bij de knop 'new'
 heroes = {}
 pouchitems = {}
-inventory = containers.GearContainer("Backpack")
-pouch = containers.SmallContainer("Pouch")
-party = containers.PartyContainer("Party", 5)
+inventory = {}
+pouch = {}
+party = {}
 
 
 def build_cond(bmp1, lev1, txp1):
@@ -72,6 +71,9 @@ def load_all_data():
 
     global heroes
     global pouchitems
+    global inventory
+    global pouch
+    global party
 
     path = 'resources/sprites_heroes/'
     all_cond = DotDict(
@@ -180,6 +182,10 @@ def load_all_data():
         herbs=items.PouchItem("Herbs"),
         spices=items.PouchItem("Spices")
     )
+
+    inventory = containers.GearContainer("Backpack")
+    pouch = containers.SmallContainer("Pouch")
+    party = containers.PartyContainer("Party", 5)
 
     inventory.add(items.Weapon.factory(decorators.weapons.emptyweapon), verbose=False)
     inventory.add(items.Shield.factory(decorators.shields.emptyshield), verbose=False)
