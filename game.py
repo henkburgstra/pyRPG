@@ -237,7 +237,6 @@ class PartyWindow(gui.PartyDialog):
 
         for i in range(18):
             bmp_list[i].Hide()
-            self.Layout()
             value(i, 0, "")
             value(i, 1, "")
             value(i, 2, "")
@@ -247,11 +246,11 @@ class PartyWindow(gui.PartyDialog):
             if skill_list[i].positive_quantity():
                 bmp_list[i].Bitmap = wx.Bitmap(skill_list[i].BMP)
                 bmp_list[i].Show()
-                self.Layout()
                 value(j, 0, str(skill_list[i].NAME))
                 value(j, 1, str(skill_list[i].quantity))
                 self._show_skills2(j, 2, skill_list[i].extra)
                 j += 1
+        self.Layout()
 
         self.grid_skills.SetColSize(0, 90)
         self.grid_skills.SetColSize(1, 45)

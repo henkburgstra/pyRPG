@@ -183,7 +183,7 @@ class MainFrame ( wx.Frame ):
 class PartyDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Party", pos = wx.DefaultPosition, size = wx.Size( 1280,750 ), style = wx.STAY_ON_TOP|wx.NO_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Party", pos = wx.DefaultPosition, size = wx.Size( 1280,800 ), style = wx.STAY_ON_TOP|wx.NO_BORDER )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
@@ -563,6 +563,13 @@ class PartyDialog ( wx.Dialog ):
 		self.pnl_stats = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		bSizer17 = wx.BoxSizer( wx.VERTICAL )
 		
+		self.lbl_stats = wx.StaticText( self.pnl_stats, wx.ID_ANY, u"Stats", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_stats.Wrap( -1 )
+		self.lbl_stats.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_stats.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		bSizer17.Add( self.lbl_stats, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		
 		self.grid_stats = wx.grid.Grid( self.pnl_stats, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
@@ -592,7 +599,7 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_stats.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_stats.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_stats.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
-		bSizer17.Add( self.grid_stats, 0, wx.ALL|wx.EXPAND, 30 )
+		bSizer17.Add( self.grid_stats, 0, wx.ALL, 36 )
 		
 		
 		self.pnl_stats.SetSizer( bSizer17 )
@@ -601,12 +608,21 @@ class PartyDialog ( wx.Dialog ):
 		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		bSizer23 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.lbl_skills = wx.StaticText( self.pnl_skills, wx.ID_ANY, u"Skills", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_skills.Wrap( -1 )
+		self.lbl_skills.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_skills.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		bSizer23.Add( self.lbl_skills, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		
 		bSizer20 = wx.BoxSizer( wx.HORIZONTAL )
 		
 		bSizer22 = wx.BoxSizer( wx.VERTICAL )
 		
 		self.bmp_chm = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_chm, 0, wx.ALL, 0 )
+		bSizer22.Add( self.bmp_chm, 0, wx.TOP, 0 )
 		
 		self.bmp_dip = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
 		bSizer22.Add( self.bmp_dip, 0, wx.ALL, 0 )
@@ -660,16 +676,7 @@ class PartyDialog ( wx.Dialog ):
 		bSizer22.Add( self.bmp_thr, 0, wx.ALL, 0 )
 		
 		
-		bSizer20.Add( bSizer22, 0, wx.TOP|wx.LEFT, 30 )
-		
-		bSizer19 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.lbl_spacer = wx.StaticText( self.pnl_skills, wx.ID_ANY, u"XX", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.lbl_spacer.Wrap( -1 )
-		bSizer19.Add( self.lbl_spacer, 0, 0, 5 )
-		
-		
-		bSizer20.Add( bSizer19, 0, wx.EXPAND, 5 )
+		bSizer20.Add( bSizer22, 0, wx.TOP|wx.BOTTOM|wx.LEFT, 30 )
 		
 		bSizer18 = wx.BoxSizer( wx.VERTICAL )
 		
@@ -719,21 +726,50 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_skills.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_skills.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_skills.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
-		bSizer18.Add( self.grid_skills, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 30 )
+		bSizer18.Add( self.grid_skills, 0, wx.TOP|wx.BOTTOM|wx.RIGHT, 30 )
 		
 		
-		bSizer20.Add( bSizer18, 1, wx.EXPAND, 5 )
+		bSizer20.Add( bSizer18, 1, wx.EXPAND|wx.LEFT, 10 )
 		
 		
-		self.pnl_skills.SetSizer( bSizer20 )
+		bSizer23.Add( bSizer20, 1, wx.EXPAND, 5 )
+		
+		
+		self.pnl_skills.SetSizer( bSizer23 )
 		self.pnl_skills.Layout()
-		bSizer20.Fit( self.pnl_skills )
+		bSizer23.Fit( self.pnl_skills )
 		szr_info.Add( self.pnl_skills, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.pnl_inventory = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		szr_info.Add( self.pnl_inventory, 1, wx.EXPAND |wx.ALL, 5 )
+		bSizer26 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.lbl_inventory = wx.StaticText( self.pnl_inventory, wx.ID_ANY, u"Inventory", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_inventory.Wrap( -1 )
+		self.lbl_inventory.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_inventory.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		bSizer26.Add( self.lbl_inventory, 1, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		
+		
+		self.pnl_inventory.SetSizer( bSizer26 )
+		self.pnl_inventory.Layout()
+		bSizer26.Fit( self.pnl_inventory )
+		szr_info.Add( self.pnl_inventory, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.m_science = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
+		bSizer27 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.lbl_science = wx.StaticText( self.m_science, wx.ID_ANY, u"Science", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_science.Wrap( -1 )
+		self.lbl_science.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_science.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		bSizer27.Add( self.lbl_science, 1, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		
+		
+		self.m_science.SetSizer( bSizer27 )
+		self.m_science.Layout()
+		bSizer27.Fit( self.m_science )
 		szr_info.Add( self.m_science, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		
