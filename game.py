@@ -272,26 +272,37 @@ class PartyWindow(gui.PartyDialog):
 
     # noinspection PyCallByClass
     def OnPanelPaint(self, event):
+        hero = self.hero_list[self._hc]
+
         dc = wx.PaintDC(self.pnl_test)
         gc = wx.GraphicsContext.Create(dc)
-        dc.Clear()
+        # dc.Clear() is dit nodig?
         pnl_width = self.pnl_test.GetSize().Width
         dc.DrawBitmap(wx.Bitmap("resources/stickman.png"), ((pnl_width - 200) / 2), 10)
-        col = (100, 0, 0, 128)
+        col = (100, 0, 0, 128)  # transparant rood
         gc.SetPen(wx.Pen(wx.WHITE, 1))
         gc.SetBrush(wx.Brush(col))
-        gc.DrawRectangle(120, 20, 32, 32)   # helmet
-        gc.DrawRectangle(120, 80, 32, 32)   # necklace
-        gc.DrawRectangle(105, 115, 32, 32)  # cloak
+        gc.DrawRectangle(54,  115, 32, 32)  # weapon
+        gc.DrawRectangle(190, 115, 32, 32)  # shield
+        gc.DrawRectangle(120, 20,  32, 32)  # helmet
+        gc.DrawRectangle(120, 80,  32, 32)  # necklace
         gc.DrawRectangle(137, 115, 32, 32)  # armor
+        gc.DrawRectangle(105, 115, 32, 32)  # cloak
+        gc.DrawRectangle(54,  147, 32, 32)  # gloves
         gc.DrawRectangle(120, 157, 32, 32)  # belt
         gc.DrawRectangle(120, 220, 32, 32)  # boots
-        gc.DrawRectangle(54, 115, 32, 32)   # sword
-        gc.DrawRectangle(54, 147, 32, 32)   # gloves
-        gc.DrawRectangle(54, 179, 32, 32)   # lring
-        gc.DrawRectangle(190, 115, 32, 32)  # shield
         gc.DrawRectangle(190, 147, 32, 32)  # accessoire
-        gc.DrawRectangle(190, 179, 32, 32)  # rring
+        gc.DrawRectangle(190, 179, 32, 32)  # lring
+        gc.DrawRectangle(54,  179, 32, 32)  # rring
+
+        if "empty" not in hero.equipment.wpn.RAW:
+            self._show_gear(dc, hero.equipment.wpn, 54, 115)
+
+    @staticmethod
+    def _show_gear(dc, gear, x, y):
+        start_image = wx.Image(gear.BMP)
+        start_image.Resize((32, 32), (-gear.COL, -gear.ROW))
+        dc.DrawBitmap(wx.Bitmap(start_image), x, y, True)
 
     def OnBtnCloseClick(self, event):
         self.Close()
