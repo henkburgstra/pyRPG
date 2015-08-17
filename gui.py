@@ -531,19 +531,19 @@ class PartyDialog ( wx.Dialog ):
 		self.pnl_btns = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		gSizer1 = wx.GridSizer( 0, 2, 0, 0 )
 		
-		self.btn_prev = wx.Button( self.pnl_btns, wx.ID_ANY, u"Previous", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_prev = wx.Button( self.pnl_btns, wx.ID_ANY, u"&Previous", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_prev.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.btn_prev.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
 		gSizer1.Add( self.btn_prev, 0, wx.ALL, 5 )
 		
-		self.btn_close = wx.Button( self.pnl_btns, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_close = wx.Button( self.pnl_btns, wx.ID_ANY, u"&Close", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_close.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.btn_close.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
 		gSizer1.Add( self.btn_close, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 		
-		self.btn_next = wx.Button( self.pnl_btns, wx.ID_ANY, u"Next", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_next = wx.Button( self.pnl_btns, wx.ID_ANY, u"&Next", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_next.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.btn_next.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
@@ -748,7 +748,12 @@ class PartyDialog ( wx.Dialog ):
 		self.lbl_inventory.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_inventory.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer26.Add( self.lbl_inventory, 1, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		bSizer26.Add( self.lbl_inventory, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		
+		self.pnl_test = wx.Panel( self.pnl_inventory, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.pnl_test.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		bSizer26.Add( self.pnl_test, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		
 		self.pnl_inventory.SetSizer( bSizer26 )
@@ -764,7 +769,7 @@ class PartyDialog ( wx.Dialog ):
 		self.lbl_science.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_science.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer27.Add( self.lbl_science, 1, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		bSizer27.Add( self.lbl_science, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
 		
 		self.m_science.SetSizer( bSizer27 )
@@ -785,6 +790,7 @@ class PartyDialog ( wx.Dialog ):
 		self.btn_prev.Bind( wx.EVT_BUTTON, self.OnBtnPrevClick )
 		self.btn_close.Bind( wx.EVT_BUTTON, self.OnBtnCloseClick )
 		self.btn_next.Bind( wx.EVT_BUTTON, self.OnBtnNextClick )
+		self.pnl_test.Bind( wx.EVT_PAINT, self.OnPanelPaint )
 	
 	def __del__( self ):
 		pass
@@ -798,6 +804,9 @@ class PartyDialog ( wx.Dialog ):
 		event.Skip()
 	
 	def OnBtnNextClick( self, event ):
+		event.Skip()
+	
+	def OnPanelPaint( self, event ):
 		event.Skip()
 	
 

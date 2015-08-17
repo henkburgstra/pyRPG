@@ -107,6 +107,7 @@ class PartyWindow(gui.PartyDialog):
         self._select_partymember()
         self._show_stats()
         self._show_skills()
+        self._show_inventory()
         self.Refresh()
 
     # noinspection PyPep8Naming
@@ -145,17 +146,11 @@ class PartyWindow(gui.PartyDialog):
             if self._hc == i:
                 pnl_list[i].BackgroundColour = (32, 32, 32)
             else:
-                pnl_list[i].BackgroundColour = "Black"
+                pnl_list[i].BackgroundColour = wx.BLACK
 
     def _show_stats(self):
         hero = self.hero_list[self._hc]
         value = self.grid_stats.SetCellValue
-
-        self.grid_stats.SetColSize(0, 100)
-        self.grid_stats.SetColSize(1, 45)
-        self.grid_stats.SetColSize(2, 45)
-        self.grid_stats.SetColSize(3, 45)
-        self.grid_stats.SetColSize(4, 45)
 
         value(0, 0, "XP Remaining:")
         value(1, 0, "Total XP:")
@@ -211,14 +206,20 @@ class PartyWindow(gui.PartyDialog):
             self._show_stats2(i, 2, stat.extra)
             i += 1
 
+        self.grid_stats.SetColSize(0, 100)
+        self.grid_stats.SetColSize(1, 40)
+        self.grid_stats.SetColSize(2, 40)
+        self.grid_stats.SetColSize(3, 40)
+        self.grid_stats.SetColSize(4, 40)
+
     def _show_stats2(self, x, y, value):
         if value == 0:
             self.grid_stats.SetCellValue(x, y, "")
         elif value > 0:
-            self.grid_stats.SetCellTextColour(x, y, "Green")
+            self.grid_stats.SetCellTextColour(x, y, wx.GREEN)
             self.grid_stats.SetCellValue(x, y, "(+"+str(value)+")")
         elif value < 0:
-            self.grid_stats.SetCellTextColour(x, y, "Red")
+            self.grid_stats.SetCellTextColour(x, y, wx.RED)
             self.grid_stats.SetCellValue(x, y, "("+str(value)+")")
 
     # noinspection PyPep8Naming
@@ -252,19 +253,45 @@ class PartyWindow(gui.PartyDialog):
         self.Layout()
 
         self.grid_skills.SetColSize(0, 90)
-        self.grid_skills.SetColSize(1, 45)
-        self.grid_skills.SetColSize(2, 45)
-        self.grid_skills.SetColSize(3, 45)
+        self.grid_skills.SetColSize(1, 35)
+        self.grid_skills.SetColSize(2, 40)
+        self.grid_skills.SetColSize(3, 40)
 
     def _show_skills2(self, x, y, value):
         if value == 0:
             self.grid_skills.SetCellValue(x, y, "")
         elif value > 0:
-            self.grid_skills.SetCellTextColour(x, y, "Green")
+            self.grid_skills.SetCellTextColour(x, y, wx.GREEN)
             self.grid_skills.SetCellValue(x, y, "(+"+str(value)+")")
         elif value < 0:
-            self.grid_skills.SetCellTextColour(x, y, "Red")
+            self.grid_skills.SetCellTextColour(x, y, wx.RED)
             self.grid_skills.SetCellValue(x, y, "("+str(value)+")")
+
+    def _show_inventory(self):
+        pass
+
+    # noinspection PyCallByClass
+    def OnPanelPaint(self, event):
+        dc = wx.PaintDC(self.pnl_test)
+        gc = wx.GraphicsContext.Create(dc)
+        dc.Clear()
+        pnl_width = self.pnl_test.GetSize().Width
+        dc.DrawBitmap(wx.Bitmap("resources/stickman.png"), ((pnl_width - 200) / 2), 10)
+        col = (100, 0, 0, 128)
+        gc.SetPen(wx.Pen(wx.WHITE, 1))
+        gc.SetBrush(wx.Brush(col))
+        gc.DrawRectangle(120, 20, 32, 32)   # helmet
+        gc.DrawRectangle(120, 80, 32, 32)   # necklace
+        gc.DrawRectangle(105, 115, 32, 32)  # cloak
+        gc.DrawRectangle(137, 115, 32, 32)  # armor
+        gc.DrawRectangle(120, 157, 32, 32)  # belt
+        gc.DrawRectangle(120, 220, 32, 32)  # boots
+        gc.DrawRectangle(54, 115, 32, 32)   # sword
+        gc.DrawRectangle(54, 147, 32, 32)   # gloves
+        gc.DrawRectangle(54, 179, 32, 32)   # lring
+        gc.DrawRectangle(190, 115, 32, 32)  # shield
+        gc.DrawRectangle(190, 147, 32, 32)  # accessoire
+        gc.DrawRectangle(190, 179, 32, 32)  # rring
 
     def OnBtnCloseClick(self, event):
         self.Close()
