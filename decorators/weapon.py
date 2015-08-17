@@ -5,11 +5,11 @@ from util import DotDict
 
 #                   value, min int/str, damage, sortering, col
 weapon_material = {
-    "Bronze":          (1,           0,      3,       100,   0),
-    "Iron":            (3,           1,      6,       200,  32),
-    "Steel":           (9,           2,      9,       300,  64),
-    "Silver":         (27,           3,     12,       400,  96),
-    "Titanium":       (81,           0,     12,       500, 128)
+    "Bronze":        (100,           0,      3,       100,   0),
+    "Iron":          (900,           1,      6,       200,  32),
+    "Steel":        (1700,           2,      9,       300,  64),
+    "Silver":       (2500,           3,     12,       400,  96),
+    "Titanium":     (3300,           0,     12,       500, 128)
 }
 #                   value, min int, min str, base hit, damage,   skill, type, sortering, row
 weapon_type = {
@@ -67,13 +67,14 @@ for key_material, value_material in weapon_material.items():
         for key_upgraded, value_upgraded in weapon_upgraded.items():
 
             raw_key_name = (key_material + key_type + key_upgraded).strip().lower().replace(" ", "")
+            price = int((value_material[0] + value_type[0]) * (value_material[0] + value_type[0]) / 400)
 
             weapons[raw_key_name] = DotDict(
                 name=(key_material + " " + key_type + " " + key_upgraded).strip(),
                 raw=raw_key_name,
 
                 # berekening value: material * type * upgraded
-                value=int(value_material[0] * value_type[0] * value_upgraded[0]),
+                value=int(price * value_upgraded[0]),
                 shop=True,
                 skill=value_type[5],
 

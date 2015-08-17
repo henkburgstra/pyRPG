@@ -7,7 +7,7 @@ def todo():
 
     meer gears
     meer stats voor heroes
-    prijzen weapons hercalculeren. die van de shields en armors zijn een voorbeeld om zo te doen.
+    prijzen van weapons, shields en armors zijn een voorbeeld
 
     wat is beter in de output class, pushen naar de output, of vanuit de output getten?
     wel veel static methods... is dat de juiste manier?
@@ -295,14 +295,15 @@ class PartyWindow(gui.PartyDialog):
         gc.DrawRectangle(190, 179, 32, 32)  # lring
         gc.DrawRectangle(54,  179, 32, 32)  # rring
 
-        if "empty" not in hero.equipment.wpn.RAW:
-            self._show_gear(dc, hero.equipment.wpn, 54, 115)
+        self._show_inventory2(dc, hero.equipment.wpn,  54, 115)
+        self._show_inventory2(dc, hero.equipment.shd, 190, 115)
 
     @staticmethod
-    def _show_gear(dc, gear, x, y):
-        start_image = wx.Image(gear.BMP)
-        start_image.Resize((32, 32), (-gear.COL, -gear.ROW))
-        dc.DrawBitmap(wx.Bitmap(start_image), x, y, True)
+    def _show_inventory2(dc, gear, x, y):
+        if "empty" not in gear.RAW:
+            start_image = wx.Image(gear.BMP)
+            start_image.Resize((32, 32), (-gear.COL, -gear.ROW))
+            dc.DrawBitmap(wx.Bitmap(start_image), x, y, True)
 
     def OnBtnCloseClick(self, event):
         self.Close()

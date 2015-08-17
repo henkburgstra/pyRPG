@@ -1,31 +1,31 @@
 
 from util import DotDict
 
-# col, row, upgradable, min_mech, metals zijn nog niet verwerkt.
+# upgradable, min_mech, metals zijn nog niet verwerkt.
 
-#                   value, min str, protection, defense, dexterity, stealth, sortering
+#                   value, min str, protection, defense, dexterity, stealth, sortering, col
 shield_material = {
-    "Wooden":        (200,       3,          2,       1,        -1,      -1,    100),
-    "Bronze":        (500,       6,          4,       2,        -2,      -2,    200),
-    "Iron":          (800,       9,          6,       3,        -3,      -3,    300),
-    "Steel":        (1100,      12,          8,       4,        -4,      -4,    400),
-    "Silver":       (1400,      15,         10,       5,        -5,      -5,    500),
-    "Titanium":     (1700,       3,         10,       5,        -1,      -1,    600)
+    "Wooden":        (200,       3,          2,       1,        -1,      -1,       100,   0),
+    "Bronze":        (500,       6,          4,       2,        -2,      -2,       200,  32),
+    "Iron":          (800,       9,          6,       3,        -3,      -3,       300,  64),
+    "Steel":        (1100,      12,          8,       4,        -4,      -4,       400,  96),
+    "Silver":       (1400,      15,         10,       5,        -5,      -5,       500, 128),
+    "Titanium":     (1700,       3,         10,       5,        -1,      -1,       600, 160)
     # "Stealth":      (16,       1,          0,       0,        -1,      -1)
 }
-#                   value, min str, protection, defense, dexterity, stealth
+#                   value, min str, protection, defense, dexterity, stealth, sortering, row
 shield_type = {
-    "Buckler":       (100,       3,          1,       5,        -1,      -3,    1000),
-    "Targe":         (700,       6,          2,      10,        -2,      -6,    2000),
-    "Heater":       (1300,       9,          3,      15,        -3,      -9,    3000),
-    "Kite":         (1900,      12,          4,      20,        -4,     -12,    4000),
-    "Scutum":       (2500,      15,          5,      25,        -5,     -15,    5000)
+    "Buckler":       (100,       3,          1,       5,        -1,      -3,      1000,   0),
+    "Targe":         (700,       6,          2,      10,        -2,      -6,      2000,  32),
+    "Heater":       (1300,       9,          3,      15,        -3,      -9,      3000,  64),
+    "Kite":         (1900,      12,          4,      20,        -4,     -12,      4000,  96),
+    "Scutum":       (2500,      15,          5,      25,        -5,     -15,      5000, 128)
 }
 #                   value, min str, protection, defense, dexterity, stealth
 shield_upgraded = {
-    "":              (1.0,       0,          0,       0,         0,       0,    10),
-    "+":             (1.1,       0,          0,       0,         1,       2,    20),
-    "++":            (1.2,       0,          0,       0,         2,       4,    30)
+    "":              (1.0,       0,          0,       0,         0,       0,        10),
+    "+":             (1.1,       0,          0,       0,         1,       2,        20),
+    "++":            (1.2,       0,          0,       0,         2,       4,        30)
 }
 # de hoogste protection/defense mogelijk is 15/30: Large Silver/Titanium Scutum /+/++
 
@@ -40,7 +40,9 @@ shields = DotDict(
         defense=0,
         dexterity=0,
         stealth=0,
-        sort=0
+        sort=0,
+        col=0,
+        row=0
     ))
 
 for key_material, value_material in shield_material.items():
@@ -73,8 +75,11 @@ for key_material, value_material in shield_material.items():
                 # berekening stealth: material + type + upgraded
                 stealth=value_material[5] + value_type[5] + value_upgraded[5],
 
-                # puur voor sortering
-                sort=value_material[6] + value_type[6] + value_upgraded[6]
+                # puur voor sortering in de winkels
+                sort=value_material[6] + value_type[6] + value_upgraded[6],
+
+                col=value_material[7],
+                row=value_type[7]
             )
 
 # shop uitzetten voor sommige armors
