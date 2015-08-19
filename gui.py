@@ -565,14 +565,14 @@ class PartyDialog ( wx.Dialog ):
 		szr_info = wx.BoxSizer( wx.HORIZONTAL )
 		
 		self.pnl_stats = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		bSizer17 = wx.BoxSizer( wx.VERTICAL )
+		szr_stats = wx.BoxSizer( wx.VERTICAL )
 		
 		self.lbl_stats = wx.StaticText( self.pnl_stats, wx.ID_ANY, u"Stats", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_stats.Wrap( -1 )
 		self.lbl_stats.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_stats.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer17.Add( self.lbl_stats, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		szr_stats.Add( self.lbl_stats, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
 		self.grid_stats = wx.grid.Grid( self.pnl_stats, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
@@ -607,86 +607,86 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_stats.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_stats.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_stats.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
-		bSizer17.Add( self.grid_stats, 0, wx.ALL, 36 )
+		szr_stats.Add( self.grid_stats, 0, wx.ALL, 36 )
 		
 		
-		self.pnl_stats.SetSizer( bSizer17 )
+		self.pnl_stats.SetSizer( szr_stats )
 		self.pnl_stats.Layout()
-		bSizer17.Fit( self.pnl_stats )
+		szr_stats.Fit( self.pnl_stats )
 		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		bSizer23 = wx.BoxSizer( wx.VERTICAL )
+		szr_skills = wx.BoxSizer( wx.VERTICAL )
 		
 		self.lbl_skills = wx.StaticText( self.pnl_skills, wx.ID_ANY, u"Skills", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_skills.Wrap( -1 )
 		self.lbl_skills.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_skills.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer23.Add( self.lbl_skills, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		szr_skills.Add( self.lbl_skills, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
-		bSizer20 = wx.BoxSizer( wx.HORIZONTAL )
+		szr_skills_contents = wx.BoxSizer( wx.HORIZONTAL )
 		
-		bSizer22 = wx.BoxSizer( wx.VERTICAL )
+		szr_skill_pics = wx.BoxSizer( wx.VERTICAL )
 		
 		self.bmp_chm = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_chm, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_chm, 0, wx.ALL, 0 )
 		
 		self.bmp_dip = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_dip, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_dip, 0, wx.ALL, 0 )
 		
 		self.bmp_lor = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_lor, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_lor, 0, wx.ALL, 0 )
 		
 		self.bmp_mec = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_mec, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_mec, 0, wx.ALL, 0 )
 		
 		self.bmp_med = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_med, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_med, 0, wx.ALL, 0 )
 		
 		self.bmp_mer = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_mer, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_mer, 0, wx.ALL, 0 )
 		
 		self.bmp_ran = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_ran, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_ran, 0, wx.ALL, 0 )
 		
 		self.bmp_sci = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_sci, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_sci, 0, wx.ALL, 0 )
 		
 		self.bmp_stl = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_stl, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_stl, 0, wx.ALL, 0 )
 		
 		self.bmp_thf = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_thf, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_thf, 0, wx.ALL, 0 )
 		
 		self.bmp_trb = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_trb, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_trb, 0, wx.ALL, 0 )
 		
 		self.bmp_war = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_war, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_war, 0, wx.ALL, 0 )
 		
 		self.bmp_haf = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_haf, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_haf, 0, wx.ALL, 0 )
 		
 		self.bmp_mis = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_mis, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_mis, 0, wx.ALL, 0 )
 		
 		self.bmp_pol = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_pol, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_pol, 0, wx.ALL, 0 )
 		
 		self.bmp_shd = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_shd, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_shd, 0, wx.ALL, 0 )
 		
 		self.bmp_swd = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_swd, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_swd, 0, wx.ALL, 0 )
 		
 		self.bmp_thr = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_thr, 0, wx.ALL, 0 )
+		szr_skill_pics.Add( self.bmp_thr, 0, wx.ALL, 0 )
 		
 		
-		bSizer20.Add( bSizer22, 0, wx.TOP|wx.BOTTOM|wx.LEFT, 30 )
+		szr_skills_contents.Add( szr_skill_pics, 0, wx.TOP|wx.BOTTOM|wx.LEFT, 30 )
 		
-		bSizer18 = wx.BoxSizer( wx.VERTICAL )
+		szr_skill_grid = wx.BoxSizer( wx.VERTICAL )
 		
 		self.grid_skills = wx.grid.Grid( self.pnl_skills, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
@@ -737,55 +737,55 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_skills.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_skills.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_skills.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
-		bSizer18.Add( self.grid_skills, 0, wx.TOP|wx.BOTTOM|wx.RIGHT, 30 )
+		szr_skill_grid.Add( self.grid_skills, 0, wx.TOP|wx.BOTTOM|wx.RIGHT, 30 )
 		
 		
-		bSizer20.Add( bSizer18, 1, wx.EXPAND|wx.LEFT, 10 )
+		szr_skills_contents.Add( szr_skill_grid, 1, wx.EXPAND|wx.LEFT, 10 )
 		
 		
-		bSizer23.Add( bSizer20, 1, wx.EXPAND, 5 )
+		szr_skills.Add( szr_skills_contents, 1, wx.EXPAND, 5 )
 		
 		
-		self.pnl_skills.SetSizer( bSizer23 )
+		self.pnl_skills.SetSizer( szr_skills )
 		self.pnl_skills.Layout()
-		bSizer23.Fit( self.pnl_skills )
+		szr_skills.Fit( self.pnl_skills )
 		szr_info.Add( self.pnl_skills, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.pnl_inventory = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		bSizer26 = wx.BoxSizer( wx.VERTICAL )
+		szr_inventory = wx.BoxSizer( wx.VERTICAL )
 		
 		self.lbl_inventory = wx.StaticText( self.pnl_inventory, wx.ID_ANY, u"Inventory", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_inventory.Wrap( -1 )
 		self.lbl_inventory.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_inventory.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer26.Add( self.lbl_inventory, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		szr_inventory.Add( self.lbl_inventory, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
 		self.pnl_canvas = wx.Panel( self.pnl_inventory, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		self.pnl_canvas.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		bSizer26.Add( self.pnl_canvas, 1, wx.ALL|wx.EXPAND, 5 )
+		szr_inventory.Add( self.pnl_canvas, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		
-		self.pnl_inventory.SetSizer( bSizer26 )
+		self.pnl_inventory.SetSizer( szr_inventory )
 		self.pnl_inventory.Layout()
-		bSizer26.Fit( self.pnl_inventory )
+		szr_inventory.Fit( self.pnl_inventory )
 		szr_info.Add( self.pnl_inventory, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		self.m_science = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
-		bSizer27 = wx.BoxSizer( wx.VERTICAL )
+		szr_science = wx.BoxSizer( wx.VERTICAL )
 		
 		self.lbl_science = wx.StaticText( self.m_science, wx.ID_ANY, u"Science", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_science.Wrap( -1 )
 		self.lbl_science.SetFont( wx.Font( 14, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_science.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		bSizer27.Add( self.lbl_science, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
+		szr_science.Add( self.lbl_science, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
 		
-		self.m_science.SetSizer( bSizer27 )
+		self.m_science.SetSizer( szr_science )
 		self.m_science.Layout()
-		bSizer27.Fit( self.m_science )
+		szr_science.Fit( self.m_science )
 		szr_info.Add( self.m_science, 1, wx.EXPAND |wx.ALL, 5 )
 		
 		
@@ -828,55 +828,239 @@ class PartyDialog ( wx.Dialog ):
 class HeroDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 623,469 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 640,700 ), style = wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		bSizer24 = wx.BoxSizer( wx.HORIZONTAL )
+		szr_heroes = wx.BoxSizer( wx.VERTICAL )
 		
-		self.bSizer25 = wx.BoxSizer( wx.VERTICAL )
+		self.lbl_size = wx.StaticText( self, wx.ID_ANY, u"In party: 1/5", wx.Point( -1,-1 ), wx.DefaultSize, 0 )
+		self.lbl_size.Wrap( -1 )
+		self.lbl_size.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_size.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		szr_heroes.Add( self.lbl_size, 1, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		
+		self.m_panel12 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		bSizer30 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.szr_pics = wx.BoxSizer( wx.VERTICAL )
+		
+		self.bmp_h1 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h1, 0, wx.ALL, 6 )
+		
+		self.bmp_h2 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h2, 0, wx.ALL, 6 )
+		
+		self.bmp_h3 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h3, 0, wx.ALL, 6 )
+		
+		self.bmp_h4 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h4, 0, wx.ALL, 6 )
+		
+		self.bmp_h5 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h5, 0, wx.ALL, 6 )
+		
+		self.bmp_h6 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h6, 0, wx.ALL, 6 )
+		
+		self.bmp_h7 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h7, 0, wx.ALL, 6 )
+		
+		self.bmp_h8 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h8, 0, wx.ALL, 6 )
+		
+		self.bmp_h9 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h9, 0, wx.ALL, 6 )
+		
+		self.bmp_h10 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h10, 0, wx.ALL, 6 )
+		
+		self.bmp_h11 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h11, 0, wx.ALL, 6 )
+		
+		self.bmp_h12 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h12, 0, wx.ALL, 6 )
+		
+		self.bmp_h13 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h13, 0, wx.ALL, 6 )
+		
+		self.bmp_h14 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.szr_pics.Add( self.bmp_h14, 0, wx.ALL, 6 )
 		
 		
-		bSizer24.Add( self.bSizer25, 1, wx.EXPAND, 5 )
+		bSizer30.Add( self.szr_pics, 0, wx.LEFT, 20 )
 		
-		bSizer26 = wx.BoxSizer( wx.VERTICAL )
-		
-		self.m_grid3 = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.grid_heroes = wx.grid.Grid( self.m_panel12, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.m_grid3.CreateGrid( 1, 3 )
-		self.m_grid3.EnableEditing( True )
-		self.m_grid3.EnableGridLines( True )
-		self.m_grid3.EnableDragGridSize( False )
-		self.m_grid3.SetMargins( 0, 0 )
+		self.grid_heroes.CreateGrid( 14, 4 )
+		self.grid_heroes.EnableEditing( False )
+		self.grid_heroes.EnableGridLines( False )
+		self.grid_heroes.EnableDragGridSize( False )
+		self.grid_heroes.SetMargins( 0, 0 )
 		
 		# Columns
-		self.m_grid3.EnableDragColMove( False )
-		self.m_grid3.EnableDragColSize( True )
-		self.m_grid3.SetColLabelSize( 30 )
-		self.m_grid3.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		self.grid_heroes.SetColSize( 0, 60 )
+		self.grid_heroes.SetColSize( 1, 70 )
+		self.grid_heroes.SetColSize( 2, 70 )
+		self.grid_heroes.SetColSize( 3, 100 )
+		self.grid_heroes.EnableDragColMove( False )
+		self.grid_heroes.EnableDragColSize( False )
+		self.grid_heroes.SetColLabelSize( 0 )
+		self.grid_heroes.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		
 		# Rows
-		self.m_grid3.EnableDragRowSize( True )
-		self.m_grid3.SetRowLabelSize( 80 )
-		self.m_grid3.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		self.grid_heroes.SetRowSize( 0, 44 )
+		self.grid_heroes.SetRowSize( 1, 44 )
+		self.grid_heroes.SetRowSize( 2, 44 )
+		self.grid_heroes.SetRowSize( 3, 44 )
+		self.grid_heroes.SetRowSize( 4, 44 )
+		self.grid_heroes.SetRowSize( 5, 44 )
+		self.grid_heroes.SetRowSize( 6, 44 )
+		self.grid_heroes.SetRowSize( 7, 44 )
+		self.grid_heroes.SetRowSize( 8, 44 )
+		self.grid_heroes.SetRowSize( 9, 44 )
+		self.grid_heroes.SetRowSize( 10, 44 )
+		self.grid_heroes.SetRowSize( 11, 44 )
+		self.grid_heroes.SetRowSize( 12, 44 )
+		self.grid_heroes.SetRowSize( 13, 44 )
+		self.grid_heroes.EnableDragRowSize( False )
+		self.grid_heroes.SetRowLabelSize( 0 )
+		self.grid_heroes.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		
 		# Label Appearance
 		
 		# Cell Defaults
-		self.m_grid3.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
-		bSizer26.Add( self.m_grid3, 0, wx.ALL, 5 )
+		self.grid_heroes.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.grid_heroes.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.grid_heroes.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
+		self.grid_heroes.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
+		self.grid_heroes.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
+		
+		bSizer30.Add( self.grid_heroes, 0, wx.ALL, 5 )
+		
+		self.szr_check = wx.BoxSizer( wx.VERTICAL )
+		
+		self.chk_h1 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h1, 0, wx.ALL, 0 )
+		
+		self.chk_h2 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h2, 0, wx.ALL, 0 )
+		
+		self.chk_h3 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h3, 0, wx.ALL, 0 )
+		
+		self.chk_h4 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h4, 0, wx.ALL, 0 )
+		
+		self.chk_h5 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h5, 0, wx.ALL, 0 )
+		
+		self.chk_h6 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h6, 0, wx.ALL, 0 )
+		
+		self.chk_h7 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h7, 0, wx.ALL, 0 )
+		
+		self.chk_h8 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h8, 0, wx.ALL, 0 )
+		
+		self.chk_h9 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h9, 0, wx.ALL, 0 )
+		
+		self.chk_h10 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h10, 0, wx.ALL, 0 )
+		
+		self.chk_h11 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h11, 0, wx.ALL, 0 )
+		
+		self.chk_h12 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h12, 0, wx.ALL, 0 )
+		
+		self.chk_h13 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h13, 0, wx.ALL, 0 )
+		
+		self.chk_h14 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
+		self.szr_check.Add( self.chk_h14, 0, wx.ALL, 0 )
 		
 		
-		bSizer24.Add( bSizer26, 1, wx.EXPAND, 5 )
+		bSizer30.Add( self.szr_check, 0, wx.EXPAND|wx.TOP, 6 )
 		
 		
-		self.SetSizer( bSizer24 )
+		self.m_panel12.SetSizer( bSizer30 )
+		self.m_panel12.Layout()
+		bSizer30.Fit( self.m_panel12 )
+		szr_heroes.Add( self.m_panel12, 1, wx.EXPAND |wx.ALL, 0 )
+		
+		
+		self.SetSizer( szr_heroes )
 		self.Layout()
 		
 		self.Centre( wx.BOTH )
+		
+		# Connect Events
+		self.chk_h1.Bind( wx.EVT_CHECKBOX, self.OnH1Check )
+		self.chk_h2.Bind( wx.EVT_CHECKBOX, self.OnH2Check )
+		self.chk_h3.Bind( wx.EVT_CHECKBOX, self.OnH3Check )
+		self.chk_h4.Bind( wx.EVT_CHECKBOX, self.OnH4Check )
+		self.chk_h5.Bind( wx.EVT_CHECKBOX, self.OnH5Check )
+		self.chk_h6.Bind( wx.EVT_CHECKBOX, self.OnH6Check )
+		self.chk_h7.Bind( wx.EVT_CHECKBOX, self.OnH7Check )
+		self.chk_h8.Bind( wx.EVT_CHECKBOX, self.OnH8Check )
+		self.chk_h9.Bind( wx.EVT_CHECKBOX, self.OnH9Check )
+		self.chk_h10.Bind( wx.EVT_CHECKBOX, self.OnH10Check )
+		self.chk_h11.Bind( wx.EVT_CHECKBOX, self.OnH11Check )
+		self.chk_h12.Bind( wx.EVT_CHECKBOX, self.OnH12Check )
+		self.chk_h13.Bind( wx.EVT_CHECKBOX, self.OnH13Check )
+		self.chk_h14.Bind( wx.EVT_CHECKBOX, self.OnH14Check )
 	
 	def __del__( self ):
 		pass
+	
+	
+	# Virtual event handlers, overide them in your derived class
+	def OnH1Check( self, event ):
+		event.Skip()
+	
+	def OnH2Check( self, event ):
+		event.Skip()
+	
+	def OnH3Check( self, event ):
+		event.Skip()
+	
+	def OnH4Check( self, event ):
+		event.Skip()
+	
+	def OnH5Check( self, event ):
+		event.Skip()
+	
+	def OnH6Check( self, event ):
+		event.Skip()
+	
+	def OnH7Check( self, event ):
+		event.Skip()
+	
+	def OnH8Check( self, event ):
+		event.Skip()
+	
+	def OnH9Check( self, event ):
+		event.Skip()
+	
+	def OnH10Check( self, event ):
+		event.Skip()
+	
+	def OnH11Check( self, event ):
+		event.Skip()
+	
+	def OnH12Check( self, event ):
+		event.Skip()
+	
+	def OnH13Check( self, event ):
+		event.Skip()
+	
+	def OnH14Check( self, event ):
+		event.Skip()
 	
 

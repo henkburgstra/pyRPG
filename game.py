@@ -95,28 +95,61 @@ class MainWindow(gui.MainFrame):
 class TavernWindow(gui.HeroDialog):
     def __init__(self, parent):
         gui.HeroDialog.__init__(self, parent)
+        self._load()
 
-        rows = self.m_grid3.GetNumberRows()
-        self.m_grid3.DeleteRows(0, rows)
-        img_list = []
+    # noinspection PyPep8Naming
+    def _load(self):
+        bmp_list = [self.bmp_h1, self.bmp_h2, self.bmp_h3, self.bmp_h4, self.bmp_h5, self.bmp_h6, self.bmp_h7,
+                    self.bmp_h8, self.bmp_h9, self.bmp_h10, self.bmp_h11, self.bmp_h12, self.bmp_h13, self.bmp_h14]
+
+        chk_list = [self.chk_h1, self.chk_h2, self.chk_h3, self.chk_h4, self.chk_h5, self.chk_h6, self.chk_h7,
+                    self.chk_h8, self.chk_h9, self.chk_h10, self.chk_h11, self.chk_h12, self.chk_h13, self.chk_h14]
+
+        self.lbl_size.LabelText = "In party: "+str(len(data.party))+"/"+str(data.party.MAXIMUM)
+
         i = 0
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
-            img_list.append(wx.StaticBitmap(self, wx.ID_ANY, wx.NullBitmap, wx.Point(-1, -1), wx.Size(-1, -1), 0))
-            self.bSizer25.Add(img_list[i], 0, wx.ALL, 0)
+
             image = wx.Image(hero.BMP)
             image.Resize((32, 32), (-32, 0))
-            img_list[i].Bitmap = wx.Bitmap(image)
-            self.m_grid3.AppendRows(1)
-            self.m_grid3.SetCellValue(i, 0, hero.NAME)
-            self.m_grid3.SetCellValue(i, 1, str(hero.level.quantity))
+            bmp_list[i].Bitmap = wx.Bitmap(image)
+
+            self.grid_heroes.SetCellValue(i, 0, hero.NAME)
+            self.grid_heroes.SetCellValue(i, 1, "("+str(hero.level.quantity)+")")
+            self.grid_heroes.SetCellValue(i, 2, "Alive")
             available = "Available"
+            chk_list[i].SetValue(False)
             if hero in data.party:
                 available = "Party member"
+                chk_list[i].SetValue(True)
             if hero.RAW == "alagos":
                 available = "Party leader"
-            self.m_grid3.SetCellValue(i, 2, available)
+                chk_list[i].SetValue(True)
+            self.grid_heroes.SetCellValue(i, 3, available)
+
             i += 1
+
+    def OnH1Check(self, event):
+        if self.chk_h1.GetValue():
+            data.party.add(data.heroes.alagos)
+        else:
+            data.party.remove(data.heroes.alagos)
+        self._load()
+
+    def OnH2Check(self, event):
+        if self.chk_h2.GetValue():
+            data.party.add(data.heroes.luana)
+        else:
+            data.party.remove(data.heroes.luana)
+        self._load()
+
+    def OnH3Check(self, event):
+        if self.chk_h3.GetValue():
+            data.party.add(data.heroes.grindan)
+        else:
+            data.party.remove(data.heroes.grindan)
+        self._load()
 
 
 class PartyWindow(gui.PartyDialog):
