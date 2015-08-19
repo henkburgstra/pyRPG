@@ -68,7 +68,8 @@ class Output(object):
 
     @staticmethod
     def cmd_party():
-        """Deze is voor party"""
+        """Deze is voor party
+        Mag weg, vervangen door de gui."""
         print()
         print(str(len(data.party))+"/"+str(data.party.MAXIMUM))
         print()
@@ -102,7 +103,8 @@ class Output(object):
 
     @staticmethod
     def cmd_heroes():
-        """Deze is voor heroes"""
+        """Deze is voor heroes
+        Mag weg, vervangen door de gui."""
         print()
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]

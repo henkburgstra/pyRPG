@@ -82,6 +82,9 @@ class MainWindow(gui.MainFrame):
     def OnBtnLoadClick(self, event):
         pass
 
+    def OnBtnTavernClick(self, event):
+        TavernWindow(None).ShowModal()
+
     def OnBtnPartyClick(self, event):
         PartyWindow(None).ShowModal()
 
@@ -89,16 +92,43 @@ class MainWindow(gui.MainFrame):
         commands.cmd_exit()
 
 
+class TavernWindow(gui.HeroDialog):
+    def __init__(self, parent):
+        gui.HeroDialog.__init__(self, parent)
+
+        rows = self.m_grid3.GetNumberRows()
+        self.m_grid3.DeleteRows(0, rows)
+        img_list = []
+        i = 0
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
+            img_list.append(wx.StaticBitmap(self, wx.ID_ANY, wx.NullBitmap, wx.Point(-1, -1), wx.Size(-1, -1), 0))
+            self.bSizer25.Add(img_list[i], 0, wx.ALL, 0)
+            image = wx.Image(hero.BMP)
+            image.Resize((32, 32), (-32, 0))
+            img_list[i].Bitmap = wx.Bitmap(image)
+            self.m_grid3.AppendRows(1)
+            self.m_grid3.SetCellValue(i, 0, hero.NAME)
+            self.m_grid3.SetCellValue(i, 1, str(hero.level.quantity))
+            available = "Available"
+            if hero in data.party:
+                available = "Party member"
+            if hero.RAW == "alagos":
+                available = "Party leader"
+            self.m_grid3.SetCellValue(i, 2, available)
+            i += 1
+
+
 class PartyWindow(gui.PartyDialog):
     def __init__(self, parent):
         gui.PartyDialog.__init__(self, parent)
         self._hc = 0
 
-        self.hero_list = []
+        self._hero_list = []
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                self.hero_list.append(hero)
+                self._hero_list.append(hero)
 
         self._show_partymembers()
         self._refresh_window()
@@ -113,7 +143,7 @@ class PartyWindow(gui.PartyDialog):
     # noinspection PyPep8Naming
     def _show_partymembers(self):
         img_list = []
-        for hero in self.hero_list:
+        for hero in self._hero_list:
             start_image = wx.Image(hero.BMP)
             start_image.Resize((32, 32), (-32, 0))
             img_list.append(wx.Bitmap(start_image))
@@ -129,11 +159,11 @@ class PartyWindow(gui.PartyDialog):
             if len(data.party) >= i + 1:
                 pnl_list[i].Show()
                 bmp_list[i].Bitmap = img_list[i]
-                nam_list[i].LabelText = self.hero_list[i].NAME
-                lev_list[i].LabelText = str(self.hero_list[i].level.quantity)
-                hp_list[i].LabelText = str(self.hero_list[i].current_hp)+" / "+str(self.hero_list[i].max_hp)
-                gau_list[i].Range = self.hero_list[i].max_hp
-                gau_list[i].Value = self.hero_list[i].current_hp
+                nam_list[i].LabelText = self._hero_list[i].NAME
+                lev_list[i].LabelText = str(self._hero_list[i].level.quantity)
+                hp_list[i].LabelText = str(self._hero_list[i].current_hp)+" / "+str(self._hero_list[i].max_hp)
+                gau_list[i].Range = self._hero_list[i].max_hp
+                gau_list[i].Value = self._hero_list[i].current_hp
             else:
                 pnl_list[i].Hide()
 
@@ -149,7 +179,7 @@ class PartyWindow(gui.PartyDialog):
                 pnl_list[i].BackgroundColour = wx.BLACK
 
     def _show_stats(self):
-        hero = self.hero_list[self._hc]
+        hero = self._hero_list[self._hc]
         value = self.grid_stats.SetCellValue
 
         value(0, 0, "XP Remaining:")
@@ -186,15 +216,13 @@ class PartyWindow(gui.PartyDialog):
         value(3, 2, "")
         value(4, 2, "")
         self._show_stats2(5, 2, hero.diff_movepoints)
+        # dit moet nog anders, bijv shield protection apart in het groen via show_stats2 ?
         if hero.skills.shd.positive_quantity():
             value(6, 2, "("+str(hero.equipment.shd.PROTECTION)+")")
         else:
             value(6, 2, "")
         value(7, 2, "")
-        if hero.skills.war.positive_quantity() and "empty" not in hero.equipment.wpn.RAW:
-            self._show_stats2(8, 2, hero.skills.war.bonus(hero.equipment.wpn.BASE_HIT))
-        else:
-            value(8, 2, "")
+        self._show_stats2(8, 2, hero.skills.war.bonus(hero.equipment.wpn))
         value(9, 2, "")
         value(10, 2, "")
 
@@ -206,14 +234,8 @@ class PartyWindow(gui.PartyDialog):
             self._show_stats2(i, 2, stat.extra)
             i += 1
 
-        self.grid_stats.SetColSize(0, 100)
-        self.grid_stats.SetColSize(1, 40)
-        self.grid_stats.SetColSize(2, 40)
-        self.grid_stats.SetColSize(3, 40)
-        self.grid_stats.SetColSize(4, 40)
-
     def _show_stats2(self, x, y, value):
-        if value == 0:
+        if value == 0 or value is None:
             self.grid_stats.SetCellValue(x, y, "")
         elif value > 0:
             self.grid_stats.SetCellTextColour(x, y, wx.GREEN)
@@ -224,7 +246,7 @@ class PartyWindow(gui.PartyDialog):
 
     # noinspection PyPep8Naming
     def _show_skills(self):
-        hero = self.hero_list[self._hc]
+        hero = self._hero_list[self._hc]
         value = self.grid_skills.SetCellValue
 
         skill_list = []
@@ -252,11 +274,6 @@ class PartyWindow(gui.PartyDialog):
                 j += 1
         self.Layout()
 
-        self.grid_skills.SetColSize(0, 90)
-        self.grid_skills.SetColSize(1, 35)
-        self.grid_skills.SetColSize(2, 40)
-        self.grid_skills.SetColSize(3, 40)
-
     def _show_skills2(self, x, y, value):
         if value == 0:
             self.grid_skills.SetCellValue(x, y, "")
@@ -272,16 +289,16 @@ class PartyWindow(gui.PartyDialog):
 
     # noinspection PyCallByClass
     def OnPanelPaint(self, event):
-        hero = self.hero_list[self._hc]
+        hero = self._hero_list[self._hc]
 
-        dc = wx.PaintDC(self.pnl_test)
+        dc = wx.PaintDC(self.pnl_canvas)
         gc = wx.GraphicsContext.Create(dc)
         # dc.Clear() is dit nodig?
-        pnl_width = self.pnl_test.GetSize().Width
+        pnl_width = self.pnl_canvas.GetSize().Width
         dc.DrawBitmap(wx.Bitmap("resources/stickman.png"), ((pnl_width - 200) / 2), 10)
-        col = (100, 0, 0, 128)  # transparant rood
+        red = (100, 0, 0, 128)  # transparant rood
         gc.SetPen(wx.Pen(wx.WHITE, 1))
-        gc.SetBrush(wx.Brush(col))
+        gc.SetBrush(wx.Brush(red))
         gc.DrawRectangle(54,  115, 32, 32)  # weapon
         gc.DrawRectangle(190, 115, 32, 32)  # shield
         gc.DrawRectangle(120, 20,  32, 32)  # helmet

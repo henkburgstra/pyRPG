@@ -88,8 +88,9 @@ class Warrior(Skill):
         super().__init__("Warrior", "war", 800, quantity)
         self.BMP = 'resources/icons/skills/warrior.png'
 
-    def bonus(self, wpn_base_hit):
-        return round((47 - ((wpn_base_hit / 10) * 5)) * (self.total / 10))
+    def bonus(self, wpn):
+        if self.positive_quantity() and "empty" not in wpn.RAW:
+            return round((47 - ((wpn.BASE_HIT / 10) * 5)) * (self.total / 10))
 
 
 class Hafted(Skill):

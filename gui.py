@@ -155,6 +155,7 @@ class MainFrame ( wx.Frame ):
 		# Connect Events
 		self.btn_new.Bind( wx.EVT_BUTTON, self.OnBtnNewClick )
 		self.btn_load.Bind( wx.EVT_BUTTON, self.OnBtnLoadClick )
+		self.btn_tavern.Bind( wx.EVT_BUTTON, self.OnBtnTavernClick )
 		self.btn_party.Bind( wx.EVT_BUTTON, self.OnBtnPartyClick )
 		self.btn_exit.Bind( wx.EVT_BUTTON, self.OnBtnExitClick )
 	
@@ -167,6 +168,9 @@ class MainFrame ( wx.Frame ):
 		event.Skip()
 	
 	def OnBtnLoadClick( self, event ):
+		event.Skip()
+	
+	def OnBtnTavernClick( self, event ):
 		event.Skip()
 	
 	def OnBtnPartyClick( self, event ):
@@ -580,9 +584,13 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_stats.SetMargins( 0, 0 )
 		
 		# Columns
-		self.grid_stats.AutoSizeColumns()
+		self.grid_stats.SetColSize( 0, 100 )
+		self.grid_stats.SetColSize( 1, 40 )
+		self.grid_stats.SetColSize( 2, 40 )
+		self.grid_stats.SetColSize( 3, 40 )
+		self.grid_stats.SetColSize( 4, 40 )
 		self.grid_stats.EnableDragColMove( False )
-		self.grid_stats.EnableDragColSize( True )
+		self.grid_stats.EnableDragColSize( False )
 		self.grid_stats.SetColLabelSize( 0 )
 		self.grid_stats.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		
@@ -622,7 +630,7 @@ class PartyDialog ( wx.Dialog ):
 		bSizer22 = wx.BoxSizer( wx.VERTICAL )
 		
 		self.bmp_chm = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		bSizer22.Add( self.bmp_chm, 0, wx.TOP, 0 )
+		bSizer22.Add( self.bmp_chm, 0, wx.ALL, 0 )
 		
 		self.bmp_dip = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
 		bSizer22.Add( self.bmp_dip, 0, wx.ALL, 0 )
@@ -690,9 +698,12 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_skills.SetMargins( 0, 0 )
 		
 		# Columns
-		self.grid_skills.AutoSizeColumns()
+		self.grid_skills.SetColSize( 0, 90 )
+		self.grid_skills.SetColSize( 1, 35 )
+		self.grid_skills.SetColSize( 2, 40 )
+		self.grid_skills.SetColSize( 3, 40 )
 		self.grid_skills.EnableDragColMove( False )
-		self.grid_skills.EnableDragColSize( True )
+		self.grid_skills.EnableDragColSize( False )
 		self.grid_skills.SetColLabelSize( 0 )
 		self.grid_skills.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		
@@ -750,10 +761,10 @@ class PartyDialog ( wx.Dialog ):
 		
 		bSizer26.Add( self.lbl_inventory, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
-		self.pnl_test = wx.Panel( self.pnl_inventory, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		self.pnl_test.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.pnl_canvas = wx.Panel( self.pnl_inventory, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.pnl_canvas.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		bSizer26.Add( self.pnl_test, 1, wx.ALL|wx.EXPAND, 5 )
+		bSizer26.Add( self.pnl_canvas, 1, wx.ALL|wx.EXPAND, 5 )
 		
 		
 		self.pnl_inventory.SetSizer( bSizer26 )
@@ -790,7 +801,7 @@ class PartyDialog ( wx.Dialog ):
 		self.btn_prev.Bind( wx.EVT_BUTTON, self.OnBtnPrevClick )
 		self.btn_close.Bind( wx.EVT_BUTTON, self.OnBtnCloseClick )
 		self.btn_next.Bind( wx.EVT_BUTTON, self.OnBtnNextClick )
-		self.pnl_test.Bind( wx.EVT_PAINT, self.OnPanelPaint )
+		self.pnl_canvas.Bind( wx.EVT_PAINT, self.OnPanelPaint )
 	
 	def __del__( self ):
 		pass
@@ -808,5 +819,64 @@ class PartyDialog ( wx.Dialog ):
 	
 	def OnPanelPaint( self, event ):
 		event.Skip()
+	
+
+###########################################################################
+## Class HeroDialog
+###########################################################################
+
+class HeroDialog ( wx.Dialog ):
+	
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 623,469 ), style = wx.DEFAULT_DIALOG_STYLE )
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		
+		bSizer24 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.bSizer25 = wx.BoxSizer( wx.VERTICAL )
+		
+		
+		bSizer24.Add( self.bSizer25, 1, wx.EXPAND, 5 )
+		
+		bSizer26 = wx.BoxSizer( wx.VERTICAL )
+		
+		self.m_grid3 = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		
+		# Grid
+		self.m_grid3.CreateGrid( 1, 3 )
+		self.m_grid3.EnableEditing( True )
+		self.m_grid3.EnableGridLines( True )
+		self.m_grid3.EnableDragGridSize( False )
+		self.m_grid3.SetMargins( 0, 0 )
+		
+		# Columns
+		self.m_grid3.EnableDragColMove( False )
+		self.m_grid3.EnableDragColSize( True )
+		self.m_grid3.SetColLabelSize( 30 )
+		self.m_grid3.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Rows
+		self.m_grid3.EnableDragRowSize( True )
+		self.m_grid3.SetRowLabelSize( 80 )
+		self.m_grid3.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Label Appearance
+		
+		# Cell Defaults
+		self.m_grid3.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
+		bSizer26.Add( self.m_grid3, 0, wx.ALL, 5 )
+		
+		
+		bSizer24.Add( bSizer26, 1, wx.EXPAND, 5 )
+		
+		
+		self.SetSizer( bSizer24 )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+	
+	def __del__( self ):
+		pass
 	
 

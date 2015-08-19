@@ -55,6 +55,11 @@ class Hero(Character):
                 total += equipment_item.PROTECTION
         return total
 
+    # naast hero.protection ook nog:
+    # defense
+    # hit
+    # damage
+
     def gain_experience(self, xp_input):
         """Deze is voor xp"""
         if xp_input < 1:
