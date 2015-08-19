@@ -895,7 +895,7 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes = wx.grid.Grid( self.m_panel12, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_heroes.CreateGrid( 14, 4 )
+		self.grid_heroes.CreateGrid( 14, 5 )
 		self.grid_heroes.EnableEditing( False )
 		self.grid_heroes.EnableGridLines( False )
 		self.grid_heroes.EnableDragGridSize( False )
@@ -906,6 +906,7 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes.SetColSize( 1, 70 )
 		self.grid_heroes.SetColSize( 2, 70 )
 		self.grid_heroes.SetColSize( 3, 100 )
+		self.grid_heroes.SetColSize( 4, 50 )
 		self.grid_heroes.EnableDragColMove( False )
 		self.grid_heroes.EnableDragColSize( False )
 		self.grid_heroes.SetColLabelSize( 0 )
@@ -1001,6 +1002,8 @@ class HeroDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 		
 		# Connect Events
+		self.grid_heroes.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnCellClick )
+		self.grid_heroes.Bind( wx.grid.EVT_GRID_SELECT_CELL, self.OnCellClick2 )
 		self.chk_h1.Bind( wx.EVT_CHECKBOX, self.OnH1Check )
 		self.chk_h2.Bind( wx.EVT_CHECKBOX, self.OnH2Check )
 		self.chk_h3.Bind( wx.EVT_CHECKBOX, self.OnH3Check )
@@ -1021,6 +1024,12 @@ class HeroDialog ( wx.Dialog ):
 	
 	
 	# Virtual event handlers, overide them in your derived class
+	def OnCellClick( self, event ):
+		event.Skip()
+	
+	def OnCellClick2( self, event ):
+		event.Skip()
+	
 	def OnH1Check( self, event ):
 		event.Skip()
 	

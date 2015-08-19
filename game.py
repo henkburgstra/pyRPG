@@ -119,16 +119,22 @@ class TavernWindow(gui.HeroDialog):
             self.grid_heroes.SetCellValue(i, 1, "("+str(hero.level.quantity)+")")
             self.grid_heroes.SetCellValue(i, 2, "Alive")
             available = "Available"
-            chk_list[i].SetValue(False)
+            self.grid_heroes.SetCellValue(i, 4, "")
             if hero in data.party:
                 available = "Party member"
-                chk_list[i].SetValue(True)
+                self.grid_heroes.SetCellValue(i, 4, "X")
             if hero.RAW == "alagos":
                 available = "Party leader"
-                chk_list[i].SetValue(True)
+                self.grid_heroes.SetCellValue(i, 4, "X")
             self.grid_heroes.SetCellValue(i, 3, available)
 
             i += 1
+
+    def OnCellClick2(self, event):
+        piet = (event.GetRow(), event.GetCol())
+        if piet == "X":
+            piet = ""
+            data.party.add(data.heroes.grindan)
 
     def OnH1Check(self, event):
         if self.chk_h1.GetValue():
