@@ -905,7 +905,7 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes.SetColSize( 0, 60 )
 		self.grid_heroes.SetColSize( 1, 70 )
 		self.grid_heroes.SetColSize( 2, 70 )
-		self.grid_heroes.SetColSize( 3, 100 )
+		self.grid_heroes.SetColSize( 3, 150 )
 		self.grid_heroes.SetColSize( 4, 50 )
 		self.grid_heroes.EnableDragColMove( False )
 		self.grid_heroes.EnableDragColSize( False )
@@ -937,57 +937,10 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		self.grid_heroes.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_heroes.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
-		self.grid_heroes.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
+		self.grid_heroes.SetDefaultCellAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		self.grid_heroes.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
 		
 		bSizer30.Add( self.grid_heroes, 0, wx.ALL, 5 )
-		
-		self.szr_check = wx.BoxSizer( wx.VERTICAL )
-		
-		self.chk_h1 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h1, 0, wx.ALL, 0 )
-		
-		self.chk_h2 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h2, 0, wx.ALL, 0 )
-		
-		self.chk_h3 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h3, 0, wx.ALL, 0 )
-		
-		self.chk_h4 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h4, 0, wx.ALL, 0 )
-		
-		self.chk_h5 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h5, 0, wx.ALL, 0 )
-		
-		self.chk_h6 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h6, 0, wx.ALL, 0 )
-		
-		self.chk_h7 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h7, 0, wx.ALL, 0 )
-		
-		self.chk_h8 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h8, 0, wx.ALL, 0 )
-		
-		self.chk_h9 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h9, 0, wx.ALL, 0 )
-		
-		self.chk_h10 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h10, 0, wx.ALL, 0 )
-		
-		self.chk_h11 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h11, 0, wx.ALL, 0 )
-		
-		self.chk_h12 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h12, 0, wx.ALL, 0 )
-		
-		self.chk_h13 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h13, 0, wx.ALL, 0 )
-		
-		self.chk_h14 = wx.CheckBox( self.m_panel12, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 44,44 ), 0 )
-		self.szr_check.Add( self.chk_h14, 0, wx.ALL, 0 )
-		
-		
-		bSizer30.Add( self.szr_check, 0, wx.EXPAND|wx.TOP, 6 )
 		
 		
 		self.m_panel12.SetSizer( bSizer30 )
@@ -1003,21 +956,6 @@ class HeroDialog ( wx.Dialog ):
 		
 		# Connect Events
 		self.grid_heroes.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnCellClick )
-		self.grid_heroes.Bind( wx.grid.EVT_GRID_SELECT_CELL, self.OnCellClick2 )
-		self.chk_h1.Bind( wx.EVT_CHECKBOX, self.OnH1Check )
-		self.chk_h2.Bind( wx.EVT_CHECKBOX, self.OnH2Check )
-		self.chk_h3.Bind( wx.EVT_CHECKBOX, self.OnH3Check )
-		self.chk_h4.Bind( wx.EVT_CHECKBOX, self.OnH4Check )
-		self.chk_h5.Bind( wx.EVT_CHECKBOX, self.OnH5Check )
-		self.chk_h6.Bind( wx.EVT_CHECKBOX, self.OnH6Check )
-		self.chk_h7.Bind( wx.EVT_CHECKBOX, self.OnH7Check )
-		self.chk_h8.Bind( wx.EVT_CHECKBOX, self.OnH8Check )
-		self.chk_h9.Bind( wx.EVT_CHECKBOX, self.OnH9Check )
-		self.chk_h10.Bind( wx.EVT_CHECKBOX, self.OnH10Check )
-		self.chk_h11.Bind( wx.EVT_CHECKBOX, self.OnH11Check )
-		self.chk_h12.Bind( wx.EVT_CHECKBOX, self.OnH12Check )
-		self.chk_h13.Bind( wx.EVT_CHECKBOX, self.OnH13Check )
-		self.chk_h14.Bind( wx.EVT_CHECKBOX, self.OnH14Check )
 	
 	def __del__( self ):
 		pass
@@ -1025,51 +963,6 @@ class HeroDialog ( wx.Dialog ):
 	
 	# Virtual event handlers, overide them in your derived class
 	def OnCellClick( self, event ):
-		event.Skip()
-	
-	def OnCellClick2( self, event ):
-		event.Skip()
-	
-	def OnH1Check( self, event ):
-		event.Skip()
-	
-	def OnH2Check( self, event ):
-		event.Skip()
-	
-	def OnH3Check( self, event ):
-		event.Skip()
-	
-	def OnH4Check( self, event ):
-		event.Skip()
-	
-	def OnH5Check( self, event ):
-		event.Skip()
-	
-	def OnH6Check( self, event ):
-		event.Skip()
-	
-	def OnH7Check( self, event ):
-		event.Skip()
-	
-	def OnH8Check( self, event ):
-		event.Skip()
-	
-	def OnH9Check( self, event ):
-		event.Skip()
-	
-	def OnH10Check( self, event ):
-		event.Skip()
-	
-	def OnH11Check( self, event ):
-		event.Skip()
-	
-	def OnH12Check( self, event ):
-		event.Skip()
-	
-	def OnH13Check( self, event ):
-		event.Skip()
-	
-	def OnH14Check( self, event ):
 		event.Skip()
 	
 
