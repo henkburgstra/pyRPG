@@ -828,7 +828,7 @@ class PartyDialog ( wx.Dialog ):
 class HeroDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 640,700 ), style = wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 772,700 ), style = wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
@@ -903,10 +903,10 @@ class HeroDialog ( wx.Dialog ):
 		
 		# Columns
 		self.grid_heroes.SetColSize( 0, 60 )
-		self.grid_heroes.SetColSize( 1, 70 )
-		self.grid_heroes.SetColSize( 2, 70 )
-		self.grid_heroes.SetColSize( 3, 150 )
-		self.grid_heroes.SetColSize( 4, 50 )
+		self.grid_heroes.SetColSize( 1, 40 )
+		self.grid_heroes.SetColSize( 2, 120 )
+		self.grid_heroes.SetColSize( 3, 130 )
+		self.grid_heroes.SetColSize( 4, 80 )
 		self.grid_heroes.EnableDragColMove( False )
 		self.grid_heroes.EnableDragColSize( False )
 		self.grid_heroes.SetColLabelSize( 0 )

@@ -41,6 +41,8 @@ import data
 import wx
 import gui
 
+import sys
+
 
 class MainWindow(gui.MainFrame):
     def __init__(self, parent):
@@ -89,7 +91,7 @@ class MainWindow(gui.MainFrame):
         PartyWindow(None).ShowModal()
 
     def OnBtnExitClick(self, event):
-        commands.cmd_exit()
+        sys.exit()
 
 
 class TavernWindow(gui.HeroDialog):
@@ -114,23 +116,27 @@ class TavernWindow(gui.HeroDialog):
 
             self.grid_heroes.SetCellValue(i, 0, hero.NAME)
             self.grid_heroes.SetCellValue(i, 1, "("+str(hero.level.quantity)+")")
+            self.grid_heroes.SetCellTextColour(i, 2, wx.GREEN)
             self.grid_heroes.SetCellValue(i, 2, "Alive")
             available = "Available"
-            self.grid_heroes.SetCellValue(i, 4, "(  )")
+            self.grid_heroes.SetCellTextColour(i, 3, wx.GREEN)
+            self.grid_heroes.SetCellValue(i, 4, "[    ]")
             if hero in data.party:
                 available = "Party member"
-                self.grid_heroes.SetCellValue(i, 4, "(X)")
+                self.grid_heroes.SetCellTextColour(i, 3, wx.WHITE)
+                self.grid_heroes.SetCellValue(i, 4, "[ X ]")
             if hero.RAW == "alagos":
                 available = "Party leader"
-                self.grid_heroes.SetCellValue(i, 4, "(X)")
+                self.grid_heroes.SetCellTextColour(i, 3, wx.WHITE)
+                self.grid_heroes.SetCellValue(i, 4, "[ X ]")
             self.grid_heroes.SetCellValue(i, 3, available)
 
             i += 1
 
     def OnCellClick(self, event):
-        if self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "(  )":
+        if self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[    ]":
             data.party.add(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 0).lower()])
-        elif self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "(X)":
+        elif self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[ X ]":
             data.party.remove(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 0).lower()])
         self._load()
 
@@ -160,9 +166,9 @@ class PartyWindow(gui.PartyDialog):
     def _show_partymembers(self):
         img_list = []
         for hero in self._hero_list:
-            start_image = wx.Image(hero.BMP)
-            start_image.Resize((32, 32), (-32, 0))
-            img_list.append(wx.Bitmap(start_image))
+            image = wx.Image(hero.BMP)
+            image.Resize((32, 32), (-32, 0))
+            img_list.append(wx.Bitmap(image))
 
         pnl_list = [self.pnl_hero1, self.pnl_hero2, self.pnl_hero3, self.pnl_hero4, self.pnl_hero5]
         bmp_list = [self.bmp_p1,    self.bmp_p2,    self.bmp_p3,    self.bmp_p4,    self.bmp_p5]
@@ -334,9 +340,9 @@ class PartyWindow(gui.PartyDialog):
     @staticmethod
     def _show_inventory2(dc, gear, x, y):
         if "empty" not in gear.RAW:
-            start_image = wx.Image(gear.BMP)
-            start_image.Resize((32, 32), (-gear.COL, -gear.ROW))
-            dc.DrawBitmap(wx.Bitmap(start_image), x, y, True)
+            image = wx.Image(gear.BMP)
+            image.Resize((32, 32), (-gear.COL, -gear.ROW))
+            dc.DrawBitmap(wx.Bitmap(image), x, y, True)
 
     def OnBtnCloseClick(self, event):
         self.Close()
@@ -354,19 +360,7 @@ class PartyWindow(gui.PartyDialog):
         self._refresh_window()
 
 
-def create_name():
-    while True:
-        name = input("What is your name? ").strip().capitalize()
-        if len(name) < 1:
-            continue
-        if commands.yes_or_no(name+", is that your name? "):
-            return name
-        else:
-            continue
-
-
 def play():
-    # heroes.alagos.name = create_name()
     commands.cmd_cls()
     print("This is PyRPG.")
     print()

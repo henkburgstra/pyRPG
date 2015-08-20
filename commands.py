@@ -9,12 +9,14 @@ from output import Output
 
 
 def cmd_exit():
+    """Mag weg, vervangen door de gui."""
     print("Thanks for playing!")
     sys.exit()
     # player.die("Thanks for playing!")
 
 
 def cmd_cls():
+    """Mag weg, overbodig door de gui."""
     if os.name == "posix":
         os.system("clear")
     elif os.name in ("nit", "dos", "ce", "nt"):
@@ -171,6 +173,7 @@ def cmd_unequip(*params):
 
 
 def cmd_join(*params):
+    """Mag weg, vervangen door de gui."""
     try:
         data.party.add(data.heroes[params[0]])
     except KeyError:
@@ -178,6 +181,7 @@ def cmd_join(*params):
 
 
 def cmd_leave(*params):
+    """Mag weg, vervangen door de gui."""
     try:
         data.party.remove(data.heroes[params[0]])
     except KeyError:
@@ -228,17 +232,3 @@ def run_command(cmd, *params):
         cmd_join(*params)
     elif cmd == 'leave':
         cmd_leave(*params)
-
-
-def yes_or_no(prompt="(Y/N)?"):
-    while True:
-        answer = input(prompt)
-        answer = answer.strip()
-        answer = answer.lower()
-
-        if answer in ('yes', 'y', 'ye'):
-            return True
-        elif answer in ('no', 'n', 'nope'):
-            return False
-        else:
-            continue

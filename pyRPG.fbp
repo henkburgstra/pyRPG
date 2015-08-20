@@ -8176,7 +8176,7 @@
             <property name="minimum_size"></property>
             <property name="name">HeroDialog</property>
             <property name="pos"></property>
-            <property name="size">640,700</property>
+            <property name="size">772,700</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP</property>
             <property name="subclass"></property>
             <property name="title"></property>
@@ -9567,7 +9567,7 @@
                                     <property name="col_label_values"></property>
                                     <property name="col_label_vert_alignment">wxALIGN_CENTRE</property>
                                     <property name="cols">5</property>
-                                    <property name="column_sizes">60,70,70,150,50</property>
+                                    <property name="column_sizes">60,40,120,130,80</property>
                                     <property name="context_help"></property>
                                     <property name="context_menu">1</property>
                                     <property name="default_pane">0</property>
