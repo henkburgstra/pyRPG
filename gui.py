@@ -187,7 +187,7 @@ class MainFrame ( wx.Frame ):
 class PartyDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Party", pos = wx.DefaultPosition, size = wx.Size( 1280,800 ), style = wx.STAY_ON_TOP|wx.NO_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Party", pos = wx.DefaultPosition, size = wx.Size( 1280,800 ), style = 0|wx.NO_BORDER )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
@@ -801,6 +801,7 @@ class PartyDialog ( wx.Dialog ):
 		self.btn_prev.Bind( wx.EVT_BUTTON, self.OnBtnPrevClick )
 		self.btn_close.Bind( wx.EVT_BUTTON, self.OnBtnCloseClick )
 		self.btn_next.Bind( wx.EVT_BUTTON, self.OnBtnNextClick )
+		self.pnl_canvas.Bind( wx.EVT_LEFT_UP, self.OnPanelClick )
 		self.pnl_canvas.Bind( wx.EVT_PAINT, self.OnPanelPaint )
 	
 	def __del__( self ):
@@ -817,6 +818,9 @@ class PartyDialog ( wx.Dialog ):
 	def OnBtnNextClick( self, event ):
 		event.Skip()
 	
+	def OnPanelClick( self, event ):
+		event.Skip()
+	
 	def OnPanelPaint( self, event ):
 		event.Skip()
 	
@@ -828,7 +832,7 @@ class PartyDialog ( wx.Dialog ):
 class HeroDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 772,700 ), style = wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 772,700 ), style = wx.DEFAULT_DIALOG_STYLE )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
@@ -963,6 +967,33 @@ class HeroDialog ( wx.Dialog ):
 	
 	# Virtual event handlers, overide them in your derived class
 	def OnCellClick( self, event ):
+		event.Skip()
+	
+
+###########################################################################
+## Class InventoryFrame
+###########################################################################
+
+class InventoryFrame ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Inventory", pos = wx.DefaultPosition, size = wx.Size( 260,-1 ), style = wx.FRAME_NO_TASKBAR|wx.TAB_TRAVERSAL )
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		
+		self.Centre( wx.BOTH )
+		
+		# Connect Events
+		self.Bind( wx.EVT_KILL_FOCUS, self.OnClose )
+	
+	def __del__( self ):
+		pass
+	
+	
+	# Virtual event handlers, overide them in your derived class
+	def OnClose( self, event ):
 		event.Skip()
 	
 

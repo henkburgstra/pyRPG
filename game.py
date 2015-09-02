@@ -1,4 +1,12 @@
 
+import commands
+from output import Output
+import data
+import wx
+import gui
+
+import sys
+
 
 def todo():
     """"
@@ -33,15 +41,6 @@ def todo():
 
     suggestie van kasper om 1 gear class te hebben en de rest daarvan afleiden
     """
-
-
-import commands
-from output import Output
-import data
-import wx
-import gui
-
-import sys
 
 
 class MainWindow(gui.MainFrame):
@@ -134,6 +133,7 @@ class TavernWindow(gui.HeroDialog):
             i += 1
 
     def OnCellClick(self, event):
+        # idee kasper, kolom en rij als dict key. en hero raw als value.
         if self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[    ]":
             data.party.add(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 0).lower()])
         elif self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[ X ]":
@@ -337,6 +337,14 @@ class PartyWindow(gui.PartyDialog):
         self._show_inventory2(dc, hero.equipment.wpn,  54, 115)
         self._show_inventory2(dc, hero.equipment.shd, 190, 115)
 
+    def OnPanelClick(self, event):
+        pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
+        mpos = wx.GetMousePosition()
+        if 54 <= pos.x < 54 + 32 and 115 <= pos.y < 115 + 32:
+            InventoryWindow(None, mpos).Show()
+        elif 190 <= pos.x < 190 + 32 and 115 <= pos.y < 115 + 32:
+            InventoryWindow(None, mpos).Show()
+
     @staticmethod
     def _show_inventory2(dc, gear, x, y):
         if "empty" not in gear.RAW:
@@ -358,6 +366,16 @@ class PartyWindow(gui.PartyDialog):
         if self._hc < 0:
             self._hc = len(data.party) - 1
         self._refresh_window()
+
+
+class InventoryWindow(gui.InventoryFrame):
+    def __init__(self, parent, position):
+        gui.InventoryFrame.__init__(self, parent)
+        self.Move(position)
+        self.SetTransparent(224)
+
+    def OnClose(self, event):
+        self.Close()
 
 
 def play():
