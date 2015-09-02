@@ -309,13 +309,11 @@ class PartyWindow(gui.PartyDialog):
     def _show_inventory(self):
         pass
 
-    # noinspection PyCallByClass
     def OnPanelPaint(self, event):
         hero = self._hero_list[self._hc]
 
         dc = wx.PaintDC(self.pnl_canvas)
-        gc = wx.GraphicsContext.Create(dc)
-        # dc.Clear() is dit nodig?
+        gc = wx.GraphicsContext.Create(self.pnl_canvas)
         pnl_width = self.pnl_canvas.GetSize().Width
         dc.DrawBitmap(wx.Bitmap("resources/stickman.png"), ((pnl_width - 200) / 2), 10)
         red = (100, 0, 0, 128)  # transparant rood
