@@ -4,8 +4,8 @@ from items.gear import Gear
 
 
 class Shield(Gear):
-    def __init__(self, name, raw, col, row, value, shop, min_strength, protection, defense, dexterity, stealth):
-        super().__init__(name, raw, value, shop)
+    def __init__(self, name, raw, sort, col, row, value, shop, min_strength, protection, defense, dexterity, stealth):
+        super().__init__(name, raw, sort, value, shop)
         self.BMP = 'resources/icons/gear/shield1.png'
         self.COL = col
         self.ROW = row
@@ -19,6 +19,7 @@ class Shield(Gear):
     def factory(shield_dict):
         return Shield(shield_dict.name,
                       shield_dict.raw,
+                      shield_dict.sort,
                       shield_dict.col,
                       shield_dict.row,
                       shield_dict.value,

@@ -3,8 +3,8 @@ from items.gear import Gear
 
 
 class Helmet(Gear):
-    def __init__(self, name, raw, value, shop, weight, prt, intell, wil, dip, lor, sci, war):
-        super().__init__(name, raw, value, shop)
+    def __init__(self, name, raw, sort, value, shop, weight, prt, intell, wil, dip, lor, sci, war):
+        super().__init__(name, raw, sort, value, shop)
         self.WEIGHT = weight
         self.PROTECTION = prt
         self.INTELLIGENCE = intell
@@ -18,6 +18,7 @@ class Helmet(Gear):
     def factory(helmet_dict):
         return Helmet(helmet_dict.name,
                       helmet_dict.raw,
+                      helmet_dict.sort,
                       helmet_dict.value,
                       helmet_dict.shop,
                       helmet_dict.weight,

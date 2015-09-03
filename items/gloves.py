@@ -3,8 +3,8 @@ from items.gear import Gear
 
 
 class Gloves(Gear):
-    def __init__(self, name, raw, value, shop, weight, prt):
-        super().__init__(name, raw, value, shop)
+    def __init__(self, name, raw, sort, value, shop, weight, prt):
+        super().__init__(name, raw, sort, value, shop)
         self.WEIGHT = weight
         self.PROTECTION = prt
 
@@ -12,6 +12,7 @@ class Gloves(Gear):
     def factory(gloves_dict):
         return Gloves(gloves_dict.name,
                       gloves_dict.raw,
+                      gloves_dict.sort,
                       gloves_dict.value,
                       gloves_dict.shop,
                       gloves_dict.weight,

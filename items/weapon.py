@@ -4,8 +4,8 @@ from items.gear import Gear
 
 
 class Weapon(Gear):
-    def __init__(self, name, raw, col, row, value, shop, wpn_skill, min_intelligence, min_strength, base_hit, damage):
-        super().__init__(name, raw, value, shop)
+    def __init__(self, name, raw, sort, col, row, value, shop, wpn_skill, min_intelligence, min_strength, base_hit, damage):
+        super().__init__(name, raw, sort, value, shop)
         self.BMP = 'resources/icons/gear/weapon1.png'
         self.COL = col
         self.ROW = row
@@ -24,6 +24,7 @@ class Weapon(Gear):
     def factory(weapon_dict):
         return Weapon(weapon_dict.name,
                       weapon_dict.raw,
+                      weapon_dict.sort,
                       weapon_dict.col,
                       weapon_dict.row,
                       weapon_dict.value,

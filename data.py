@@ -199,8 +199,15 @@ def load_all_data():
     inventory.add(items.Accessory.factory(decorators.accessories.emptyaccessory), verbose=False)
 
     party.add(heroes.alagos, verbose=False)
-    party.add(heroes.luana, verbose=False)
-    party.add(heroes.elias, verbose=False)
-    party.add(heroes.faeron, verbose=False)
-    party.add(heroes.onarr, verbose=False)
-    party.add(heroes.codrif, verbose=False)
+
+    # dit hieronder is om te testen
+    party.add(heroes.luana)
+    party.add(heroes.elias)
+    party.add(heroes.faeron)
+    party.add(heroes.onarr)
+    party.add(heroes.codrif)
+
+    inventory.add(items.Weapon.factory(decorators.weapons.bronzeshortsword), 20)
+    inventory.add(items.Weapon.factory(decorators.weapons.bronzelongsword), 9)
+
+    ###############
