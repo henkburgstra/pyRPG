@@ -97,7 +97,7 @@ class MainWindow(gui.MainFrame):
 class TavernWindow(gui.HeroDialog):
     def __init__(self, parent):
         gui.HeroDialog.__init__(self, parent)
-        self.firsttime = True
+        self._firsttime = True
         self._load()
 
     def _load(self):
@@ -132,16 +132,16 @@ class TavernWindow(gui.HeroDialog):
             self.grid_heroes.SetCellValue(i, 4, available)
 
             i += 1
-            if self.firsttime:
+            if self._firsttime:
                 self.grid_heroes.AppendRows(1)
             self.grid_heroes.SetRowSize(i, 44)
 
-        if self.firsttime:
+        if self._firsttime:
             rows = self.grid_heroes.GetNumberRows()
             w, h = self.grid_heroes.GetSize()
             self.SetSize(w + 300, 44 * rows + 100)
             self.Center()
-            self.firsttime = False
+            self._firsttime = False
 
     def OnCellClick(self, event):
         # idee kasper, kolom en rij als dict key. en hero raw als value.
@@ -164,9 +164,9 @@ class PartyWindow(gui.PartyDialog):
                 self._hero_list.append(hero)
 
         self._show_partymembers()
-        self._refresh_window()
+        self.refresh_window()
 
-    def _refresh_window(self):
+    def refresh_window(self):
         self._select_partymember()
         self._show_stats()
         self._show_skills()
@@ -352,9 +352,9 @@ class PartyWindow(gui.PartyDialog):
         pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
         mpos = wx.GetMousePosition()
         if 54 <= pos.x < 54 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(None, mpos, 'Weapon', 'wpn').Show()
+            InventoryWindow(self, self._hero_list[self._hc], mpos, 'Weapon', 'wpn').Show()
         elif 190 <= pos.x < 190 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(None, mpos, 'Shield', 'shd').Show()
+            InventoryWindow(self, self._hero_list[self._hc], mpos, 'Shield', 'shd').Show()
 
     @staticmethod
     def _show_inventory2(dc, gear, x, y):
@@ -370,51 +370,59 @@ class PartyWindow(gui.PartyDialog):
         self._hc += 1
         if self._hc > len(data.party) - 1:
             self._hc = 0
-        self._refresh_window()
+        self.refresh_window()
 
     def OnBtnPrevClick(self, event):
         self._hc -= 1
         if self._hc < 0:
             self._hc = len(data.party) - 1
-        self._refresh_window()
+        self.refresh_window()
 
 
 class MyImageRenderer(wx.grid.GridCellRenderer):
     def __init__(self, img):
         wx.grid.GridCellRenderer.__init__(self)
-        self.img = img
+        self._img = img
 
     def Draw(self, grid, attr, dc, rect, row, col, is_selected):
         image = wx.MemoryDC()
-        image.SelectObject(self.img)
+        image.SelectObject(self._img)
         dc.SetBackgroundMode(wx.SOLID)
         if is_selected:
             dc.SetBrush(wx.Brush(wx.GREEN, wx.SOLID))
         else:
             dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
         dc.DrawRectangle(rect)
-        width, height = self.img.GetWidth(), self.img.GetHeight()
+        width, height = self._img.GetWidth(), self._img.GetHeight()
         dc.Blit(rect.x, rect.y, width, height, image, 0, 0, wx.COPY, True)
 
 
 class InventoryWindow(gui.InventoryFrame):
-    def __init__(self, parent, position, name, group):
+    def __init__(self, parent, hc, position, gearname, geargroup):
         gui.InventoryFrame.__init__(self, parent)
+        self._parent = parent
+        self._hero = hc
+        self._gearname = gearname
+        self._geargroup = geargroup
         self.Move(position)
-        self.SetTransparent(240)
+        self.SetTransparent(224)
         self.grid_items.SetFocus()
 
+        self._load()
+
+    def _load(self):
+        self.grid_items.ClearGrid()
         i = 0
         self.grid_items.SetCellValue(i, 0, "")
         self.grid_items.SetCellValue(i, 1, "")
         self.grid_items.SetCellValue(i, 2, "")
-        self.grid_items.SetCellValue(i, 3, "Unequip " + name)
+        self.grid_items.SetCellValue(i, 3, "Unequip " + self._gearname)
         # hero volgorde
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
                 # equipment volgorde
-                equipment_item = hero.equipment[group]
+                equipment_item = hero.equipment[self._geargroup]
                 if "empty" not in equipment_item.RAW:
                     i += 1
                     self.grid_items.AppendRows(1)
@@ -439,7 +447,7 @@ class InventoryWindow(gui.InventoryFrame):
                         self.grid_items.SetCellValue(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
         # rest van unequipped volgorde
         for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
-            if name == inventory_item.TYPE:
+            if self._gearname == inventory_item.TYPE:
                 if "empty" not in inventory_item.RAW:
                     i += 1
                     self.grid_items.AppendRows(1)
@@ -463,6 +471,21 @@ class InventoryWindow(gui.InventoryFrame):
 
     def OnClick(self, event):
         self.grid_items.SelectRow(event.GetRow())
+
+    def OnDClick(self, event):
+        """Unequip"""
+        if event.GetRow() == 0:
+            try:
+                equipped_item = self._hero.get_equipment(self._gearname.lower())
+                empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
+
+                data.inventory.add(equipped_item)
+                self._hero.set_equipment(empty_item, verbose=False)
+
+                self.Close()
+                self._parent.refresh_window()
+            except AttributeError:
+                pass
 
     def OnClose(self, event):
         self.Close()

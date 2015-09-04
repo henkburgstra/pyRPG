@@ -968,6 +968,7 @@ class InventoryFrame ( wx.Frame ):
 		
 		# Connect Events
 		self.grid_items.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnClick )
+		self.grid_items.Bind( wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.OnDClick )
 		self.grid_items.Bind( wx.EVT_KILL_FOCUS, self.OnClose )
 	
 	def __del__( self ):
@@ -976,6 +977,9 @@ class InventoryFrame ( wx.Frame ):
 	
 	# Virtual event handlers, overide them in your derived class
 	def OnClick( self, event ):
+		event.Skip()
+	
+	def OnDClick( self, event ):
 		event.Skip()
 	
 	def OnClose( self, event ):
