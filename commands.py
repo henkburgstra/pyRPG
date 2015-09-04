@@ -148,6 +148,7 @@ def cmd_sell(*params):
 
 
 def cmd_equip(*params):
+    """Mag weg, vervangen door de gui."""
     try:
         hero = data.party[params[0]]
         selected_item = data.inventory[params[1]]
@@ -161,6 +162,7 @@ def cmd_equip(*params):
 
 
 def cmd_unequip(*params):
+    """Mag weg, vervangen door de gui."""
     try:
         hero = data.party[params[0]]
         equipped_item = hero.get_equipment(params[1])

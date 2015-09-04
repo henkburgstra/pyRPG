@@ -929,7 +929,7 @@ class InventoryFrame ( wx.Frame ):
 		self.grid_items = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_items.CreateGrid( 1, 4 )
+		self.grid_items.CreateGrid( 1, 5 )
 		self.grid_items.EnableEditing( False )
 		self.grid_items.EnableGridLines( True )
 		self.grid_items.EnableDragGridSize( False )
@@ -940,6 +940,7 @@ class InventoryFrame ( wx.Frame ):
 		self.grid_items.SetColSize( 1, 34 )
 		self.grid_items.SetColSize( 2, 30 )
 		self.grid_items.SetColSize( 3, 180 )
+		self.grid_items.SetColSize( 4, 0 )
 		self.grid_items.EnableDragColMove( False )
 		self.grid_items.EnableDragColSize( False )
 		self.grid_items.SetColLabelSize( 0 )

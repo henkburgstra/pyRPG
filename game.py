@@ -2,8 +2,9 @@
 import commands
 from output import Output
 import data
+import util
+
 import wx
-import wx.grid
 import gui
 
 import sys
@@ -111,7 +112,7 @@ class TavernWindow(gui.HeroDialog):
             image = wx.Image(hero.BMP)
             image.Resize((32, 32), (-32, 0))
             new_img = wx.Bitmap(image)
-            img_render = MyImageRenderer(new_img)
+            img_render = util.ImageRenderer(new_img)
             self.grid_heroes.SetCellRenderer(i, 0, img_render)
 
             self.grid_heroes.SetCellValue(i, 1, hero.NAME)
@@ -379,29 +380,11 @@ class PartyWindow(gui.PartyDialog):
         self.refresh_window()
 
 
-class MyImageRenderer(wx.grid.GridCellRenderer):
-    def __init__(self, img):
-        wx.grid.GridCellRenderer.__init__(self)
-        self._img = img
-
-    def Draw(self, grid, attr, dc, rect, row, col, is_selected):
-        image = wx.MemoryDC()
-        image.SelectObject(self._img)
-        dc.SetBackgroundMode(wx.SOLID)
-        if is_selected:
-            dc.SetBrush(wx.Brush(wx.GREEN, wx.SOLID))
-        else:
-            dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
-        dc.DrawRectangle(rect)
-        width, height = self._img.GetWidth(), self._img.GetHeight()
-        dc.Blit(rect.x, rect.y, width, height, image, 0, 0, wx.COPY, True)
-
-
 class InventoryWindow(gui.InventoryFrame):
-    def __init__(self, parent, hc, position, gearname, geargroup):
+    def __init__(self, parent, hero, position, gearname, geargroup):
         gui.InventoryFrame.__init__(self, parent)
         self._parent = parent
-        self._hero = hc
+        self._hero = hero
         self._gearname = gearname
         self._geargroup = geargroup
         self.Move(position)
@@ -411,12 +394,15 @@ class InventoryWindow(gui.InventoryFrame):
         self._load()
 
     def _load(self):
+        value = self.grid_items.SetCellValue
+
         self.grid_items.ClearGrid()
         i = 0
-        self.grid_items.SetCellValue(i, 0, "")
-        self.grid_items.SetCellValue(i, 1, "")
-        self.grid_items.SetCellValue(i, 2, "")
-        self.grid_items.SetCellValue(i, 3, "Unequip " + self._gearname)
+        value(i, 0, "")
+        value(i, 1, "")
+        value(i, 2, "")
+        value(i, 3, "Unequip " + self._gearname)
+        value(i, 4, "")
         # hero volgorde
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
@@ -431,20 +417,21 @@ class InventoryWindow(gui.InventoryFrame):
                     image = wx.Image(hero.BMP)
                     image.Resize((32, 32), (-32, 0))
                     new_img = wx.Bitmap(image)
-                    img_render = MyImageRenderer(new_img)
+                    img_render = util.ImageRenderer(new_img)
                     self.grid_items.SetCellRenderer(i, 0, img_render)
 
                     image = wx.Image(equipment_item.BMP)
                     image.Resize((32, 32), (-equipment_item.COL, -equipment_item.ROW))
                     new_img = wx.Bitmap(image)
-                    img_render = MyImageRenderer(new_img)
+                    img_render = util.ImageRenderer(new_img)
                     self.grid_items.SetCellRenderer(i, 1, img_render)
 
-                    self.grid_items.SetCellValue(i, 2, "1")
+                    value(i, 2, "1")
                     if equipment_item.WPN_SKILL is None:
-                        self.grid_items.SetCellValue(i, 3, equipment_item.NAME)
+                        value(i, 3, equipment_item.NAME)
                     else:
-                        self.grid_items.SetCellValue(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
+                        value(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
+                    value(i, 4, equipment_item.RAW)
         # rest van unequipped volgorde
         for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
             if self._gearname == inventory_item.TYPE:
@@ -453,17 +440,20 @@ class InventoryWindow(gui.InventoryFrame):
                     self.grid_items.AppendRows(1)
                     self.grid_items.SetRowSize(i, 34)
 
+                    value(i, 0, "")
+
                     image = wx.Image(inventory_item.BMP)
                     image.Resize((32, 32), (-inventory_item.COL, -inventory_item.ROW))
                     new_img = wx.Bitmap(image)
-                    img_render = MyImageRenderer(new_img)
+                    img_render = util.ImageRenderer(new_img)
                     self.grid_items.SetCellRenderer(i, 1, img_render)
 
-                    self.grid_items.SetCellValue(i, 2, str(inventory_item.quantity))
+                    value(i, 2, str(inventory_item.quantity))
                     if inventory_item.WPN_SKILL is None:
-                        self.grid_items.SetCellValue(i, 3, inventory_item.NAME)
+                        value(i, 3, inventory_item.NAME)
                     else:
-                        self.grid_items.SetCellValue(i, 3, "["+inventory_item.WPN_SKILL+"] "+inventory_item.NAME)
+                        value(i, 3, "["+inventory_item.WPN_SKILL+"] "+inventory_item.NAME)
+                    value(i, 4, inventory_item.RAW)
 
         rows = self.grid_items.GetNumberRows()
         w, h = self.grid_items.GetSize()
@@ -473,19 +463,25 @@ class InventoryWindow(gui.InventoryFrame):
         self.grid_items.SelectRow(event.GetRow())
 
     def OnDClick(self, event):
+        raw = self.grid_items.GetCellValue(event.GetRow(), 4)
         """Unequip"""
         if event.GetRow() == 0:
-            try:
-                equipped_item = self._hero.get_equipment(self._gearname.lower())
+            equipped_item = self._hero.get_equipment(self._gearname.lower())
+            # deze if moet weg, hier geen check meer op empty enzo.
+            if equipped_item is not None:
                 empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
-
                 data.inventory.add(equipped_item)
                 self._hero.set_equipment(empty_item, verbose=False)
+        else:
+            """Equip"""
+            selected_item = data.inventory[raw]
+            equipped_item = self._hero.get_same_type_from_equipment(selected_item)
+            if self._hero.set_equipment(selected_item):
+                data.inventory.add(equipped_item, verbose=False if "empty" in equipped_item.RAW else True)
+                data.inventory.remove(selected_item, verbose=False)
 
-                self.Close()
-                self._parent.refresh_window()
-            except AttributeError:
-                pass
+        self.Close()
+        self._parent.refresh_window()
 
     def OnClose(self, event):
         self.Close()

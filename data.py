@@ -209,5 +209,5 @@ def load_all_data():
 
     inventory.add(items.Weapon.factory(decorators.weapons.bronzeshortsword), 20)
     inventory.add(items.Weapon.factory(decorators.weapons.bronzelongsword), 9)
-
+    inventory.add(items.Weapon.factory(decorators.weapons.steelbroadsword), 48)
     ###############
