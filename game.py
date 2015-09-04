@@ -3,6 +3,7 @@ import commands
 from output import Output
 import data
 import wx
+import wx.grid
 import gui
 
 import sys
@@ -339,9 +340,9 @@ class PartyWindow(gui.PartyDialog):
         pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
         mpos = wx.GetMousePosition()
         if 54 <= pos.x < 54 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(None, mpos).Show()
+            InventoryWindow(None, mpos, 'Weapon', 'wpn').Show()
         elif 190 <= pos.x < 190 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(None, mpos).Show()
+            InventoryWindow(None, mpos, 'Shield', 'shd').Show()
 
     @staticmethod
     def _show_inventory2(dc, gear, x, y):
@@ -366,11 +367,92 @@ class PartyWindow(gui.PartyDialog):
         self._refresh_window()
 
 
+class MyImageRenderer(wx.grid.GridCellRenderer):
+    def __init__(self, img):
+        wx.grid.GridCellRenderer.__init__(self)
+        self.img = img
+
+    def Draw(self, grid, attr, dc, rect, row, col, is_selected):
+        image = wx.MemoryDC()
+        image.SelectObject(self.img)
+        dc.SetBackgroundMode(wx.SOLID)
+        if is_selected:
+            dc.SetBrush(wx.Brush(wx.BLUE, wx.SOLID))
+            dc.SetPen(wx.Pen(wx.BLUE, 1, wx.SOLID))
+        else:
+            dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
+            dc.SetPen(wx.Pen(wx.BLACK, 1, wx.SOLID))
+        dc.DrawRectangle(rect)
+        width, height = self.img.GetWidth(), self.img.GetHeight()
+        # if width > rect.width-2:
+        #     width = rect.width-2
+        # if height > rect.height-2:
+        #     height = rect.height-2
+        dc.Blit(rect.x, rect.y, width, height, image, 0, 0, wx.COPY, True)
+
+
 class InventoryWindow(gui.InventoryFrame):
-    def __init__(self, parent, position):
+    def __init__(self, parent, position, name, group):
         gui.InventoryFrame.__init__(self, parent)
         self.Move(position)
-        self.SetTransparent(224)
+        self.SetTransparent(240)
+        self.SetFocus()
+
+        i = 0
+        self.grid_items.SetCellValue(i, 0, "")
+        self.grid_items.SetCellValue(i, 1, "")
+        self.grid_items.SetCellValue(i, 2, "")
+        self.grid_items.SetCellValue(i, 3, "Unequip " + name)
+        # hero volgorde
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
+            if hero in data.party:
+                # equipment volgorde
+                equipment_item = hero.equipment[group]
+                if "empty" not in equipment_item.RAW:
+                    i += 1
+                    self.grid_items.AppendRows(1)
+                    self.grid_items.SetRowSize(i, 36)
+
+                    image = wx.Image(hero.BMP)
+                    image.Resize((32, 32), (-32, 0))
+                    new_img = wx.Bitmap(image)
+                    img_render = MyImageRenderer(new_img)
+                    self.grid_items.SetCellRenderer(i, 0, img_render)
+
+                    image = wx.Image(equipment_item.BMP)
+                    image.Resize((32, 32), (-equipment_item.COL, -equipment_item.ROW))
+                    new_img = wx.Bitmap(image)
+                    img_render = MyImageRenderer(new_img)
+                    self.grid_items.SetCellRenderer(i, 1, img_render)
+
+                    self.grid_items.SetCellValue(i, 2, "1")
+                    if equipment_item.WPN_SKILL is None:
+                        self.grid_items.SetCellValue(i, 3, equipment_item.NAME)
+                    else:
+                        self.grid_items.SetCellValue(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
+        # rest van unequipped volgorde
+        for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
+            if name == inventory_item.TYPE:
+                if "empty" not in inventory_item.RAW:
+                    i += 1
+                    self.grid_items.AppendRows(1)
+                    self.grid_items.SetRowSize(i, 36)
+
+                    image = wx.Image(inventory_item.BMP)
+                    image.Resize((32, 32), (-inventory_item.COL, -inventory_item.ROW))
+                    new_img = wx.Bitmap(image)
+                    img_render = MyImageRenderer(new_img)
+                    self.grid_items.SetCellRenderer(i, 1, img_render)
+
+                    self.grid_items.SetCellValue(i, 2, str(inventory_item.quantity))
+                    if inventory_item.WPN_SKILL is None:
+                        self.grid_items.SetCellValue(i, 3, inventory_item.NAME)
+                    else:
+                        self.grid_items.SetCellValue(i, 3, "["+inventory_item.WPN_SKILL+"] "+inventory_item.NAME)
+
+        self.Layout()
+        self.Refresh()
 
     def OnClose(self, event):
         self.Close()

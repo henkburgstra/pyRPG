@@ -977,11 +977,52 @@ class HeroDialog ( wx.Dialog ):
 class InventoryFrame ( wx.Frame ):
 	
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Inventory", pos = wx.DefaultPosition, size = wx.Size( 260,-1 ), style = wx.FRAME_NO_TASKBAR|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Inventory", pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.FRAME_NO_TASKBAR|wx.TAB_TRAVERSAL )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
+		bSizer27 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.grid_items = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		
+		# Grid
+		self.grid_items.CreateGrid( 1, 4 )
+		self.grid_items.EnableEditing( False )
+		self.grid_items.EnableGridLines( True )
+		self.grid_items.EnableDragGridSize( False )
+		self.grid_items.SetMargins( 0, 0 )
+		
+		# Columns
+		self.grid_items.SetColSize( 0, 36 )
+		self.grid_items.SetColSize( 1, 36 )
+		self.grid_items.SetColSize( 2, 20 )
+		self.grid_items.SetColSize( 3, 150 )
+		self.grid_items.AutoSizeColumns()
+		self.grid_items.EnableDragColMove( False )
+		self.grid_items.EnableDragColSize( False )
+		self.grid_items.SetColLabelSize( 0 )
+		self.grid_items.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Rows
+		self.grid_items.SetRowSize( 0, 36 )
+		self.grid_items.AutoSizeRows()
+		self.grid_items.EnableDragRowSize( False )
+		self.grid_items.SetRowLabelSize( 0 )
+		self.grid_items.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Label Appearance
+		
+		# Cell Defaults
+		self.grid_items.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.grid_items.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.grid_items.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
+		bSizer27.Add( self.grid_items, 1, wx.ALL|wx.EXPAND, 0 )
+		
+		
+		self.SetSizer( bSizer27 )
+		self.Layout()
+		bSizer27.Fit( self )
 		
 		self.Centre( wx.BOTH )
 		
