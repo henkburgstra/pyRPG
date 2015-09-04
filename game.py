@@ -97,14 +97,12 @@ class MainWindow(gui.MainFrame):
 class TavernWindow(gui.HeroDialog):
     def __init__(self, parent):
         gui.HeroDialog.__init__(self, parent)
+        self.firsttime = True
         self._load()
 
-    # noinspection PyPep8Naming
     def _load(self):
-        bmp_list = [self.bmp_h1, self.bmp_h2, self.bmp_h3, self.bmp_h4, self.bmp_h5, self.bmp_h6, self.bmp_h7,
-                    self.bmp_h8, self.bmp_h9, self.bmp_h10, self.bmp_h11, self.bmp_h12, self.bmp_h13, self.bmp_h14]
-
         self.lbl_size.LabelText = "In party: "+str(len(data.party))+"/"+str(data.party.MAXIMUM)
+        self.grid_heroes.SetGridCursor((0, 1))  # zodat de selector niet door alagos heen gaat
 
         i = 0
         for hero_raw in Output.HERO_SORT:
@@ -112,33 +110,45 @@ class TavernWindow(gui.HeroDialog):
 
             image = wx.Image(hero.BMP)
             image.Resize((32, 32), (-32, 0))
-            bmp_list[i].Bitmap = wx.Bitmap(image)
+            new_img = wx.Bitmap(image)
+            img_render = MyImageRenderer(new_img)
+            self.grid_heroes.SetCellRenderer(i, 0, img_render)
 
-            self.grid_heroes.SetCellValue(i, 0, hero.NAME)
-            self.grid_heroes.SetCellValue(i, 1, "("+str(hero.level.quantity)+")")
-            self.grid_heroes.SetCellTextColour(i, 2, wx.GREEN)
-            self.grid_heroes.SetCellValue(i, 2, "Alive")
-            available = "Available"
+            self.grid_heroes.SetCellValue(i, 1, hero.NAME)
+            self.grid_heroes.SetCellValue(i, 2, "("+str(hero.level.quantity)+")")
             self.grid_heroes.SetCellTextColour(i, 3, wx.GREEN)
-            self.grid_heroes.SetCellValue(i, 4, "[    ]")
+            self.grid_heroes.SetCellValue(i, 4, "Alive")
+            available = "Available"
+            self.grid_heroes.SetCellTextColour(i, 4, wx.GREEN)
+            self.grid_heroes.SetCellValue(i, 5, "[    ]")
             if hero in data.party:
                 available = "Party member"
-                self.grid_heroes.SetCellTextColour(i, 3, wx.WHITE)
-                self.grid_heroes.SetCellValue(i, 4, "[ X ]")
+                self.grid_heroes.SetCellTextColour(i, 4, wx.WHITE)
+                self.grid_heroes.SetCellValue(i, 5, "[ X ]")
             if hero.RAW == "alagos":
                 available = "Party leader"
-                self.grid_heroes.SetCellTextColour(i, 3, wx.WHITE)
-                self.grid_heroes.SetCellValue(i, 4, "[ X ]")
-            self.grid_heroes.SetCellValue(i, 3, available)
+                self.grid_heroes.SetCellTextColour(i, 4, wx.WHITE)
+                self.grid_heroes.SetCellValue(i, 5, "[ X ]")
+            self.grid_heroes.SetCellValue(i, 4, available)
 
             i += 1
+            if self.firsttime:
+                self.grid_heroes.AppendRows(1)
+            self.grid_heroes.SetRowSize(i, 44)
+
+        if self.firsttime:
+            rows = self.grid_heroes.GetNumberRows()
+            w, h = self.grid_heroes.GetSize()
+            self.SetSize(w + 300, 44 * rows + 100)
+            self.Center()
+            self.firsttime = False
 
     def OnCellClick(self, event):
         # idee kasper, kolom en rij als dict key. en hero raw als value.
         if self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[    ]":
-            data.party.add(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 0).lower()])
+            data.party.add(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 1).lower()])
         elif self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[ X ]":
-            data.party.remove(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 0).lower()])
+            data.party.remove(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 1).lower()])
         self._load()
 
 
@@ -276,6 +286,8 @@ class PartyWindow(gui.PartyDialog):
         for skill_type_raw in Output.SKILL_SORT:
             skill_list.append(hero.skills[skill_type_raw])
 
+        """todo, bmp list aanpassen, bmp's in grid verwerken"""
+
         bmp_list = [self.bmp_chm, self.bmp_dip, self.bmp_lor, self.bmp_mec, self.bmp_med, self.bmp_mer,
                     self.bmp_ran, self.bmp_sci, self.bmp_stl, self.bmp_thf, self.bmp_trb, self.bmp_war,
                     self.bmp_haf, self.bmp_mis, self.bmp_pol, self.bmp_shd, self.bmp_swd, self.bmp_thr]
@@ -377,17 +389,11 @@ class MyImageRenderer(wx.grid.GridCellRenderer):
         image.SelectObject(self.img)
         dc.SetBackgroundMode(wx.SOLID)
         if is_selected:
-            dc.SetBrush(wx.Brush(wx.BLUE, wx.SOLID))
-            dc.SetPen(wx.Pen(wx.BLUE, 1, wx.SOLID))
+            dc.SetBrush(wx.Brush(wx.GREEN, wx.SOLID))
         else:
             dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
-            dc.SetPen(wx.Pen(wx.BLACK, 1, wx.SOLID))
         dc.DrawRectangle(rect)
         width, height = self.img.GetWidth(), self.img.GetHeight()
-        # if width > rect.width-2:
-        #     width = rect.width-2
-        # if height > rect.height-2:
-        #     height = rect.height-2
         dc.Blit(rect.x, rect.y, width, height, image, 0, 0, wx.COPY, True)
 
 
@@ -396,7 +402,7 @@ class InventoryWindow(gui.InventoryFrame):
         gui.InventoryFrame.__init__(self, parent)
         self.Move(position)
         self.SetTransparent(240)
-        self.SetFocus()
+        self.grid_items.SetFocus()
 
         i = 0
         self.grid_items.SetCellValue(i, 0, "")
@@ -412,7 +418,7 @@ class InventoryWindow(gui.InventoryFrame):
                 if "empty" not in equipment_item.RAW:
                     i += 1
                     self.grid_items.AppendRows(1)
-                    self.grid_items.SetRowSize(i, 36)
+                    self.grid_items.SetRowSize(i, 34)
 
                     image = wx.Image(hero.BMP)
                     image.Resize((32, 32), (-32, 0))
@@ -437,7 +443,7 @@ class InventoryWindow(gui.InventoryFrame):
                 if "empty" not in inventory_item.RAW:
                     i += 1
                     self.grid_items.AppendRows(1)
-                    self.grid_items.SetRowSize(i, 36)
+                    self.grid_items.SetRowSize(i, 34)
 
                     image = wx.Image(inventory_item.BMP)
                     image.Resize((32, 32), (-inventory_item.COL, -inventory_item.ROW))
@@ -451,8 +457,12 @@ class InventoryWindow(gui.InventoryFrame):
                     else:
                         self.grid_items.SetCellValue(i, 3, "["+inventory_item.WPN_SKILL+"] "+inventory_item.NAME)
 
-        self.Layout()
-        self.Refresh()
+        rows = self.grid_items.GetNumberRows()
+        w, h = self.grid_items.GetSize()
+        self.SetSize(w + 2, 34 * rows + 2)
+
+    def OnClick(self, event):
+        self.grid_items.SelectRow(event.GetRow())
 
     def OnClose(self, event):
         self.Close()

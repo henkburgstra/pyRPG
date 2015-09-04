@@ -832,7 +832,7 @@ class PartyDialog ( wx.Dialog ):
 class HeroDialog ( wx.Dialog ):
 	
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 772,700 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
 		
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
@@ -844,73 +844,27 @@ class HeroDialog ( wx.Dialog ):
 		self.lbl_size.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
 		self.lbl_size.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		szr_heroes.Add( self.lbl_size, 1, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		szr_heroes.Add( self.lbl_size, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10 )
 		
 		self.m_panel12 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer30 = wx.BoxSizer( wx.HORIZONTAL )
 		
-		self.szr_pics = wx.BoxSizer( wx.VERTICAL )
-		
-		self.bmp_h1 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h1, 0, wx.ALL, 6 )
-		
-		self.bmp_h2 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h2, 0, wx.ALL, 6 )
-		
-		self.bmp_h3 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h3, 0, wx.ALL, 6 )
-		
-		self.bmp_h4 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h4, 0, wx.ALL, 6 )
-		
-		self.bmp_h5 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h5, 0, wx.ALL, 6 )
-		
-		self.bmp_h6 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h6, 0, wx.ALL, 6 )
-		
-		self.bmp_h7 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h7, 0, wx.ALL, 6 )
-		
-		self.bmp_h8 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h8, 0, wx.ALL, 6 )
-		
-		self.bmp_h9 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h9, 0, wx.ALL, 6 )
-		
-		self.bmp_h10 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h10, 0, wx.ALL, 6 )
-		
-		self.bmp_h11 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h11, 0, wx.ALL, 6 )
-		
-		self.bmp_h12 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h12, 0, wx.ALL, 6 )
-		
-		self.bmp_h13 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h13, 0, wx.ALL, 6 )
-		
-		self.bmp_h14 = wx.StaticBitmap( self.m_panel12, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.szr_pics.Add( self.bmp_h14, 0, wx.ALL, 6 )
-		
-		
-		bSizer30.Add( self.szr_pics, 0, wx.LEFT, 20 )
-		
 		self.grid_heroes = wx.grid.Grid( self.m_panel12, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_heroes.CreateGrid( 14, 5 )
+		self.grid_heroes.CreateGrid( 1, 6 )
 		self.grid_heroes.EnableEditing( False )
 		self.grid_heroes.EnableGridLines( False )
 		self.grid_heroes.EnableDragGridSize( False )
 		self.grid_heroes.SetMargins( 0, 0 )
 		
 		# Columns
-		self.grid_heroes.SetColSize( 0, 60 )
-		self.grid_heroes.SetColSize( 1, 40 )
-		self.grid_heroes.SetColSize( 2, 120 )
-		self.grid_heroes.SetColSize( 3, 130 )
-		self.grid_heroes.SetColSize( 4, 80 )
+		self.grid_heroes.SetColSize( 0, 44 )
+		self.grid_heroes.SetColSize( 1, 60 )
+		self.grid_heroes.SetColSize( 2, 40 )
+		self.grid_heroes.SetColSize( 3, 120 )
+		self.grid_heroes.SetColSize( 4, 130 )
+		self.grid_heroes.SetColSize( 5, 80 )
 		self.grid_heroes.EnableDragColMove( False )
 		self.grid_heroes.EnableDragColSize( False )
 		self.grid_heroes.SetColLabelSize( 0 )
@@ -918,19 +872,6 @@ class HeroDialog ( wx.Dialog ):
 		
 		# Rows
 		self.grid_heroes.SetRowSize( 0, 44 )
-		self.grid_heroes.SetRowSize( 1, 44 )
-		self.grid_heroes.SetRowSize( 2, 44 )
-		self.grid_heroes.SetRowSize( 3, 44 )
-		self.grid_heroes.SetRowSize( 4, 44 )
-		self.grid_heroes.SetRowSize( 5, 44 )
-		self.grid_heroes.SetRowSize( 6, 44 )
-		self.grid_heroes.SetRowSize( 7, 44 )
-		self.grid_heroes.SetRowSize( 8, 44 )
-		self.grid_heroes.SetRowSize( 9, 44 )
-		self.grid_heroes.SetRowSize( 10, 44 )
-		self.grid_heroes.SetRowSize( 11, 44 )
-		self.grid_heroes.SetRowSize( 12, 44 )
-		self.grid_heroes.SetRowSize( 13, 44 )
 		self.grid_heroes.EnableDragRowSize( False )
 		self.grid_heroes.SetRowLabelSize( 0 )
 		self.grid_heroes.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
@@ -944,7 +885,7 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes.SetDefaultCellAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		self.grid_heroes.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
 		
-		bSizer30.Add( self.grid_heroes, 0, wx.ALL, 5 )
+		bSizer30.Add( self.grid_heroes, 0, wx.TOP|wx.LEFT, 20 )
 		
 		
 		self.m_panel12.SetSizer( bSizer30 )
@@ -955,6 +896,7 @@ class HeroDialog ( wx.Dialog ):
 		
 		self.SetSizer( szr_heroes )
 		self.Layout()
+		szr_heroes.Fit( self )
 		
 		self.Centre( wx.BOTH )
 		
@@ -994,19 +936,17 @@ class InventoryFrame ( wx.Frame ):
 		self.grid_items.SetMargins( 0, 0 )
 		
 		# Columns
-		self.grid_items.SetColSize( 0, 36 )
-		self.grid_items.SetColSize( 1, 36 )
-		self.grid_items.SetColSize( 2, 20 )
-		self.grid_items.SetColSize( 3, 150 )
-		self.grid_items.AutoSizeColumns()
+		self.grid_items.SetColSize( 0, 34 )
+		self.grid_items.SetColSize( 1, 34 )
+		self.grid_items.SetColSize( 2, 30 )
+		self.grid_items.SetColSize( 3, 180 )
 		self.grid_items.EnableDragColMove( False )
 		self.grid_items.EnableDragColSize( False )
 		self.grid_items.SetColLabelSize( 0 )
 		self.grid_items.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		
 		# Rows
-		self.grid_items.SetRowSize( 0, 36 )
-		self.grid_items.AutoSizeRows()
+		self.grid_items.SetRowSize( 0, 34 )
 		self.grid_items.EnableDragRowSize( False )
 		self.grid_items.SetRowLabelSize( 0 )
 		self.grid_items.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
@@ -1017,7 +957,7 @@ class InventoryFrame ( wx.Frame ):
 		self.grid_items.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		self.grid_items.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_items.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
-		bSizer27.Add( self.grid_items, 1, wx.ALL|wx.EXPAND, 0 )
+		bSizer27.Add( self.grid_items, 0, 0, 0 )
 		
 		
 		self.SetSizer( bSizer27 )
@@ -1027,13 +967,17 @@ class InventoryFrame ( wx.Frame ):
 		self.Centre( wx.BOTH )
 		
 		# Connect Events
-		self.Bind( wx.EVT_KILL_FOCUS, self.OnClose )
+		self.grid_items.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnClick )
+		self.grid_items.Bind( wx.EVT_KILL_FOCUS, self.OnClose )
 	
 	def __del__( self ):
 		pass
 	
 	
 	# Virtual event handlers, overide them in your derived class
+	def OnClick( self, event ):
+		event.Skip()
+	
 	def OnClose( self, event ):
 		event.Skip()
 	

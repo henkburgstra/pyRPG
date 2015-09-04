@@ -82,7 +82,8 @@ class Output(object):
 
     @staticmethod
     def cmd_inventory():
-        """Deze is voor inv"""
+        """Deze is voor inv
+        Mag weg, vervangen door de gui."""
         print()
         # hero volgorde
         for hero_raw in Output.HERO_SORT:
