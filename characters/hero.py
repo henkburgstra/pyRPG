@@ -93,7 +93,7 @@ class Hero(Character):
         """Deze is voor stats, sell en unequip"""
         for equipment_item in self.equipment.values():
             if equipment_item.RAW == gear_raw or \
-                    (equipment_item.TYPE == gear_raw.title() and "empty" not in equipment_item.RAW):
+               equipment_item.TYPE == gear_raw.title():  # and "empty" not in equipment_item.RAW):
                 return equipment_item
 
     def set_equipment(self, item, verbose=True):
@@ -104,7 +104,7 @@ class Hero(Character):
                     return False
                 self.equipment[equipment_type] = item
                 self.stats_update()
-                if verbose:
+                if verbose and "empty" not in item.RAW:
                     Output.is_equipping(self.NAME, item.NAME)
                 return True
 

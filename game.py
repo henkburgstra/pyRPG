@@ -431,7 +431,7 @@ class InventoryWindow(gui.InventoryFrame):
                         value(i, 3, equipment_item.NAME)
                     else:
                         value(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
-                    value(i, 4, equipment_item.RAW)
+                    value(i, 4, "")   # cell in de laatste kolom achter een hero is leeg. want die mag je niet equippen.
         # rest van unequipped volgorde
         for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
             if self._gearname == inventory_item.TYPE:
@@ -467,18 +467,16 @@ class InventoryWindow(gui.InventoryFrame):
         """Unequip"""
         if event.GetRow() == 0:
             equipped_item = self._hero.get_equipment(self._gearname.lower())
-            # deze if moet weg, hier geen check meer op empty enzo.
-            if equipped_item is not None:
-                empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
-                data.inventory.add(equipped_item)
-                self._hero.set_equipment(empty_item, verbose=False)
-        else:
+            empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
+            data.inventory.add(equipped_item)
+            self._hero.set_equipment(empty_item)
+        elif raw != "":     # de raws in de laatste kolom achter een hero zijn leeg. die kun je dus niet pakken.
             """Equip"""
             selected_item = data.inventory[raw]
             equipped_item = self._hero.get_same_type_from_equipment(selected_item)
             if self._hero.set_equipment(selected_item):
-                data.inventory.add(equipped_item, verbose=False if "empty" in equipped_item.RAW else True)
-                data.inventory.remove(selected_item, verbose=False)
+                data.inventory.add(equipped_item)
+                data.inventory.remove(selected_item)
 
         self.Close()
         self._parent.refresh_window()

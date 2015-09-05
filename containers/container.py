@@ -31,6 +31,9 @@ class Container(object):
             Output.quantity_less_than_one()
             raise ValueError
 
+        if "empty" in item.RAW and item in self:        # de eerste keer moet hij wel alle empty's toevoegen
+            return                                      # maar als ze er eenmaal inzitten hoeft dat ingame niet meer
+
         if item in self:
             self[item.RAW].quantity += quantity
         else:
