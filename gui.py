@@ -564,6 +564,8 @@ class PartyDialog ( wx.Dialog ):
 		
 		szr_info = wx.BoxSizer( wx.HORIZONTAL )
 		
+		szr_descr = wx.BoxSizer( wx.VERTICAL )
+		
 		self.pnl_stats = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		szr_stats = wx.BoxSizer( wx.VERTICAL )
 		
@@ -613,7 +615,16 @@ class PartyDialog ( wx.Dialog ):
 		self.pnl_stats.SetSizer( szr_stats )
 		self.pnl_stats.Layout()
 		szr_stats.Fit( self.pnl_stats )
-		szr_info.Add( self.pnl_stats, 1, wx.EXPAND |wx.ALL, 5 )
+		szr_descr.Add( self.pnl_stats, 0, wx.ALL, 5 )
+		
+		self.lbl_desc = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE|wx.TE_NO_VSCROLL|wx.TE_READONLY|wx.NO_BORDER )
+		self.lbl_desc.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.lbl_desc.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		szr_descr.Add( self.lbl_desc, 1, wx.ALL|wx.EXPAND, 5 )
+		
+		
+		szr_info.Add( szr_descr, 1, wx.EXPAND, 5 )
 		
 		self.pnl_skills = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER|wx.TAB_TRAVERSAL )
 		szr_skills = wx.BoxSizer( wx.VERTICAL )

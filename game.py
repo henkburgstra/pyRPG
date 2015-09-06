@@ -417,6 +417,7 @@ class InventoryWindow(gui.InventoryFrame):
                     new_img = wx.Bitmap(image)
                     img_render = util.ImageRenderer(new_img)
                     self.grid_items.SetCellRenderer(i, 0, img_render)
+                    value(i, 0, "[X]")  # cell verborgen achter het plaatje van de hero. want die mag je niet equippen.
 
                     image = wx.Image(equipment_item.BMP)
                     image.Resize((32, 32), (-equipment_item.COL, -equipment_item.ROW))
@@ -429,7 +430,7 @@ class InventoryWindow(gui.InventoryFrame):
                         value(i, 3, equipment_item.NAME)
                     else:
                         value(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
-                    value(i, 4, "")   # cell in de laatste kolom achter een hero is leeg. want die mag je niet equippen.
+                    value(i, 4, equipment_item.RAW)
         # dan de rest van unequipped op volgorde
         for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
             if self._gearname == inventory_item.TYPE:
@@ -459,16 +460,35 @@ class InventoryWindow(gui.InventoryFrame):
 
     def OnClick(self, event):
         self.grid_items.SelectRow(event.GetRow())
+        raw = self.grid_items.GetCellValue(event.GetRow(), 4)
+
+        if event.GetRow() == 0:
+            return
+
+        try:
+            item = data.inventory[raw]
+        except KeyError:
+            hero = data.party.get_member_with_this_equipment(raw)
+            item = hero.get_equipment(raw)
+
+        self._parent.lbl_desc.Clear()
+        self._parent.lbl_desc.WriteText("{}\t\t{}\n".format(item.TYPE, item.NAME))
+        for gear_property_name in Output.PROP_SORT:
+            gear_property_value = getattr(item, gear_property_name.upper())
+            if gear_property_value is not None:
+                self._parent.lbl_desc.AppendText("{}\t\t{}\n". format(gear_property_name.title().replace("_", "."),
+                                                                      gear_property_value))
 
     def OnDClick(self, event):
         raw = self.grid_items.GetCellValue(event.GetRow(), 4)
+        hero = self.grid_items.GetCellValue(event.GetRow(), 0)
         """Unequip"""
         if event.GetRow() == 0:
             equipped_item = self._hero.get_equipment(self._gearname.lower())
             empty_item = data.inventory.get_empty_of_this_type(equipped_item.TYPE)
             data.inventory.add(equipped_item)
             self._hero.set_equipment(empty_item)
-        elif raw != "":     # de raws in de laatste kolom achter een hero zijn leeg. die kun je dus niet pakken.
+        elif hero != "[X]":  # als er een X verborgen onder het plaatje staat, mag je die niet equippen.
             """Equip"""
             selected_item = data.inventory[raw]
             equipped_item = self._hero.get_same_type_from_equipment(selected_item)
@@ -480,6 +500,7 @@ class InventoryWindow(gui.InventoryFrame):
         self._parent.refresh_window()
 
     def OnClose(self, event):
+        self._parent.lbl_desc.Clear()
         self.Close()
 
 

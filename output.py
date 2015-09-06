@@ -131,7 +131,8 @@ class Output(object):
 
     @staticmethod
     def character(character):
-        """Deze is voor hero stats"""
+        """Deze is voor hero stats
+        Mag weg, vervangen door de gui."""
         print()
         print("Name: {},\tLevel: {},\tHitPoints: {}/{}".format(
             character.NAME, character.level.quantity, character.current_hp, character.max_hp))
