@@ -625,83 +625,21 @@ class PartyDialog ( wx.Dialog ):
 		
 		szr_skills.Add( self.lbl_skills, 0, wx.TOP|wx.RIGHT|wx.LEFT|wx.ALIGN_BOTTOM|wx.EXPAND, 5 )
 		
-		szr_skills_contents = wx.BoxSizer( wx.HORIZONTAL )
-		
-		szr_skill_pics = wx.BoxSizer( wx.VERTICAL )
-		
-		self.bmp_chm = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_chm, 0, wx.ALL, 0 )
-		
-		self.bmp_dip = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_dip, 0, wx.ALL, 0 )
-		
-		self.bmp_lor = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_lor, 0, wx.ALL, 0 )
-		
-		self.bmp_mec = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_mec, 0, wx.ALL, 0 )
-		
-		self.bmp_med = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_med, 0, wx.ALL, 0 )
-		
-		self.bmp_mer = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_mer, 0, wx.ALL, 0 )
-		
-		self.bmp_ran = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_ran, 0, wx.ALL, 0 )
-		
-		self.bmp_sci = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_sci, 0, wx.ALL, 0 )
-		
-		self.bmp_stl = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_stl, 0, wx.ALL, 0 )
-		
-		self.bmp_thf = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_thf, 0, wx.ALL, 0 )
-		
-		self.bmp_trb = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_trb, 0, wx.ALL, 0 )
-		
-		self.bmp_war = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_war, 0, wx.ALL, 0 )
-		
-		self.bmp_haf = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_haf, 0, wx.ALL, 0 )
-		
-		self.bmp_mis = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_mis, 0, wx.ALL, 0 )
-		
-		self.bmp_pol = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_pol, 0, wx.ALL, 0 )
-		
-		self.bmp_shd = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_shd, 0, wx.ALL, 0 )
-		
-		self.bmp_swd = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_swd, 0, wx.ALL, 0 )
-		
-		self.bmp_thr = wx.StaticBitmap( self.pnl_skills, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 30,30 ), 0 )
-		szr_skill_pics.Add( self.bmp_thr, 0, wx.ALL, 0 )
-		
-		
-		szr_skills_contents.Add( szr_skill_pics, 0, wx.TOP|wx.BOTTOM|wx.LEFT, 30 )
-		
-		szr_skill_grid = wx.BoxSizer( wx.VERTICAL )
-		
 		self.grid_skills = wx.grid.Grid( self.pnl_skills, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_skills.CreateGrid( 18, 4 )
+		self.grid_skills.CreateGrid( 1, 5 )
 		self.grid_skills.EnableEditing( False )
 		self.grid_skills.EnableGridLines( False )
 		self.grid_skills.EnableDragGridSize( False )
 		self.grid_skills.SetMargins( 0, 0 )
 		
 		# Columns
-		self.grid_skills.SetColSize( 0, 90 )
-		self.grid_skills.SetColSize( 1, 35 )
-		self.grid_skills.SetColSize( 2, 40 )
+		self.grid_skills.SetColSize( 0, 50 )
+		self.grid_skills.SetColSize( 1, 90 )
+		self.grid_skills.SetColSize( 2, 35 )
 		self.grid_skills.SetColSize( 3, 40 )
+		self.grid_skills.SetColSize( 4, 40 )
 		self.grid_skills.EnableDragColMove( False )
 		self.grid_skills.EnableDragColSize( False )
 		self.grid_skills.SetColLabelSize( 0 )
@@ -709,23 +647,6 @@ class PartyDialog ( wx.Dialog ):
 		
 		# Rows
 		self.grid_skills.SetRowSize( 0, 30 )
-		self.grid_skills.SetRowSize( 1, 30 )
-		self.grid_skills.SetRowSize( 2, 30 )
-		self.grid_skills.SetRowSize( 3, 30 )
-		self.grid_skills.SetRowSize( 4, 30 )
-		self.grid_skills.SetRowSize( 5, 30 )
-		self.grid_skills.SetRowSize( 6, 30 )
-		self.grid_skills.SetRowSize( 7, 30 )
-		self.grid_skills.SetRowSize( 8, 30 )
-		self.grid_skills.SetRowSize( 9, 30 )
-		self.grid_skills.SetRowSize( 10, 30 )
-		self.grid_skills.SetRowSize( 11, 30 )
-		self.grid_skills.SetRowSize( 12, 30 )
-		self.grid_skills.SetRowSize( 13, 30 )
-		self.grid_skills.SetRowSize( 14, 30 )
-		self.grid_skills.SetRowSize( 15, 30 )
-		self.grid_skills.SetRowSize( 16, 30 )
-		self.grid_skills.SetRowSize( 17, 30 )
 		self.grid_skills.EnableDragRowSize( False )
 		self.grid_skills.SetRowLabelSize( 0 )
 		self.grid_skills.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
@@ -737,13 +658,7 @@ class PartyDialog ( wx.Dialog ):
 		self.grid_skills.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_skills.SetDefaultCellFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
 		self.grid_skills.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
-		szr_skill_grid.Add( self.grid_skills, 0, wx.TOP|wx.BOTTOM|wx.RIGHT, 30 )
-		
-		
-		szr_skills_contents.Add( szr_skill_grid, 1, wx.EXPAND|wx.LEFT, 10 )
-		
-		
-		szr_skills.Add( szr_skills_contents, 1, wx.EXPAND, 5 )
+		szr_skills.Add( self.grid_skills, 0, wx.ALL, 30 )
 		
 		
 		self.pnl_skills.SetSizer( szr_skills )

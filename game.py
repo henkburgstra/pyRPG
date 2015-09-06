@@ -157,12 +157,13 @@ class PartyWindow(gui.PartyDialog):
     def __init__(self, parent):
         gui.PartyDialog.__init__(self, parent)
         self._hc = 0
+        self._firsttime = True
 
-        self._hero_list = []
+        self._party_list = []
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                self._hero_list.append(hero)
+                self._party_list.append(hero)
 
         self._show_partymembers()
         self.refresh_window()
@@ -174,10 +175,9 @@ class PartyWindow(gui.PartyDialog):
         self._show_inventory()
         self.Refresh()
 
-    # noinspection PyPep8Naming
     def _show_partymembers(self):
         img_list = []
-        for hero in self._hero_list:
+        for hero in self._party_list:
             image = wx.Image(hero.BMP)
             image.Resize((32, 32), (-32, 0))
             img_list.append(wx.Bitmap(image))
@@ -193,15 +193,14 @@ class PartyWindow(gui.PartyDialog):
             if len(data.party) >= i + 1:
                 pnl_list[i].Show()
                 bmp_list[i].Bitmap = img_list[i]
-                nam_list[i].LabelText = self._hero_list[i].NAME
-                lev_list[i].LabelText = str(self._hero_list[i].level.quantity)
-                hp_list[i].LabelText = str(self._hero_list[i].current_hp)+" / "+str(self._hero_list[i].max_hp)
-                gau_list[i].Range = self._hero_list[i].max_hp
-                gau_list[i].Value = self._hero_list[i].current_hp
+                nam_list[i].LabelText = self._party_list[i].NAME
+                lev_list[i].LabelText = str(self._party_list[i].level.quantity)
+                hp_list[i].LabelText = str(self._party_list[i].current_hp)+" / "+str(self._party_list[i].max_hp)
+                gau_list[i].Range = self._party_list[i].max_hp
+                gau_list[i].Value = self._party_list[i].current_hp
             else:
                 pnl_list[i].Hide()
 
-    # noinspection PyPep8Naming
     def _select_partymember(self):
 
         pnl_list = [self.pnl_hero1, self.pnl_hero2, self.pnl_hero3, self.pnl_hero4, self.pnl_hero5]
@@ -213,7 +212,7 @@ class PartyWindow(gui.PartyDialog):
                 pnl_list[i].BackgroundColour = wx.BLACK
 
     def _show_stats(self):
-        hero = self._hero_list[self._hc]
+        hero = self._party_list[self._hc]
         value = self.grid_stats.SetCellValue
 
         value(0, 0, "XP Remaining:")
@@ -250,7 +249,7 @@ class PartyWindow(gui.PartyDialog):
         value(3, 2, "")
         value(4, 2, "")
         self._show_stats2(5, 2, hero.diff_movepoints)
-        # dit moet nog anders, bijv shield protection apart in het groen via show_stats2 ?
+        # todo, dit moet nog anders, bijv shield protection apart in het groen via show_stats2 ?
         if hero.skills.shd.positive_quantity():
             value(6, 2, "("+str(hero.equipment.shd.PROTECTION)+")")
         else:
@@ -278,36 +277,36 @@ class PartyWindow(gui.PartyDialog):
             self.grid_stats.SetCellTextColour(x, y, wx.RED)
             self.grid_stats.SetCellValue(x, y, "("+str(value)+")")
 
-    # noinspection PyPep8Naming
     def _show_skills(self):
-        hero = self._hero_list[self._hc]
+        hero = self._party_list[self._hc]
         value = self.grid_skills.SetCellValue
 
         skill_list = []
         for skill_type_raw in Output.SKILL_SORT:
-            skill_list.append(hero.skills[skill_type_raw])
+            if self._firsttime:
+                self.grid_skills.AppendRows(1)
+            if hero.skills[skill_type_raw].positive_quantity():
+                skill_list.append(hero.skills[skill_type_raw])
 
-        """todo, bmp list aanpassen, bmp's in grid verwerken"""
+        self.grid_skills.ClearGrid()
+        for i in range(self.grid_skills.GetNumberRows()):   # omdat ClearGrid() blijkbaar niet werkt voor plaatjes
+            img_render = util.ImageRenderer(wx.Bitmap('resources/black.png'))
+            self.grid_skills.SetCellRenderer(i, 0, img_render)
 
-        bmp_list = [self.bmp_chm, self.bmp_dip, self.bmp_lor, self.bmp_mec, self.bmp_med, self.bmp_mer,
-                    self.bmp_ran, self.bmp_sci, self.bmp_stl, self.bmp_thf, self.bmp_trb, self.bmp_war,
-                    self.bmp_haf, self.bmp_mis, self.bmp_pol, self.bmp_shd, self.bmp_swd, self.bmp_thr]
+        i = 0
+        for skill in skill_list:
+            img_render = util.ImageRenderer(wx.Bitmap(skill.BMP))
+            self.grid_skills.SetCellRenderer(i, 0, img_render)
 
-        for i in range(18):
-            bmp_list[i].Hide()
-            value(i, 0, "")
-            value(i, 1, "")
-            value(i, 2, "")
+            value(i, 1, str(skill.NAME))
+            value(i, 2, str(skill.quantity))
+            self._show_skills2(i, 3, skill.extra)
 
-        j = 0
-        for i in range(18):
-            if skill_list[i].positive_quantity():
-                bmp_list[i].Bitmap = wx.Bitmap(skill_list[i].BMP)
-                bmp_list[i].Show()
-                value(j, 0, str(skill_list[i].NAME))
-                value(j, 1, str(skill_list[i].quantity))
-                self._show_skills2(j, 2, skill_list[i].extra)
-                j += 1
+            i += 1
+            self.grid_skills.SetRowSize(i, 30)
+
+        self._firsttime = False
+
         self.Layout()
 
     def _show_skills2(self, x, y, value):
@@ -323,8 +322,15 @@ class PartyWindow(gui.PartyDialog):
     def _show_inventory(self):
         pass
 
+    @staticmethod
+    def _show_inventory2(dc, gear, x, y):
+        if "empty" not in gear.RAW:
+            image = wx.Image(gear.BMP)
+            image.Resize((32, 32), (-gear.COL, -gear.ROW))
+            dc.DrawBitmap(wx.Bitmap(image), x, y, True)
+
     def OnPanelPaint(self, event):
-        hero = self._hero_list[self._hc]
+        hero = self._party_list[self._hc]
 
         dc = wx.PaintDC(self.pnl_canvas)
         gc = wx.GraphicsContext.Create(self.pnl_canvas)
@@ -353,16 +359,9 @@ class PartyWindow(gui.PartyDialog):
         pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
         mpos = wx.GetMousePosition()
         if 54 <= pos.x < 54 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(self, self._hero_list[self._hc], mpos, 'Weapon', 'wpn').Show()
+            InventoryWindow(self, self._party_list[self._hc], mpos, 'Weapon', 'wpn').Show()
         elif 190 <= pos.x < 190 + 32 and 115 <= pos.y < 115 + 32:
-            InventoryWindow(self, self._hero_list[self._hc], mpos, 'Shield', 'shd').Show()
-
-    @staticmethod
-    def _show_inventory2(dc, gear, x, y):
-        if "empty" not in gear.RAW:
-            image = wx.Image(gear.BMP)
-            image.Resize((32, 32), (-gear.COL, -gear.ROW))
-            dc.DrawBitmap(wx.Bitmap(image), x, y, True)
+            InventoryWindow(self, self._party_list[self._hc], mpos, 'Shield', 'shd').Show()
 
     def OnBtnCloseClick(self, event):
         self.Close()
@@ -403,11 +402,10 @@ class InventoryWindow(gui.InventoryFrame):
         value(i, 2, "")
         value(i, 3, "Unequip " + self._gearname)
         value(i, 4, "")
-        # hero volgorde
+        # eerst de hero's op volgorde
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                # equipment volgorde
                 equipment_item = hero.equipment[self._geargroup]
                 if "empty" not in equipment_item.RAW:
                     i += 1
@@ -432,7 +430,7 @@ class InventoryWindow(gui.InventoryFrame):
                     else:
                         value(i, 3, "["+equipment_item.WPN_SKILL+"] "+equipment_item.NAME)
                     value(i, 4, "")   # cell in de laatste kolom achter een hero is leeg. want die mag je niet equippen.
-        # rest van unequipped volgorde
+        # dan de rest van unequipped op volgorde
         for inventory_item in sorted(data.inventory, key=lambda x: x.SORT):
             if self._gearname == inventory_item.TYPE:
                 if "empty" not in inventory_item.RAW:

@@ -6,7 +6,7 @@ from items.gear import Gear
 class Shield(Gear):
     def __init__(self, name, raw, sort, col, row, value, shop, min_strength, protection, defense, dexterity, stealth):
         super().__init__(name, raw, sort, value, shop)
-        self.BMP = 'resources/icons/gear/shield1.png'
+        self.BMP = 'resources/icons/gear/shield2.png'
         self.COL = col
         self.ROW = row
         self.MIN_STR = min_strength
