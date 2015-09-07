@@ -25,7 +25,7 @@ class ImageRenderer(wx.grid.GridCellRenderer):
         image.SelectObject(self._img)
         dc.SetBackgroundMode(wx.SOLID)
         if is_selected:
-            dc.SetBrush(wx.Brush(wx.GREEN, wx.SOLID))
+            dc.SetBrush(wx.Brush((64, 64, 64), wx.SOLID))
         else:
             dc.SetBrush(wx.Brush(wx.BLACK, wx.SOLID))
         dc.DrawRectangle(rect)

@@ -207,7 +207,7 @@ class PartyWindow(gui.PartyDialog):
 
         for i in range(5):
             if self._hc == i:
-                pnl_list[i].BackgroundColour = (32, 32, 32)
+                pnl_list[i].BackgroundColour = (64, 64, 64)
             else:
                 pnl_list[i].BackgroundColour = wx.BLACK
 
@@ -297,6 +297,7 @@ class PartyWindow(gui.PartyDialog):
         for skill in skill_list:
             img_render = util.ImageRenderer(wx.Bitmap(skill.BMP))
             self.grid_skills.SetCellRenderer(i, 0, img_render)
+            value(i, 0, str(skill.RAW))         # de raw onder het plaatje, wordt gebruikt voor klikherkenning
 
             value(i, 1, str(skill.NAME))
             value(i, 2, str(skill.quantity))
@@ -329,6 +330,22 @@ class PartyWindow(gui.PartyDialog):
             image.Resize((32, 32), (-gear.COL, -gear.ROW))
             dc.DrawBitmap(wx.Bitmap(image), x, y, True)
 
+    def show_gear_stats(self, item):
+        self.lbl_desc.Clear()
+        if "empty" in item.RAW:
+            return
+        self.lbl_desc.WriteText("{}\t\t{}\n".format(item.TYPE, item.NAME))
+        for gear_property_name in Output.PROP_SORT:
+            gear_property_value = getattr(item, gear_property_name.upper())
+            if gear_property_value is not None:
+                self.lbl_desc.AppendText("{}\t\t{}\n". format(gear_property_name.title().replace("_", "."),
+                                                              gear_property_value))
+
+    def OnSkillClick(self, event):
+        raw = self.grid_skills.GetCellValue(event.GetRow(), 0)
+        self.lbl_desc.Clear()
+        self.lbl_desc.WriteText(self._party_list[self._hc].skills[raw].DESC)
+
     def OnPanelPaint(self, event):
         hero = self._party_list[self._hc]
 
@@ -354,6 +371,17 @@ class PartyWindow(gui.PartyDialog):
 
         self._show_inventory2(dc, hero.equipment.wpn,  54, 115)
         self._show_inventory2(dc, hero.equipment.shd, 190, 115)
+
+    def OnPanelHover(self, event):
+        pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
+        if 54 <= pos.x < 54 + 32 and 115 <= pos.y < 115 + 32:
+            item = self._party_list[self._hc].get_equipment('Weapon')
+            self.show_gear_stats(item)
+        elif 190 <= pos.x < 190 + 32 and 115 <= pos.y < 115 + 32:
+            item = self._party_list[self._hc].get_equipment('Shield')
+            self.show_gear_stats(item)
+        else:
+            self.lbl_desc.Clear()
 
     def OnPanelClick(self, event):
         pos = self.pnl_canvas.ScreenToClient(wx.GetMousePosition())
@@ -459,6 +487,7 @@ class InventoryWindow(gui.InventoryFrame):
         self.SetSize(w + 2, 34 * rows + 2)
 
     def OnClick(self, event):
+        self.grid_items.SetSelectionBackground((64, 64, 64))
         self.grid_items.SelectRow(event.GetRow())
         raw = self.grid_items.GetCellValue(event.GetRow(), 4)
 
@@ -471,13 +500,7 @@ class InventoryWindow(gui.InventoryFrame):
             hero = data.party.get_member_with_this_equipment(raw)
             item = hero.get_equipment(raw)
 
-        self._parent.lbl_desc.Clear()
-        self._parent.lbl_desc.WriteText("{}\t\t{}\n".format(item.TYPE, item.NAME))
-        for gear_property_name in Output.PROP_SORT:
-            gear_property_value = getattr(item, gear_property_name.upper())
-            if gear_property_value is not None:
-                self._parent.lbl_desc.AppendText("{}\t\t{}\n". format(gear_property_name.title().replace("_", "."),
-                                                                      gear_property_value))
+        self._parent.show_gear_stats(item)
 
     def OnDClick(self, event):
         raw = self.grid_items.GetCellValue(event.GetRow(), 4)

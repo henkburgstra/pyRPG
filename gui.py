@@ -621,7 +621,7 @@ class PartyDialog ( wx.Dialog ):
 		self.lbl_desc.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.lbl_desc.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		szr_descr.Add( self.lbl_desc, 1, wx.ALL|wx.EXPAND, 5 )
+		szr_descr.Add( self.lbl_desc, 1, wx.EXPAND|wx.LEFT, 20 )
 		
 		
 		szr_info.Add( szr_descr, 1, wx.EXPAND, 5 )
@@ -727,7 +727,9 @@ class PartyDialog ( wx.Dialog ):
 		self.btn_prev.Bind( wx.EVT_BUTTON, self.OnBtnPrevClick )
 		self.btn_close.Bind( wx.EVT_BUTTON, self.OnBtnCloseClick )
 		self.btn_next.Bind( wx.EVT_BUTTON, self.OnBtnNextClick )
+		self.grid_skills.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnSkillClick )
 		self.pnl_canvas.Bind( wx.EVT_LEFT_UP, self.OnPanelClick )
+		self.pnl_canvas.Bind( wx.EVT_MOTION, self.OnPanelHover )
 		self.pnl_canvas.Bind( wx.EVT_PAINT, self.OnPanelPaint )
 	
 	def __del__( self ):
@@ -744,7 +746,13 @@ class PartyDialog ( wx.Dialog ):
 	def OnBtnNextClick( self, event ):
 		event.Skip()
 	
+	def OnSkillClick( self, event ):
+		event.Skip()
+	
 	def OnPanelClick( self, event ):
+		event.Skip()
+	
+	def OnPanelHover( self, event ):
 		event.Skip()
 	
 	def OnPanelPaint( self, event ):
