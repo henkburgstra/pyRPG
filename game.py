@@ -344,6 +344,8 @@ class PartyWindow(gui.PartyDialog):
     def OnSkillClick(self, event):
         raw = self.grid_skills.GetCellValue(event.GetRow(), 0)
         self.lbl_desc.Clear()
+        if raw == "":
+            return
         self.lbl_desc.WriteText(self._party_list[self._hc].skills[raw].DESC)
 
     def OnPanelPaint(self, event):
