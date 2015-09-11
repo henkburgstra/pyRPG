@@ -940,7 +940,7 @@ class ShopDialog ( wx.Dialog ):
 		self.grid_shop = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
-		self.grid_shop.CreateGrid( 1, 11 )
+		self.grid_shop.CreateGrid( 1, 0 )
 		self.grid_shop.EnableEditing( False )
 		self.grid_shop.EnableGridLines( True )
 		self.grid_shop.EnableDragGridSize( False )
@@ -960,8 +960,10 @@ class ShopDialog ( wx.Dialog ):
 		# Label Appearance
 		
 		# Cell Defaults
+		self.grid_shop.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		self.grid_shop.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.grid_shop.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
-		szr_shop.Add( self.grid_shop, 0, wx.ALL, 5 )
+		szr_shop.Add( self.grid_shop, 0, 0, 5 )
 		
 		
 		self.SetSizer( szr_shop )

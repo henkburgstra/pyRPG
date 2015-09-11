@@ -104,13 +104,15 @@ class ShopWindow(gui.ShopDialog):
 
         columns = []
         for gear_item in Output.SHOP_SORT:
-            if gear_item in next(iter(data.list_gear_dict['helmets'][0].values())):
+            if gear_item in next(iter(data.list_gear_dict['armors'][0].values())):
                 columns.append(gear_item)
         headers = [item.title().replace("_", ".") for item in columns]
+        headers[0] = ''
+        headers[1] = ''
         headers.append('Backpack')
 
         sortlist = []
-        for gear_item in sorted(data.list_gear_dict['helmets'][0].values(), key=lambda x: x.sort):
+        for gear_item in sorted(data.list_gear_dict['armors'][0].values(), key=lambda x: x.sort):
             templist = []
             if gear_item.shop:
                 # if weaponskill == "EoCMD" or weaponskill == gear_item.skill.lower():
@@ -123,14 +125,22 @@ class ShopWindow(gui.ShopDialog):
                     templist.append(self._shop_count(gear_item.raw))
                     sortlist.append(templist)
 
+        for x in range(len(headers)):
+            self.grid_shop.AppendCols(1)
+            self.grid_shop.SetCellValue(0, x, headers[x])
+
         for y in range(len(sortlist)):
             self.grid_shop.AppendRows(1)
             for x in range(len(headers)):
-                self.grid_shop.SetCellValue(y, x, sortlist[y][x])
+                self.grid_shop.SetCellValue(y + 1, x, sortlist[y][x])
 
-        rows = self.grid_shop.GetNumberRows()
-        w, h = self.grid_shop.GetSize()
-        self.SetSize(w + 100, 30 * rows)
+        self.grid_shop.AutoSize()
+        self.grid_shop.SetColSize(0, 0)
+        self.grid_shop.SetColSize(1, self.grid_shop.GetColSize(1) + 20)
+        self.grid_shop.SetColSize(2, self.grid_shop.GetColSize(2) + 20)
+
+        w, h = self.grid_shop.GetClientSize()
+        self.SetSize(w, h + 70)
         self.Center()
 
     @staticmethod

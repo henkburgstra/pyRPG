@@ -27,7 +27,7 @@ class Output(object):
 
     PROP_SORT = ['wpn_skill'] + BASE_SORT
 
-    SHOP_SORT = ['name', 'value'] + BASE_SORT
+    SHOP_SORT = ['raw', 'name', 'value'] + BASE_SORT
 
     @staticmethod
     def cmd_help():
