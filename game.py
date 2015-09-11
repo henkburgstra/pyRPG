@@ -85,6 +85,9 @@ class MainWindow(gui.MainFrame):
     def OnBtnLoadClick(self, event):
         pass
 
+    def OnBtnShopClick(self, event):
+        ShopWindow(None).ShowModal()
+
     def OnBtnTavernClick(self, event):
         TavernWindow(None).ShowModal()
 
@@ -93,6 +96,50 @@ class MainWindow(gui.MainFrame):
 
     def OnBtnExitClick(self, event):
         sys.exit()
+
+
+class ShopWindow(gui.ShopDialog):
+    def __init__(self, parent):
+        gui.ShopDialog.__init__(self, parent)
+
+        columns = []
+        for gear_item in Output.SHOP_SORT:
+            if gear_item in next(iter(data.list_gear_dict['helmets'][0].values())):
+                columns.append(gear_item)
+        headers = [item.title().replace("_", ".") for item in columns]
+        headers.append('Backpack')
+
+        sortlist = []
+        for gear_item in sorted(data.list_gear_dict['helmets'][0].values(), key=lambda x: x.sort):
+            templist = []
+            if gear_item.shop:
+                # if weaponskill == "EoCMD" or weaponskill == gear_item.skill.lower():
+                    for column_name in columns:
+                        if column_name in gear_item:
+                            if gear_item[column_name] is None:  # or value1[item] == 0:
+                                templist.append("")   # uitgezet, want het is op dit moment niet per se nodig.
+                            else:
+                                templist.append(str(gear_item[column_name]))
+                    templist.append(self._shop_count(gear_item.raw))
+                    sortlist.append(templist)
+
+        for y in range(len(sortlist)):
+            self.grid_shop.AppendRows(1)
+            for x in range(len(headers)):
+                self.grid_shop.SetCellValue(y, x, sortlist[y][x])
+
+        rows = self.grid_shop.GetNumberRows()
+        w, h = self.grid_shop.GetSize()
+        self.SetSize(w + 100, 30 * rows)
+        self.Center()
+
+    @staticmethod
+    def _shop_count(key):
+        count = data.inventory.count_item(key) + data.party.count_equipment(key)
+        if count != 0:
+            return count
+        else:
+            return ""
 
 
 class TavernWindow(gui.HeroDialog):

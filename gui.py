@@ -155,6 +155,7 @@ class MainFrame ( wx.Frame ):
 		# Connect Events
 		self.btn_new.Bind( wx.EVT_BUTTON, self.OnBtnNewClick )
 		self.btn_load.Bind( wx.EVT_BUTTON, self.OnBtnLoadClick )
+		self.btn_shop.Bind( wx.EVT_BUTTON, self.OnBtnShopClick )
 		self.btn_tavern.Bind( wx.EVT_BUTTON, self.OnBtnTavernClick )
 		self.btn_party.Bind( wx.EVT_BUTTON, self.OnBtnPartyClick )
 		self.btn_exit.Bind( wx.EVT_BUTTON, self.OnBtnExitClick )
@@ -168,6 +169,9 @@ class MainFrame ( wx.Frame ):
 		event.Skip()
 	
 	def OnBtnLoadClick( self, event ):
+		event.Skip()
+	
+	def OnBtnShopClick( self, event ):
 		event.Skip()
 	
 	def OnBtnTavernClick( self, event ):
@@ -780,10 +784,7 @@ class HeroDialog ( wx.Dialog ):
 		
 		szr_heroes.Add( self.lbl_size, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10 )
 		
-		self.m_panel12 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		bSizer30 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.grid_heroes = wx.grid.Grid( self.m_panel12, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.grid_heroes = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
 		# Grid
 		self.grid_heroes.CreateGrid( 1, 6 )
@@ -819,13 +820,7 @@ class HeroDialog ( wx.Dialog ):
 		self.grid_heroes.SetDefaultCellAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
 		self.grid_heroes.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
 		
-		bSizer30.Add( self.grid_heroes, 0, wx.TOP|wx.LEFT, 20 )
-		
-		
-		self.m_panel12.SetSizer( bSizer30 )
-		self.m_panel12.Layout()
-		bSizer30.Fit( self.m_panel12 )
-		szr_heroes.Add( self.m_panel12, 1, wx.EXPAND |wx.ALL, 0 )
+		szr_heroes.Add( self.grid_heroes, 0, wx.TOP|wx.LEFT, 20 )
 		
 		
 		self.SetSizer( szr_heroes )
@@ -919,5 +914,63 @@ class InventoryFrame ( wx.Frame ):
 	
 	def OnClose( self, event ):
 		event.Skip()
+	
+
+###########################################################################
+## Class ShopDialog
+###########################################################################
+
+class ShopDialog ( wx.Dialog ):
+	
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.DefaultSize, style = wx.DEFAULT_DIALOG_STYLE )
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
+		
+		szr_shop = wx.BoxSizer( wx.VERTICAL )
+		
+		self.lbl_shop = wx.StaticText( self, wx.ID_ANY, u"MyLabel", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_shop.Wrap( -1 )
+		self.lbl_shop.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+		self.lbl_shop.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		
+		szr_shop.Add( self.lbl_shop, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 10 )
+		
+		self.grid_shop = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		
+		# Grid
+		self.grid_shop.CreateGrid( 1, 11 )
+		self.grid_shop.EnableEditing( False )
+		self.grid_shop.EnableGridLines( True )
+		self.grid_shop.EnableDragGridSize( False )
+		self.grid_shop.SetMargins( 0, 0 )
+		
+		# Columns
+		self.grid_shop.EnableDragColMove( False )
+		self.grid_shop.EnableDragColSize( False )
+		self.grid_shop.SetColLabelSize( 0 )
+		self.grid_shop.SetColLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Rows
+		self.grid_shop.EnableDragRowSize( False )
+		self.grid_shop.SetRowLabelSize( 0 )
+		self.grid_shop.SetRowLabelAlignment( wx.ALIGN_CENTRE, wx.ALIGN_CENTRE )
+		
+		# Label Appearance
+		
+		# Cell Defaults
+		self.grid_shop.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
+		szr_shop.Add( self.grid_shop, 0, wx.ALL, 5 )
+		
+		
+		self.SetSizer( szr_shop )
+		self.Layout()
+		szr_shop.Fit( self )
+		
+		self.Centre( wx.BOTH )
+	
+	def __del__( self ):
+		pass
 	
 
