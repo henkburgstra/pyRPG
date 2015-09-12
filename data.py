@@ -199,6 +199,7 @@ def load_all_data():
     inventory.add(items.Accessory.factory(decorators.accessories.emptyaccessory), verbose=False)
 
     party.add(heroes.alagos, verbose=False)
+    pouch.add(pouchitems.gold, 10, verbose=False)
 
     # dit hieronder is om te testen
     party.add(heroes.luana)
