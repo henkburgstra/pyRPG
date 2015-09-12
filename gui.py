@@ -939,119 +939,40 @@ class ShopDialog ( wx.Dialog ):
 		
 		bSizer25 = wx.BoxSizer( wx.HORIZONTAL )
 		
-		gSizer2 = wx.GridSizer( 0, 2, 0, 0 )
+		gbSizer1 = wx.GridBagSizer( 0, 0 )
+		gbSizer1.SetFlexibleDirection( wx.BOTH )
+		gbSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 		
 		self.bmp_gold = wx.StaticBitmap( self, wx.ID_ANY, wx.Bitmap( u"resources/icons/skills/merchant.png", wx.BITMAP_TYPE_ANY ), wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.bmp_gold, 0, wx.ALL|wx.EXPAND, 5 )
+		gbSizer1.Add( self.bmp_gold, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 		
 		self.lbl_gold = wx.StaticText( self, wx.ID_ANY, u"Gold: 0", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.lbl_gold.Wrap( -1 )
 		self.lbl_gold.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		self.lbl_gold.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		gSizer2.Add( self.lbl_gold, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		gbSizer1.Add( self.lbl_gold, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 		
-		self.m_bitmap7 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap7, 0, wx.ALL|wx.EXPAND, 5 )
+		self.radio_buy = wx.RadioButton( self, wx.ID_ANY, u"Buy", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.radio_buy.SetForegroundColour( wx.Colour( 255, 0, 0 ) )
+		self.radio_buy.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		self.m_radioBtn1 = wx.RadioButton( self, wx.ID_ANY, u"Buy", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_radioBtn1.SetForegroundColour( wx.Colour( 255, 0, 0 ) )
-		self.m_radioBtn1.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		gbSizer1.Add( self.radio_buy, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 		
-		gSizer2.Add( self.m_radioBtn1, 0, wx.ALL|wx.EXPAND, 5 )
+		self.radio_sell = wx.RadioButton( self, wx.ID_ANY, u"Sell", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.radio_sell.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 		
-		self.m_bitmap8 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap8, 0, wx.ALL|wx.EXPAND, 5 )
+		gbSizer1.Add( self.radio_sell, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 		
-		self.m_radioBtn2 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn2, 0, wx.ALL|wx.EXPAND, 5 )
+		combo_shopChoices = [ u"Sword", u"Hafted", u"Pole", u"Missile", u"Thrown", u"Shield", u"Helmet", u"Necklace", u"Armor", u"Cloak", u"Gloves", u"Ring", u"Belt", u"Boots", u"Accessory" ]
+		self.combo_shop = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, combo_shopChoices, wx.CB_READONLY )
+		self.combo_shop.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+		self.combo_shop.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		
-		self.m_bitmap9 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap9, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn3 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn3, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap10 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap10, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn4 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn4, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap11 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap11, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn5 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn5, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap12 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap12, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn6 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn6, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap13 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap13, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn7 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn7, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap14 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap14, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn8 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn8, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap15 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap15, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn9 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn9, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap16 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap16, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn10 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn10, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap17 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap17, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn11 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn11, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap18 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap18, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn12 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn12, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap19 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap19, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn13 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn13, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap20 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap20, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn14 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn14, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap21 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap21, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn15 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn15, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_bitmap22 = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_bitmap22, 0, wx.ALL|wx.EXPAND, 5 )
-		
-		self.m_radioBtn16 = wx.RadioButton( self, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gSizer2.Add( self.m_radioBtn16, 0, wx.ALL|wx.EXPAND, 5 )
+		gbSizer1.Add( self.combo_shop, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 2 ), wx.ALL, 5 )
 		
 		
-		bSizer25.Add( gSizer2, 0, wx.EXPAND, 5 )
+		bSizer25.Add( gbSizer1, 0, 0, 5 )
 		
 		self.grid_shop = wx.grid.Grid( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		
@@ -1078,7 +999,7 @@ class ShopDialog ( wx.Dialog ):
 		# Cell Defaults
 		self.grid_shop.SetDefaultCellBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 		self.grid_shop.SetDefaultCellTextColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
-		self.grid_shop.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_TOP )
+		self.grid_shop.SetDefaultCellAlignment( wx.ALIGN_LEFT, wx.ALIGN_CENTRE )
 		bSizer25.Add( self.grid_shop, 1, wx.EXPAND, 5 )
 		
 		
@@ -1090,8 +1011,16 @@ class ShopDialog ( wx.Dialog ):
 		szr_shop.Fit( self )
 		
 		self.Centre( wx.BOTH )
+		
+		# Connect Events
+		self.combo_shop.Bind( wx.EVT_COMBOBOX, self.OnSelect )
 	
 	def __del__( self ):
 		pass
+	
+	
+	# Virtual event handlers, overide them in your derived class
+	def OnSelect( self, event ):
+		event.Skip()
 	
 

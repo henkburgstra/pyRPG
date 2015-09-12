@@ -102,12 +102,15 @@ class ShopWindow(gui.ShopDialog):
     def __init__(self, parent):
         gui.ShopDialog.__init__(self, parent)
 
+        self._load_buy(data.list_gear_dict['shields'][0], "", 'shields')
+
+    def _load_buy(self, all_gear, path, name):
         # moet eigenlijk data.pouch['gold'] zijn, maar werkt niet .notatie, vandaar cheat: data.pouchitems
         self.lbl_gold.LabelText = data.pouchitems.gold.NAME+": "+str(data.pouchitems.gold.quantity)
 
         columns = []
         for gear_item in Output.SHOP_SORT:
-            if gear_item in next(iter(data.list_gear_dict['shields'][0].values())):
+            if gear_item in next(iter(all_gear.values())):
                 columns.append(gear_item)
         headers = [item.title().replace("_", ".") for item in columns]
         headers[0] = ''
@@ -115,7 +118,7 @@ class ShopWindow(gui.ShopDialog):
         headers.append('Backpack')
 
         sortlist = []
-        for gear_item in sorted(data.list_gear_dict['shields'][0].values(), key=lambda x: x.sort):
+        for gear_item in sorted(all_gear.values(), key=lambda x: x.sort):
             templist = []
             if gear_item.shop:
                 # if weaponskill == "EoCMD" or weaponskill == gear_item.skill.lower():
@@ -132,24 +135,31 @@ class ShopWindow(gui.ShopDialog):
             self.grid_shop.AppendCols(1)
             self.grid_shop.SetCellValue(0, x, headers[x])
 
-        import decorators
         for y in range(len(sortlist)):
             self.grid_shop.AppendRows(1)
-            image = wx.Image('resources/icons/gear/shield3.png')
-            image.Resize((32, 32), (-decorators.shields[sortlist[y][0]].col, -decorators.shields[sortlist[y][0]].row))
-            new_img = wx.Bitmap(image)
-            img_render = util.ImageRenderer(new_img)
-            self.grid_shop.SetCellRenderer(y + 1, 0, img_render)
             for x in range(len(headers)):
                 self.grid_shop.SetCellValue(y + 1, x, sortlist[y][x])
 
         self.grid_shop.AutoSize()
+
+        import decorators
+        for y in range(len(sortlist)):
+            image = wx.Image(path)
+            image.Resize((32, 32), (-decorators.shields[sortlist[y][0]].col, -decorators.shields[sortlist[y][0]].row))
+            new_img = wx.Bitmap(image)
+            img_render = util.ImageRenderer(new_img)
+            self.grid_shop.SetCellRenderer(y + 1, 0, img_render)
+
         self.grid_shop.SetColSize(0, 32)
         self.grid_shop.SetColSize(1, self.grid_shop.GetColSize(1) + 20)
         self.grid_shop.SetColSize(2, self.grid_shop.GetColSize(2) + 20)
 
+        rows = self.grid_shop.GetNumberRows()
+        for y in range(rows):
+            self.grid_shop.SetRowSize(y, 32)
+
         w, h = self.grid_shop.GetClientSize()
-        self.SetSize(w + 200, h + 300)
+        self.SetSize(w + 400, h + 400)
         self.Center()
 
     @staticmethod
@@ -159,6 +169,14 @@ class ShopWindow(gui.ShopDialog):
             return count
         else:
             return ""
+
+    def OnSelect(self, event):
+        path = 'resources/icons/gear/'
+        if self.radio_buy.GetValue():
+            if self.combo_shop.GetValue() == "Shield":
+                self._load_buy(data.list_gear_dict['shields'][0], path+'shields3.png', 'shields')
+            elif self.combo_shop.GetValue() == "Helmet":
+                self._load_buy(data.list_gear_dict['helmets'][0], None, 'helmets')
 
 
 class TavernWindow(gui.HeroDialog):
@@ -433,7 +451,7 @@ class PartyWindow(gui.PartyDialog):
         gc.DrawRectangle(54,  147, 32, 32)  # gloves
         gc.DrawRectangle(120, 157, 32, 32)  # belt
         gc.DrawRectangle(120, 220, 32, 32)  # boots
-        gc.DrawRectangle(190, 147, 32, 32)  # accessoire
+        gc.DrawRectangle(190, 147, 32, 32)  # accessory
         gc.DrawRectangle(190, 179, 32, 32)  # lring
         gc.DrawRectangle(54,  179, 32, 32)  # rring
 
