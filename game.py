@@ -102,15 +102,13 @@ class ShopWindow(gui.ShopDialog):
     def __init__(self, parent):
         gui.ShopDialog.__init__(self, parent)
 
-        self._load_buy(data.list_gear_dict['shields'][0], "", 'shields')
-
-    def _load_buy(self, all_gear, path, name):
+    def _load_buy(self, gear_dict, path, weaponskill=""):
         # moet eigenlijk data.pouch['gold'] zijn, maar werkt niet .notatie, vandaar cheat: data.pouchitems
         self.lbl_gold.LabelText = data.pouchitems.gold.NAME+": "+str(data.pouchitems.gold.quantity)
 
         columns = []
         for gear_item in Output.SHOP_SORT:
-            if gear_item in next(iter(all_gear.values())):
+            if gear_item in next(iter(gear_dict.values())):
                 columns.append(gear_item)
         headers = [item.title().replace("_", ".") for item in columns]
         headers[0] = ''
@@ -118,10 +116,10 @@ class ShopWindow(gui.ShopDialog):
         headers.append('Backpack')
 
         sortlist = []
-        for gear_item in sorted(all_gear.values(), key=lambda x: x.sort):
+        for gear_item in sorted(gear_dict.values(), key=lambda x: x.sort):
             templist = []
             if gear_item.shop:
-                # if weaponskill == "EoCMD" or weaponskill == gear_item.skill.lower():
+                if weaponskill == "" or gear_item.skill == weaponskill:
                     for column_name in columns:
                         if column_name in gear_item:
                             if gear_item[column_name] is None:  # or value1[item] == 0:
@@ -130,6 +128,10 @@ class ShopWindow(gui.ShopDialog):
                                 templist.append(str(gear_item[column_name]))
                     templist.append(str(self._shop_count(gear_item.raw)))
                     sortlist.append(templist)
+
+        if self.grid_shop.GetNumberRows() > 1 and self.grid_shop.GetNumberCols() > 0:
+            self.grid_shop.DeleteRows(1, self.grid_shop.GetNumberRows() - 1)
+            self.grid_shop.DeleteCols(0, self.grid_shop.GetNumberCols())
 
         for x in range(len(headers)):
             self.grid_shop.AppendCols(1)
@@ -142,13 +144,13 @@ class ShopWindow(gui.ShopDialog):
 
         self.grid_shop.AutoSize()
 
-        import decorators
-        for y in range(len(sortlist)):
-            image = wx.Image(path)
-            image.Resize((32, 32), (-decorators.shields[sortlist[y][0]].col, -decorators.shields[sortlist[y][0]].row))
-            new_img = wx.Bitmap(image)
-            img_render = util.ImageRenderer(new_img)
-            self.grid_shop.SetCellRenderer(y + 1, 0, img_render)
+        if path is not None:
+            for y in range(len(sortlist)):
+                image = wx.Image(path)
+                image.Resize((32, 32), (-gear_dict[sortlist[y][0]].col, -gear_dict[sortlist[y][0]].row))
+                new_img = wx.Bitmap(image)
+                img_render = util.ImageRenderer(new_img)
+                self.grid_shop.SetCellRenderer(y + 1, 0, img_render)
 
         self.grid_shop.SetColSize(0, 32)
         self.grid_shop.SetColSize(1, self.grid_shop.GetColSize(1) + 20)
@@ -173,10 +175,12 @@ class ShopWindow(gui.ShopDialog):
     def OnSelect(self, event):
         path = 'resources/icons/gear/'
         if self.radio_buy.GetValue():
-            if self.combo_shop.GetValue() == "Shield":
-                self._load_buy(data.list_gear_dict['shields'][0], path+'shields3.png', 'shields')
+            if self.combo_shop.GetValue() in ("Sword", "Hafted", "Pole", "Missile", "Thrown"):
+                self._load_buy(data.list_gear_dict['weapons'][0], None, self.combo_shop.GetValue())
+            elif self.combo_shop.GetValue() == "Shield":
+                self._load_buy(data.list_gear_dict['shields'][0], path+'shield3.png')
             elif self.combo_shop.GetValue() == "Helmet":
-                self._load_buy(data.list_gear_dict['helmets'][0], None, 'helmets')
+                self._load_buy(data.list_gear_dict['helmets'][0], None)
 
 
 class TavernWindow(gui.HeroDialog):
