@@ -1014,6 +1014,8 @@ class ShopDialog ( wx.Dialog ):
 		
 		# Connect Events
 		self.combo_shop.Bind( wx.EVT_COMBOBOX, self.OnSelect )
+		self.grid_shop.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnClick )
+		self.grid_shop.Bind( wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.OnDClick )
 	
 	def __del__( self ):
 		pass
@@ -1021,6 +1023,12 @@ class ShopDialog ( wx.Dialog ):
 	
 	# Virtual event handlers, overide them in your derived class
 	def OnSelect( self, event ):
+		event.Skip()
+	
+	def OnClick( self, event ):
+		event.Skip()
+	
+	def OnDClick( self, event ):
 		event.Skip()
 	
 

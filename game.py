@@ -182,6 +182,33 @@ class ShopWindow(gui.ShopDialog):
             elif self.combo_shop.GetValue() == "Helmet":
                 self._load_buy(data.list_gear_dict['helmets'][0], None)
 
+    def OnClick(self, event):
+        self.grid_shop.SetSelectionBackground((64, 64, 64))
+        self.grid_shop.SelectRow(event.GetRow())
+
+    def OnDClick(self, event):
+        gear_raw = self.grid_shop.GetCellValue(event.GetRow(), 0)
+
+        quantity = 1
+        item = None
+        for combo in data.list_gear_dict.values():
+            if gear_raw in combo[0]:
+                item = combo[1](combo[0][gear_raw])
+                break
+
+        if item.SHOP:
+            if data.pouch.remove(data.pouchitems.gold, item.VALUE * quantity):
+                Output.buy(quantity, item.NAME, item.VALUE)
+                self.message("Purchased {} {} for {} gold.".format(quantity, item.NAME, item.VALUE * quantity))
+                data.inventory.add(item, quantity)
+
+        self._load_buy()
+
+    def message(self, message, caption='Shop'):
+        dlg = wx.MessageDialog(self, message, caption, wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
+
 
 class TavernWindow(gui.HeroDialog):
     def __init__(self, parent):
