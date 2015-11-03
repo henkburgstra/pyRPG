@@ -9,6 +9,8 @@ import gui
 
 import sys
 
+import pygame
+
 
 def todo():
     """"
@@ -85,6 +87,9 @@ class MainWindow(gui.MainFrame):
     def OnBtnLoadClick(self, event):
         pass
 
+    def OnBtnEnemiesClick(self, event):
+        BattleWindow().run()
+
     def OnBtnShopClick(self, event):
         ShopWindow(None).ShowModal()
 
@@ -96,6 +101,233 @@ class MainWindow(gui.MainFrame):
 
     def OnBtnExitClick(self, event):
         sys.exit()
+
+
+class BattleWindow(object):
+    def __init__(self, width=640, height=480, fps=60):
+        pygame.init()
+        pygame.display.set_caption("Press ESC to quit")
+        self.width = width
+        self.height = height
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
+
+        self.background = pygame.Surface(self.screen.get_size())
+        self.background.fill((0, 100, 0))
+        self.background.convert_alpha()
+
+        self.clock = pygame.time.Clock()
+        self.fps = fps
+        self.playtime = 0.0
+        self.font = pygame.font.SysFont('mono', 14)
+
+        self.player = Player((200, 10), 'resources\sprites_heroes\\01_Alagos.png')
+
+    def run(self):
+        game_over = False
+        while not game_over:
+
+            milliseconds = self.clock.tick(self.fps)
+            self.playtime += milliseconds / 1000.0
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    game_over = True
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        game_over = True
+
+            text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
+            pygame.display.set_caption(text)
+
+            self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up), True, (0, 0, 0)), (0, 0))
+            self.screen.blit(self.font.render("press_down: {}".format(self.player.press_down), True, (0, 0, 0)), (0, 20))
+            self.screen.blit(self.font.render("press_left: {}".format(self.player.press_left), True, (0, 0, 0)), (0, 40))
+            self.screen.blit(self.font.render("press_right: {}".format(self.player.press_right), True, (0, 0, 0)), (0, 60))
+
+            self.player.handle_event(event)
+
+            self.screen.blit(self.player.image, self.player.rect)
+
+            pygame.display.flip()
+            self.screen.blit(self.background, (0, 0))
+
+        pygame.quit()
+
+
+# Player extends the pygame.sprite.Sprite class
+class Player(pygame.sprite.Sprite):
+    # In the main program, we will pass a spritesheet and x-y values to the constructor
+    def __init__(self, position, spritesheet):
+        pygame.sprite.Sprite.__init__(self)
+
+        # Load our pickled frame values and assign them to dicts
+        self.west_states = {0:  (32, 32, 32, 32), 1: (0, 32, 32, 32), 2: (32, 32, 32, 32), 3: (64, 32, 32, 32)}
+        self.east_states = {0:  (32, 64, 32, 32), 1: (0, 64, 32, 32), 2: (32, 64, 32, 32), 3: (64, 64, 32, 32)}
+        self.north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
+        self.south_states = {0: (32,  0, 32, 32), 1: (0,  0, 32, 32), 2: (32,  0, 32, 32), 3: (64,  0, 32, 32)}
+
+        # Assign the spritesheet to self.sheet
+        self.sheet = pygame.image.load(spritesheet)
+        # 'Clip' the sheet so that only one frame is displayed (the first frame of south_states)
+        self.sheet.set_clip(pygame.Rect(self.south_states[0]))
+
+        # Create a rect to animate around the screen
+        self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.rect = self.image.get_rect()
+
+        # Assign the position parameter value to the topleft x-y values of the rect
+        self.rect.topleft = position
+
+        # We'll use this later to cycle through frames
+        # self.move_dir = None
+        # self.last_dir = 'north'
+        self.step_count = 0
+        self.step_animation = 0
+        self.dir_change_count = 0
+
+        self.press_up = 0
+        self.press_down = 0
+        self.press_left = 0
+        self.press_right = 0
+
+    '''The event handler handles keypresses for our class. If a key is pressed down
+   or released, the appropriate 'state' is passed to the update
+   method below.'''
+
+    def handle_event(self, event):
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                self.press_up += 1
+            if event.key == pygame.K_DOWN:
+                self.press_down += 1
+            if event.key == pygame.K_LEFT:
+                self.press_left += 1
+            if event.key == pygame.K_RIGHT:
+                self.press_right += 1
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                self.press_up = 0
+            if event.key == pygame.K_DOWN:
+                self.press_down = 0
+            if event.key == pygame.K_LEFT:
+                self.press_left = 0
+            if event.key == pygame.K_RIGHT:
+                self.press_right = 0
+
+        if self.press_up > 0 and ((self.press_up <= self.press_down and self.press_down > 0) or
+                                  (self.press_up <= self.press_left and self.press_left > 0) or
+                                  (self.press_up <= self.press_right and self.press_right > 0)):
+            self.update('walk_north')
+            # self.move_dir = 'north'
+        elif self.press_down > 0 and ((self.press_down <= self.press_up and self.press_up > 0) or
+                                      (self.press_down <= self.press_left and self.press_left > 0) or
+                                      (self.press_down <= self.press_right and self.press_right > 0)):
+            self.update('walk_south')
+            # self.move_dir = 'south'
+        elif self.press_left > 0 and ((self.press_left <= self.press_up and self.press_up > 0) or
+                                      (self.press_left <= self.press_down and self.press_down > 0) or
+                                      (self.press_left <= self.press_right and self.press_right > 0)):
+            self.update('walk_west')
+            # self.move_dir = 'west'
+        elif self.press_right > 0 and ((self.press_right <= self.press_up and self.press_up > 0) or
+                                       (self.press_right <= self.press_down and self.press_down > 0) or
+                                       (self.press_right <= self.press_left and self.press_left > 0)):
+            self.update('walk_east')
+            # self.move_dir = 'east'
+        elif self.press_up > 0:
+            self.update('walk_north')
+            # self.move_dir = 'north'
+        elif self.press_down > 0:
+            self.update('walk_south')
+            # self.move_dir = 'south'
+        elif self.press_left > 0:
+            self.update('walk_west')
+            # self.move_dir = 'west'
+        elif self.press_right > 0:
+            self.update('walk_east')
+            # self.move_dir = 'east'
+
+        # if event.type == pygame.KEYUP:
+        #     if event.key == pygame.K_UP and \
+        #        event.key == pygame.K_DOWN and \
+        #        event.key == pygame.K_LEFT and \
+        #        event.key == pygame.K_RIGHT:
+        #         self.update(self.move_dir, False)
+        #
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_UP or \
+        #        event.key == pygame.K_DOWN or \
+        #        event.key == pygame.K_LEFT or \
+        #        event.key == pygame.K_RIGHT:
+        #         self.update(self.move_dir, True)
+
+
+
+
+
+
+
+    '''This method updates our character by passing the appropriate dict to the clip
+   method below and moves our rect object. If the direction is left, for example,
+   the character moves -5 pixels on the x-plane.'''
+
+    def update(self, direction):
+        # if moving:
+        if direction == 'walk_west':
+            self.clip(self.west_states)
+            self.rect.x -= 1
+        if direction == 'walk_east':
+            self.clip(self.east_states)
+            self.rect.x += 1
+        if direction == 'walk_north':
+            self.clip(self.north_states)
+            self.rect.y -= 1
+        if direction == 'walk_south':
+            self.clip(self.south_states)
+            self.rect.y += 1
+
+        '''These checks are necessary in order to return our character to a standing
+       position if no key is being pressed.'''
+        # if not moving:
+        if direction == 'stand_west':
+            self.clip(self.west_states[0])
+        if direction == 'stand_east':
+            self.clip(self.east_states[0])
+        if direction == 'stand_north':
+            self.clip(self.north_states[0])
+        if direction == 'stand_south':
+            self.clip(self.south_states[0])
+
+        # Update the image for each pass
+        self.image = self.sheet.subsurface(self.sheet.get_clip())
+
+    '''This method checks to see if it has been passed a dict or a single frame. If it is
+   a dict (animated), it clips the rect via the get_frame method. If it is a single frame
+   (standing), it directly clips the frame.'''
+
+    def clip(self, clipped_rect):
+        if type(clipped_rect) is dict:
+            self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
+        else:
+            self.step_count = 0
+            self.step_animation = 0
+            self.dir_change_count = 0
+            self.sheet.set_clip(pygame.Rect(clipped_rect))
+        return clipped_rect
+
+    '''This method is used to cycle through frames. Since the 0th element of each frame set
+   is a an image of the character standing (we don't want to use this), we will instead
+   start at the 1st element.'''
+
+    def get_frame(self, frame_set):
+        self.step_count += 1
+        if self.step_count % 10 == 1:
+            self.step_animation += 1
+            if self.step_animation > 3:
+                self.step_animation = 0
+        return frame_set[self.step_animation]
 
 
 class ShopWindow(gui.ShopDialog):
@@ -116,7 +348,7 @@ class ShopWindow(gui.ShopDialog):
         headers.append('Backpack')
 
         sortlist = []
-        for gear_item in sorted(gear_dict.values(), key=lambda x: x.sort):
+        for gear_item in sorted(gear_dict.values(), key=lambda xx: xx.sort):
             templist = []
             if gear_item.shop:
                 if weaponskill == "" or gear_item.skill == weaponskill:
