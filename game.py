@@ -120,7 +120,7 @@ class BattleWindow(object):
         self.playtime = 0.0
         self.font = pygame.font.SysFont('mono', 14)
 
-        self.player = Player((200, 10), 'resources\sprites_heroes\\01_Alagos.png')
+        self.player = Player((200, 200), 'resources\sprites_heroes\\01_Alagos.png')
 
     def run(self):
         game_over = False
@@ -179,8 +179,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = position
 
         # We'll use this later to cycle through frames
-        # self.move_dir = None
-        # self.last_dir = 'north'
+        self.direction = 'north'
         self.step_count = 0
         self.step_animation = 0
         self.dir_change_count = 0
@@ -196,109 +195,92 @@ class Player(pygame.sprite.Sprite):
 
     def handle_event(self, event):
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                self.press_up += 1
-            if event.key == pygame.K_DOWN:
-                self.press_down += 1
-            if event.key == pygame.K_LEFT:
-                self.press_left += 1
-            if event.key == pygame.K_RIGHT:
-                self.press_right += 1
+        keys = pygame.key.get_pressed()
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.press_up = 0
-            if event.key == pygame.K_DOWN:
-                self.press_down = 0
-            if event.key == pygame.K_LEFT:
-                self.press_left = 0
-            if event.key == pygame.K_RIGHT:
-                self.press_right = 0
+        if keys[pygame.K_UP]:
+            self.press_up += 1
+        else:
+            self.press_up = 0
+        if keys[pygame.K_DOWN]:
+            self.press_down += 1
+        else:
+            self.press_down = 0
+        if keys[pygame.K_LEFT]:
+            self.press_left += 1
+        else:
+            self.press_left = 0
+        if keys[pygame.K_RIGHT]:
+            self.press_right += 1
+        else:
+            self.press_right = 0
 
         if self.press_up > 0 and ((self.press_up <= self.press_down and self.press_down > 0) or
                                   (self.press_up <= self.press_left and self.press_left > 0) or
                                   (self.press_up <= self.press_right and self.press_right > 0)):
-            self.update('walk_north')
-            # self.move_dir = 'north'
+            self.direction = 'north'
         elif self.press_down > 0 and ((self.press_down <= self.press_up and self.press_up > 0) or
                                       (self.press_down <= self.press_left and self.press_left > 0) or
                                       (self.press_down <= self.press_right and self.press_right > 0)):
-            self.update('walk_south')
-            # self.move_dir = 'south'
+            self.direction = 'south'
         elif self.press_left > 0 and ((self.press_left <= self.press_up and self.press_up > 0) or
                                       (self.press_left <= self.press_down and self.press_down > 0) or
                                       (self.press_left <= self.press_right and self.press_right > 0)):
-            self.update('walk_west')
-            # self.move_dir = 'west'
+            self.direction = 'west'
         elif self.press_right > 0 and ((self.press_right <= self.press_up and self.press_up > 0) or
                                        (self.press_right <= self.press_down and self.press_down > 0) or
                                        (self.press_right <= self.press_left and self.press_left > 0)):
-            self.update('walk_east')
-            # self.move_dir = 'east'
+            self.direction = 'east'
         elif self.press_up > 0:
-            self.update('walk_north')
-            # self.move_dir = 'north'
+            self.direction = 'north'
         elif self.press_down > 0:
-            self.update('walk_south')
-            # self.move_dir = 'south'
+            self.direction = 'south'
         elif self.press_left > 0:
-            self.update('walk_west')
-            # self.move_dir = 'west'
+            self.direction = 'west'
         elif self.press_right > 0:
-            self.update('walk_east')
-            # self.move_dir = 'east'
+            self.direction = 'east'
 
-        # if event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_UP and \
-        #        event.key == pygame.K_DOWN and \
-        #        event.key == pygame.K_LEFT and \
-        #        event.key == pygame.K_RIGHT:
-        #         self.update(self.move_dir, False)
-        #
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_UP or \
-        #        event.key == pygame.K_DOWN or \
-        #        event.key == pygame.K_LEFT or \
-        #        event.key == pygame.K_RIGHT:
-        #         self.update(self.move_dir, True)
+        if not keys[pygame.K_UP] and \
+           not keys[pygame.K_DOWN] and \
+           not keys[pygame.K_LEFT] and \
+           not keys[pygame.K_RIGHT]:
+            self.update(False)
 
-
-
-
-
-
+        if keys[pygame.K_UP] or \
+           keys[pygame.K_DOWN] or \
+           keys[pygame.K_LEFT] or \
+           keys[pygame.K_RIGHT]:
+            self.update(True)
 
     '''This method updates our character by passing the appropriate dict to the clip
    method below and moves our rect object. If the direction is left, for example,
    the character moves -5 pixels on the x-plane.'''
 
-    def update(self, direction):
-        # if moving:
-        if direction == 'walk_west':
-            self.clip(self.west_states)
-            self.rect.x -= 1
-        if direction == 'walk_east':
-            self.clip(self.east_states)
-            self.rect.x += 1
-        if direction == 'walk_north':
-            self.clip(self.north_states)
-            self.rect.y -= 1
-        if direction == 'walk_south':
-            self.clip(self.south_states)
-            self.rect.y += 1
+    def update(self, moving):
+        if moving:
+            if self.direction == 'west':
+                self.clip(self.west_states)
+                self.rect.x -= 1
+            if self.direction == 'east':
+                self.clip(self.east_states)
+                self.rect.x += 1
+            if self.direction == 'north':
+                self.clip(self.north_states)
+                self.rect.y -= 1
+            if self.direction == 'south':
+                self.clip(self.south_states)
+                self.rect.y += 1
 
         '''These checks are necessary in order to return our character to a standing
        position if no key is being pressed.'''
-        # if not moving:
-        if direction == 'stand_west':
-            self.clip(self.west_states[0])
-        if direction == 'stand_east':
-            self.clip(self.east_states[0])
-        if direction == 'stand_north':
-            self.clip(self.north_states[0])
-        if direction == 'stand_south':
-            self.clip(self.south_states[0])
+        if not moving:
+            if self.direction == 'west':
+                self.clip(self.west_states[0])
+            if self.direction == 'east':
+                self.clip(self.east_states[0])
+            if self.direction == 'north':
+                self.clip(self.north_states[0])
+            if self.direction == 'south':
+                self.clip(self.south_states[0])
 
         # Update the image for each pass
         self.image = self.sheet.subsurface(self.sheet.get_clip())
