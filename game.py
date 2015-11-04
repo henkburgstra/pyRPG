@@ -10,6 +10,7 @@ import gui
 import sys
 
 import pygame
+import os
 
 
 def todo():
@@ -105,6 +106,7 @@ class MainWindow(gui.MainFrame):
 
 class BattleWindow(object):
     def __init__(self, width=640, height=480, fps=60):
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
         pygame.display.set_caption("Press ESC to quit")
         self.width = width
@@ -113,7 +115,7 @@ class BattleWindow(object):
 
         self.background = pygame.Surface(self.screen.get_size())
         self.background.fill((0, 100, 0))
-        self.background.convert_alpha()
+        self.background.convert_alpha(self.screen)
 
         self.clock = pygame.time.Clock()
         self.fps = fps
@@ -136,7 +138,7 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
-            self.player.handle_event()
+            self.player.handle_movement()
 
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
             pygame.display.set_caption(text)
@@ -144,10 +146,14 @@ class BattleWindow(object):
             self.screen.blit(self.background, (0, 0))
             self.screen.blit(self.player.image, self.player.rect)
 
-            self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up), True, (0, 0, 0)), (0, 0))
-            self.screen.blit(self.font.render("press_down: {}".format(self.player.press_down), True, (0, 0, 0)), (0, 20))
-            self.screen.blit(self.font.render("press_left: {}".format(self.player.press_left), True, (0, 0, 0)), (0, 40))
-            self.screen.blit(self.font.render("press_right: {}".format(self.player.press_right), True, (0, 0, 0)), (0, 60))
+            # self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up),
+            #                                   True, (0, 0, 0)), (0, 0))
+            # self.screen.blit(self.font.render("press_down: {}".format(self.player.press_down),
+            #                                   True, (0, 0, 0)), (0, 20))
+            # self.screen.blit(self.font.render("press_left: {}".format(self.player.press_left),
+            #                                   True, (0, 0, 0)), (0, 40))
+            # self.screen.blit(self.font.render("press_right: {}".format(self.player.press_right),
+            #                                   True, (0, 0, 0)), (0, 60))
 
             pygame.display.flip()
 
@@ -182,18 +188,14 @@ class Player(pygame.sprite.Sprite):
         self.direction = 'north'
         self.step_count = 0
         self.step_animation = 0
-        self.dir_change_count = 0
+        self.step_delay = 0
 
         self.press_up = 0
         self.press_down = 0
         self.press_left = 0
         self.press_right = 0
 
-    '''The event handler handles keypresses for our class. If a key is pressed down
-   or released, the appropriate 'state' is passed to the update
-   method below.'''
-
-    def handle_event(self):
+    def handle_movement(self):
 
         keys = pygame.key.get_pressed()
 
@@ -213,6 +215,14 @@ class Player(pygame.sprite.Sprite):
             self.press_right += 1
         else:
             self.press_right = 0
+
+        # Als hij nog geen stappen heeft gezet en hij kijkt naar een andere kant dan je drukt, stel een delay in.
+        if self.step_count == 0:
+            if (keys[pygame.K_UP] and self.direction != 'north') or \
+               (keys[pygame.K_DOWN] and self.direction != 'south') or \
+               (keys[pygame.K_LEFT] and self.direction != 'west') or \
+               (keys[pygame.K_RIGHT] and self.direction != 'east'):
+                self.step_delay = 7
 
         if self.press_up > 0 and ((self.press_up <= self.press_down and self.press_down > 0) or
                                   (self.press_up <= self.press_left and self.press_left > 0) or
@@ -249,11 +259,10 @@ class Player(pygame.sprite.Sprite):
            keys[pygame.K_DOWN] or \
            keys[pygame.K_LEFT] or \
            keys[pygame.K_RIGHT]:
-            self.update(True)
-
-    '''This method updates our character by passing the appropriate dict to the clip
-   method below and moves our rect object. If the direction is left, for example,
-   the character moves -5 pixels on the x-plane.'''
+            if self.step_delay > 0:
+                self.step_delay -= 1
+            else:
+                self.update(True)
 
     def update(self, moving):
         if moving:
@@ -270,8 +279,6 @@ class Player(pygame.sprite.Sprite):
                 self.clip(self.south_states)
                 self.rect.y += 1
 
-        '''These checks are necessary in order to return our character to a standing
-       position if no key is being pressed.'''
         if not moving:
             if self.direction == 'west':
                 self.clip(self.west_states[0])
@@ -285,23 +292,15 @@ class Player(pygame.sprite.Sprite):
         # Update the image for each pass
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
-    '''This method checks to see if it has been passed a dict or a single frame. If it is
-   a dict (animated), it clips the rect via the get_frame method. If it is a single frame
-   (standing), it directly clips the frame.'''
-
     def clip(self, clipped_rect):
         if type(clipped_rect) is dict:
             self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
         else:
             self.step_count = 0
             self.step_animation = 0
-            self.dir_change_count = 0
+            self.step_delay = 0
             self.sheet.set_clip(pygame.Rect(clipped_rect))
         return clipped_rect
-
-    '''This method is used to cycle through frames. Since the 0th element of each frame set
-   is a an image of the character standing (we don't want to use this), we will instead
-   start at the 1st element.'''
 
     def get_frame(self, frame_set):
         self.step_count += 1
