@@ -136,20 +136,20 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
+            self.player.handle_event()
+
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
             pygame.display.set_caption(text)
+
+            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.player.image, self.player.rect)
 
             self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up), True, (0, 0, 0)), (0, 0))
             self.screen.blit(self.font.render("press_down: {}".format(self.player.press_down), True, (0, 0, 0)), (0, 20))
             self.screen.blit(self.font.render("press_left: {}".format(self.player.press_left), True, (0, 0, 0)), (0, 40))
             self.screen.blit(self.font.render("press_right: {}".format(self.player.press_right), True, (0, 0, 0)), (0, 60))
 
-            self.player.handle_event(event)
-
-            self.screen.blit(self.player.image, self.player.rect)
-
             pygame.display.flip()
-            self.screen.blit(self.background, (0, 0))
 
         pygame.quit()
 
@@ -193,7 +193,7 @@ class Player(pygame.sprite.Sprite):
    or released, the appropriate 'state' is passed to the update
    method below.'''
 
-    def handle_event(self, event):
+    def handle_event(self):
 
         keys = pygame.key.get_pressed()
 
