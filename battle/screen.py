@@ -4,12 +4,14 @@ import pygame
 from random import randint
 
 from battle.hero import Hero
+from battle.map import Background
+
 import data
 from output import Output
 
 
 class BattleWindow(object):
-    def __init__(self, width=1024, height=768, fps=60):
+    def __init__(self, width=800, height=600, fps=60):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
         pygame.display.set_caption("Press ESC to quit")
@@ -17,14 +19,12 @@ class BattleWindow(object):
         self.height = height
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
 
-        self.background = pygame.Surface(self.screen.get_size())
-        self.background.fill((0, 100, 0))
-        self.background.convert_alpha(self.screen)
-
         self.clock = pygame.time.Clock()
         self.fps = fps
         self.playtime = 0.0
         self.font = pygame.font.SysFont('mono', 14)
+
+        self.background = Background('resources/maps/area01/map01_01.png', [0, 0])
 
         self.player = []
         for hero_raw in Output.HERO_SORT:
@@ -51,7 +51,7 @@ class BattleWindow(object):
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
             pygame.display.set_caption(text)
 
-            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.background.image, self.background.rect)
             for i in range(len(self.player)):
                 self.screen.blit(self.player[i].image, self.player[i].rect)
 
