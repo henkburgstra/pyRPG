@@ -1,6 +1,7 @@
 
 import os
 import pygame
+from random import randint
 
 from battle.hero import Hero
 import data
@@ -25,10 +26,11 @@ class BattleWindow(object):
         self.playtime = 0.0
         self.font = pygame.font.SysFont('mono', 14)
 
+        self.player = []
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                self.player = Hero((200, 200), hero.BMP)
+                self.player.append(Hero((200+randint(1, 9)*30, 200+randint(1, 9)*30), hero.BMP))
 
     def run(self):
         game_over = False
@@ -44,13 +46,14 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
-            self.player.handle_movement()
+            self.player[0].handle_movement()
 
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
             pygame.display.set_caption(text)
 
             self.screen.blit(self.background, (0, 0))
-            self.screen.blit(self.player.image, self.player.rect)
+            for i in range(len(self.player)):
+                self.screen.blit(self.player[i].image, self.player[i].rect)
 
             # self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up),
             #                                   True, (0, 0, 0)), (0, 0))
