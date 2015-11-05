@@ -222,8 +222,9 @@ class Player(pygame.sprite.Sprite):
                (keys[pygame.K_DOWN] and self.direction != 'south') or \
                (keys[pygame.K_LEFT] and self.direction != 'west') or \
                (keys[pygame.K_RIGHT] and self.direction != 'east'):
-                self.step_delay = 7
+                    self.step_delay = 7
 
+        # Als je meerdere knoppen indrukt, ga dan naar de richting van de laatst ingedrukte knop.
         if self.press_up > 0 and ((self.press_up <= self.press_down and self.press_down > 0) or
                                   (self.press_up <= self.press_left and self.press_left > 0) or
                                   (self.press_up <= self.press_right and self.press_right > 0)):
@@ -240,6 +241,7 @@ class Player(pygame.sprite.Sprite):
                                        (self.press_right <= self.press_down and self.press_down > 0) or
                                        (self.press_right <= self.press_left and self.press_left > 0)):
             self.direction = 'east'
+        # Of ga in de richting van de enige knop die je indrukt.
         elif self.press_up > 0:
             self.direction = 'north'
         elif self.press_down > 0:
@@ -249,16 +251,14 @@ class Player(pygame.sprite.Sprite):
         elif self.press_right > 0:
             self.direction = 'east'
 
-        if not keys[pygame.K_UP] and \
-           not keys[pygame.K_DOWN] and \
-           not keys[pygame.K_LEFT] and \
-           not keys[pygame.K_RIGHT]:
-            self.update(False)
+        # Als je helemaal geen knoppen indrukt, ga dan in de stilstand pose.
+        if not keys[pygame.K_UP] and not keys[pygame.K_DOWN] and \
+           not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+                self.update(False)
 
-        if keys[pygame.K_UP] or \
-           keys[pygame.K_DOWN] or \
-           keys[pygame.K_LEFT] or \
-           keys[pygame.K_RIGHT]:
+        # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
+        if keys[pygame.K_UP] or keys[pygame.K_DOWN] or \
+           keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
             if self.step_delay > 0:
                 self.step_delay -= 1
             else:
