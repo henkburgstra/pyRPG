@@ -2,4 +2,4 @@
 from distutils.core import setup
 import py2exe
 
-setup(console=['game.py'], requires=['texttable'])
+setup(console=['game.py'])
