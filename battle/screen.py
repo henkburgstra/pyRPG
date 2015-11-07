@@ -15,7 +15,7 @@ from output import Output
 
 
 class BattleWindow(object):
-    def __init__(self, width=800, height=600, fps=60):
+    def __init__(self, width=900, height=800, fps=60):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
         pygame.display.set_caption("Press ESC to quit")
@@ -39,12 +39,16 @@ class BattleWindow(object):
         # self.background = Background('resources/maps/area01/map01_01.png', [0, 0])
 
         self.player = []
-        for hero_raw in Output.HERO_SORT:
-            hero = data.heroes[hero_raw]
-            if hero in data.party:
-                self.player.append(Hero((200+randint(1, 9)*30, 200+randint(1, 9)*30), hero.BMP))
-
+        self.player.append(Hero((0, 0), data.heroes.alagos.BMP))
         self.group.add(self.player[0])
+
+        # i = 0
+        # for hero_raw in Output.HERO_SORT:
+        #     hero = data.heroes[hero_raw]
+        #     if hero in data.party:
+        #         self.player.append(Hero((200+randint(1, 9)*30, 200+randint(1, 9)*30), hero.BMP))
+        #         self.group.add(self.player[i])
+        #         i += 1
 
     def run(self):
         game_over = False
@@ -60,14 +64,21 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
+            # for i in range(len(self.player)):
             self.player[0].handle_movement()
 
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
             pygame.display.set_caption(text)
 
-            self.screen.blit(self.background.image, self.background.rect)
-            for i in range(len(self.player)):
-                self.screen.blit(self.player[i].image, self.player[i].rect)
+            if self.player[0].rect.collidelist(self.walls) > -1:
+                self.player[0].move_back()
+
+            self.group.center(self.player[0].rect.center)
+            self.group.draw(self.screen)
+
+            # self.screen.blit(self.background.image, self.background.rect)
+            # for i in range(len(self.player)):
+            #     self.screen.blit(self.player[i].image, self.player[i].rect)
 
             # self.screen.blit(self.font.render("press_up: {}".format(self.player.press_up),
             #                                   True, (0, 0, 0)), (0, 0))

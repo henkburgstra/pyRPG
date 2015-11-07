@@ -14,13 +14,13 @@ class Hero(pygame.sprite.Sprite):
         self.north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
         self.south_states = {0: (32,  0, 32, 32), 1: (0,  0, 32, 32), 2: (32,  0, 32, 32), 3: (64,  0, 32, 32)}
 
-        # Assign the spritesheet to self.sheet
-        self.sheet = pygame.image.load(spritesheet)
+        # Assign the spritesheet to self.full_sprite
+        self.full_sprite = pygame.image.load(spritesheet)
         # 'Clip' the sheet so that only one frame is displayed (the first frame of south_states)
-        self.sheet.set_clip(pygame.Rect(self.south_states[0]))
+        self.full_sprite.set_clip(pygame.Rect(self.north_states[0]))
 
         # Create a rect to animate around the screen
-        self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.image = self.full_sprite.subsurface(self.full_sprite.get_clip())
         self.rect = self.image.get_rect()
 
         # Assign the position parameter value to the topleft x-y values of the rect
@@ -132,16 +132,16 @@ class Hero(pygame.sprite.Sprite):
                 self.clip(self.south_states[0])
 
         # Update the image for each pass
-        self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.image = self.full_sprite.subsurface(self.full_sprite.get_clip())
 
     def clip(self, clipped_rect):
         if type(clipped_rect) is dict:
-            self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
+            self.full_sprite.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
         else:
             self.step_count = 0
             self.step_animation = 0
             self.step_delay = 0
-            self.sheet.set_clip(pygame.Rect(clipped_rect))
+            self.full_sprite.set_clip(pygame.Rect(clipped_rect))
         return clipped_rect
 
     def get_frame(self, frame_set):
@@ -151,3 +151,13 @@ class Hero(pygame.sprite.Sprite):
             if self.step_animation > 3:
                 self.step_animation = 0
         return frame_set[self.step_animation]
+
+    def move_back(self):
+        if self.direction == 'west':
+            self.rect.x += 1
+        if self.direction == 'east':
+            self.rect.x -= 1
+        if self.direction == 'north':
+            self.rect.y += 1
+        if self.direction == 'south':
+            self.rect.y -= 1
