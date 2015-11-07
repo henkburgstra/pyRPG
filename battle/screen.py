@@ -65,6 +65,7 @@ class BattleWindow(object):
                         game_over = True
 
             # for i in range(len(self.player)):
+            self.player[0].set_speed()
             self.player[0].handle_movement()
 
             text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)

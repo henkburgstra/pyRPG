@@ -2,6 +2,12 @@
 import pygame
 
 
+MOVESPEED1 = 1
+MOVESPEED2 = 2
+MOVESPEED3 = 4
+MOVESPEED4 = 8
+
+
 # Hero extends the pygame.sprite.Sprite class
 class Hero(pygame.sprite.Sprite):
     # In the main program, we will pass a spritesheet and x-y values to the constructor
@@ -37,8 +43,22 @@ class Hero(pygame.sprite.Sprite):
         self.press_left = 0
         self.press_right = 0
 
-    def handle_movement(self):
+        self.movespeed = MOVESPEED2
 
+    def set_speed(self):
+        keys = pygame.key.get_pressed()
+
+        if (keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]) and (keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]):
+            self.movespeed = MOVESPEED4
+        elif keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+            self.movespeed = MOVESPEED3
+        elif keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]:
+            self.movespeed = MOVESPEED1
+        elif not keys[pygame.K_LSHIFT] and not keys[pygame.K_RSHIFT] and \
+                not keys[pygame.K_LCTRL] and not keys[pygame.K_RCTRL]:
+            self.movespeed = MOVESPEED2
+
+    def handle_movement(self):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
@@ -110,16 +130,16 @@ class Hero(pygame.sprite.Sprite):
         if moving:
             if self.direction == 'west':
                 self.clip(self.west_states)
-                self.rect.x -= 1
+                self.rect.x -= self.movespeed
             if self.direction == 'east':
                 self.clip(self.east_states)
-                self.rect.x += 1
+                self.rect.x += self.movespeed
             if self.direction == 'north':
                 self.clip(self.north_states)
-                self.rect.y -= 1
+                self.rect.y -= self.movespeed
             if self.direction == 'south':
                 self.clip(self.south_states)
-                self.rect.y += 1
+                self.rect.y += self.movespeed
 
         if not moving:
             if self.direction == 'west':
@@ -146,7 +166,7 @@ class Hero(pygame.sprite.Sprite):
 
     def get_frame(self, frame_set):
         self.step_count += 1
-        if self.step_count % 10 == 1:
+        if self.step_count % (24 / self.movespeed) == 1:
             self.step_animation += 1
             if self.step_animation > 3:
                 self.step_animation = 0
@@ -154,10 +174,10 @@ class Hero(pygame.sprite.Sprite):
 
     def move_back(self):
         if self.direction == 'west':
-            self.rect.x += 1
+            self.rect.x += self.movespeed
         if self.direction == 'east':
-            self.rect.x -= 1
+            self.rect.x -= self.movespeed
         if self.direction == 'north':
-            self.rect.y += 1
+            self.rect.y += self.movespeed
         if self.direction == 'south':
-            self.rect.y -= 1
+            self.rect.y -= self.movespeed
