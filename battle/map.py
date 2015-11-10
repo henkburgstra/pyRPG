@@ -1,12 +1,20 @@
 
 
 import pygame
+import pytmx
+import pyscroll
+import pyscroll.data
 
 
-class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file, location):
-        pygame.sprite.Sprite.__init__(self)
+class Map(object):
+    def __init__(self, map_path, window_width, window_height, layer):
 
-        self.image = pygame.image.load(image_file)
-        self.rect = self.image.get_rect()
-        self.rect.left, self.rect.top = location
+        tmx_data = pytmx.load_pygame(map_path)
+
+        self.walls = []
+        for an_object in tmx_data.objects:
+            self.walls.append(pygame.Rect(an_object.x, an_object.y, an_object.width, an_object.height))
+
+        map_data = pyscroll.data.TiledMapData(tmx_data)
+        map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
+        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
