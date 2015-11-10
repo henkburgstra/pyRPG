@@ -51,14 +51,14 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
+            text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
+            pygame.display.set_caption(text)
+
             # for i in range(len(self.player)):
             self.player[0].set_speed()
             self.player[0].handle_movement()
 
-            text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
-            pygame.display.set_caption(text)
-
-            if self.player[0].rect.collidelist(self.map.walls) > -1:
+            while self.player[0].rect.collidelist(self.map.walls) > -1:
                 self.player[0].move_back()
 
             self.map.group.center(self.player[0].rect.center)

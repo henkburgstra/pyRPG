@@ -14,7 +14,6 @@ class Hero(pygame.sprite.Sprite):
     def __init__(self, position, spritesheet):
         pygame.sprite.Sprite.__init__(self)
 
-        # Load our pickled frame values and assign them to dicts
         self.west_states = {0:  (32, 32, 32, 32), 1: (0, 32, 32, 32), 2: (32, 32, 32, 32), 3: (64, 32, 32, 32)}
         self.east_states = {0:  (32, 64, 32, 32), 1: (0, 64, 32, 32), 2: (32, 64, 32, 32), 3: (64, 64, 32, 32)}
         self.north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
@@ -32,7 +31,6 @@ class Hero(pygame.sprite.Sprite):
         # Assign the position parameter value to the topleft x-y values of the rect
         self.rect.topleft = position
 
-        # We'll use this later to cycle through frames
         self.direction = 'north'
         self.step_count = 0
         self.step_animation = 0
@@ -174,10 +172,10 @@ class Hero(pygame.sprite.Sprite):
 
     def move_back(self):
         if self.direction == 'west':
-            self.rect.x += self.movespeed
+            self.rect.x += 1
         if self.direction == 'east':
-            self.rect.x -= self.movespeed
+            self.rect.x -= 1
         if self.direction == 'north':
-            self.rect.y += self.movespeed
+            self.rect.y += 1
         if self.direction == 'south':
-            self.rect.y -= self.movespeed
+            self.rect.y -= 1
