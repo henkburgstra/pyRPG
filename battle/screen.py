@@ -12,6 +12,9 @@ import data
 from output import Output
 
 
+# todo, cirkel blijft ook onder de bomen, maar moet erboven
+# todo, scroll van de ene speler naar de andere na een 'c' toets
+
 class BattleWindow(object):
     def __init__(self, width=900, height=800, fps=60):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
