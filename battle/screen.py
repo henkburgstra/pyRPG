@@ -32,8 +32,7 @@ class BattleWindow(object):
             if hero in data.party:
                 self.player.append(Hero((320+randint(1, 9)*32, 320+randint(1, 9)*32), hero.BMP))
                 self.map.group.add(self.player[i])
-                self.map.walls.append(pygame.Rect(self.player[i].rect.x, self.player[i].rect.y,
-                                                  self.player[i].rect.width, self.player[i].rect.height))
+                self.map.add_obstacle(self.player[i].rect)
                 i += 1
 
         self.cu = 0
@@ -41,9 +40,8 @@ class BattleWindow(object):
         self.pointer = Pointer(self.player[self.cu].rect.center)
         self.map.group.add(self.pointer)
 
-        # de walls van de player die aan de beurt is weer verwijderen.
-        self.map.walls.remove(pygame.Rect(self.player[self.cu].rect.x, self.player[self.cu].rect.y,
-                                          self.player[self.cu].rect.width, self.player[self.cu].rect.height))
+        # de obstacle van de player die aan de beurt is weer verwijderen.
+        self.map.del_obstacle(self.player[self.cu].rect)
 
     def run(self):
         debug = False
@@ -67,17 +65,11 @@ class BattleWindow(object):
                         self.player[self.cu].align_to_grid()
                     if event.key == pygame.K_c:
                         self.player[self.cu].align_to_grid()
-                        self.map.walls.append(pygame.Rect(self.player[self.cu].rect.x,
-                                                          self.player[self.cu].rect.y,
-                                                          self.player[self.cu].rect.width,
-                                                          self.player[self.cu].rect.height))
+                        self.map.add_obstacle(self.player[self.cu].rect)
                         self.cu += 1
                         if self.cu > 4:
                             self.cu = 0
-                        self.map.walls.remove(pygame.Rect(self.player[self.cu].rect.x,
-                                                          self.player[self.cu].rect.y,
-                                                          self.player[self.cu].rect.width,
-                                                          self.player[self.cu].rect.height))
+                        self.map.del_obstacle(self.player[self.cu].rect)
 
             text = "Press ESC to quit.{}FPS: {:6.3}".format(" "*5, self.clock.get_fps())
             pygame.display.set_caption(text)
@@ -85,15 +77,16 @@ class BattleWindow(object):
             self.player[self.cu].set_speed()
             self.player[self.cu].handle_movement()
 
-            # loop tegen de rand van een wall aan
-            if self.player[self.cu].rect.collidelist(self.map.walls) > -1 and \
-                    len(self.player[self.cu].rect.collidelistall(self.map.walls)) == 1:
-                    # er mag maar 1 wall in deze lijst hierboven zijn
-                obj_nr = self.player[self.cu].rect.collidelist(self.map.walls)  # obj_nr is het nr van de betr. wall
-                self.player[self.cu].move_side(self.map.walls[obj_nr])
+            # loop tegen de rand van een obstacle aan
+            if self.player[self.cu].rect.collidelist(self.map.obstacles) > -1 and \
+                    len(self.player[self.cu].rect.collidelistall(self.map.obstacles)) == 1:
+                    # er mag maar 1 obstacle in deze lijst hierboven zijn
+                # obj_nr is het nummer van de betreffende obstacle
+                obj_nr = self.player[self.cu].rect.collidelist(self.map.obstacles)
+                self.player[self.cu].move_side(self.map.obstacles[obj_nr])
 
-            # loop tegen een wall aan
-            while self.player[self.cu].rect.collidelist(self.map.walls) > -1:
+            # loop tegen een obstacle aan
+            while self.player[self.cu].rect.collidelist(self.map.obstacles) > -1:
                 self.player[self.cu].move_back()
 
             self.pointer.update(self.player[self.cu].rect.center)
