@@ -1,4 +1,10 @@
 
+# todo fullscreen
+# todo fps naar debug
+# todo debug transparant ondergrond
+# todo next unit list
+# todo frames en borders
+
 import os
 from random import randint
 
