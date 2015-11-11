@@ -7,7 +7,23 @@ MOVESPEED2 = 2
 MOVESPEED3 = 4
 MOVESPEED4 = 8
 
-MTS = 16  # Map Tile Size
+MTS = 16  # Map Tile Size (todo, moet dit een functie parameter worden voor align_to_grid?)
+
+
+class Pointer(pygame.sprite.Sprite):
+    def __init__(self, position):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.Surface((64, 64))
+        self.image.fill((0, 0, 0))
+        self.image.set_colorkey((0, 0, 0))
+        self.image.convert_alpha()
+        pygame.draw.circle(self.image, (255, 255, 255), (32, 32), 32, 1)
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+    def update(self, position):
+        self.rect.center = position
 
 
 # Hero extends the pygame.sprite.Sprite class
@@ -118,9 +134,6 @@ class Hero(pygame.sprite.Sprite):
            not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
                 self.update(False)
 
-        if keys[pygame.K_SPACE]:
-            self.rect.topleft = (round(self.rect.x / MTS) * MTS, round(self.rect.y / MTS) * MTS)
-
         # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
         if keys[pygame.K_UP] or keys[pygame.K_DOWN] or \
            keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
@@ -174,6 +187,9 @@ class Hero(pygame.sprite.Sprite):
             if self.step_animation > 3:
                 self.step_animation = 0
         return frame_set[self.step_animation]
+
+    def align_to_grid(self):
+        self.rect.topleft = (round(self.rect.x / MTS) * MTS, round(self.rect.y / MTS) * MTS)
 
     def move_back(self):
         if self.direction == 'west':
