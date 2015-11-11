@@ -20,7 +20,7 @@ class BattleWindow(object):
 
         self.clock = pygame.time.Clock()
         self.fps = fps
-        self.font = pygame.font.SysFont('mono', 14)
+        self.font = pygame.font.SysFont('courier', 11)
 
         self.map = Map('resources/maps/area01/new.tmx', width, height, 3)
 
@@ -37,6 +37,7 @@ class BattleWindow(object):
         #         i += 1
 
     def run(self):
+        debug = False
         game_over = False
         while not game_over:
 
@@ -48,6 +49,11 @@ class BattleWindow(object):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
+                    if event.key == pygame.K_F12:
+                        if debug:
+                            debug = False
+                        else:
+                            debug = True
 
             text = "Press ESC to quit.{}FPS: {:6.3}".format(" "*5, self.clock.get_fps())
             pygame.display.set_caption(text)
@@ -68,16 +74,19 @@ class BattleWindow(object):
 
             self.map.group.center(self.player[0].rect.center)
             self.map.group.draw(self.screen)
-
-            # self.screen.blit(self.font.render("press_up: {}".format(self.player[0].press_up),
-            #                                   True, (0, 0, 0)), (0, 0))
-            # self.screen.blit(self.font.render("press_down: {}".format(self.player[0].press_down),
-            #                                   True, (0, 0, 0)), (0, 20))
-            # self.screen.blit(self.font.render("press_left: {}".format(self.player[0].press_left),
-            #                                   True, (0, 0, 0)), (0, 40))
-            # self.screen.blit(self.font.render("press_right: {}".format(self.player[0].press_right),
-            #                                   True, (0, 0, 0)), (0, 60))
+            if debug:
+                self.debug()
 
             pygame.display.flip()
 
         pygame.quit()
+
+    def debug(self):
+        self.screen.blit(self.font.render("press_up:    {}".format(self.player[0].press_up),
+                                          True, (255, 255, 255)), (0, 0))
+        self.screen.blit(self.font.render("press_down:  {}".format(self.player[0].press_down),
+                                          True, (255, 255, 255)), (0, 10))
+        self.screen.blit(self.font.render("press_left:  {}".format(self.player[0].press_left),
+                                          True, (255, 255, 255)), (0, 20))
+        self.screen.blit(self.font.render("press_right: {}".format(self.player[0].press_right),
+                                          True, (255, 255, 255)), (0, 30))
