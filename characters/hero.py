@@ -55,7 +55,7 @@ class Hero(Character):
                 total += equipment_item.PROTECTION
         return total
 
-    # naast hero.protection ook nog:
+    # todo, naast hero.protection ook nog:
     # defense
     # hit
     # damage

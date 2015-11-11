@@ -24,7 +24,7 @@ class PouchItem(Item):
 
 
 class Gear(Item):
-    def __init__(self, name, raw, sort, value, shop):  # , boostdict):
+    def __init__(self, name, raw, sort, value, shop):  # , boostdict): # is van kasper
         super().__init__(name)
         self.RAW = raw
         self.SORT = sort

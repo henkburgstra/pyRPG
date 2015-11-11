@@ -266,7 +266,7 @@ class TavernWindow(gui.HeroDialog):
             self._firsttime = False
 
     def OnCellClick(self, event):
-        # idee kasper, kolom en rij als dict key. en hero raw als value.
+        # todo, idee kasper, kolom en rij als dict key. en hero raw als value.
         if self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[    ]":
             data.party.add(data.heroes[self.grid_heroes.GetCellValue(event.GetRow(), 1).lower()])
         elif self.grid_heroes.GetCellValue(event.GetRow(), event.GetCol()) == "[ X ]":

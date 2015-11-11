@@ -201,7 +201,7 @@ def load_all_data():
     party.add(heroes.alagos, verbose=False)
     pouch.add(pouchitems.gold, 10, verbose=False)
 
-    # dit hieronder is om te testen
+    # todo, dit hieronder is om te testen
     party.add(heroes.luana)
     party.add(heroes.elias)
     party.add(heroes.faeron)
