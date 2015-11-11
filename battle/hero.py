@@ -7,6 +7,8 @@ MOVESPEED2 = 2
 MOVESPEED3 = 4
 MOVESPEED4 = 8
 
+MTS = 16  # Map Tile Size
+
 
 # Hero extends the pygame.sprite.Sprite class
 class Hero(pygame.sprite.Sprite):
@@ -116,6 +118,9 @@ class Hero(pygame.sprite.Sprite):
            not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
                 self.update(False)
 
+        if keys[pygame.K_SPACE]:
+            self.rect.topleft = (round(self.rect.x / MTS) * MTS, round(self.rect.y / MTS) * MTS)
+
         # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
         if keys[pygame.K_UP] or keys[pygame.K_DOWN] or \
            keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
@@ -164,7 +169,7 @@ class Hero(pygame.sprite.Sprite):
 
     def get_frame(self, frame_set):
         self.step_count += 1
-        if self.step_count % (24 / self.movespeed) == 1:
+        if self.step_count % (24 / self.movespeed) == 1:  # 24 is deelbaar door alle movespeeds
             self.step_animation += 1
             if self.step_animation > 3:
                 self.step_animation = 0
@@ -179,3 +184,15 @@ class Hero(pygame.sprite.Sprite):
             self.rect.y += 1
         if self.direction == 'south':
             self.rect.y -= 1
+
+    def move_side(self, obj):
+        if self.direction in ('west', 'east'):
+            if abs(self.rect.top - obj.bottom) < self.rect.h / 2:  # < 16
+                self.rect.y += self.movespeed
+            if abs(self.rect.bottom - obj.top) < self.rect.h / 2:
+                self.rect.y -= self.movespeed
+        if self.direction in ('north', 'south'):
+            if abs(self.rect.left - obj.right) < self.rect.w / 2:
+                self.rect.x += self.movespeed
+            if abs(self.rect.right - obj.left) < self.rect.w / 2:
+                self.rect.x -= self.movespeed

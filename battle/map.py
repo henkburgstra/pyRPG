@@ -12,8 +12,8 @@ class Map(object):
         tmx_data = pytmx.load_pygame(map_path)
 
         self.walls = []
-        for an_object in tmx_data.objects:
-            self.walls.append(pygame.Rect(an_object.x, an_object.y, an_object.width, an_object.height))
+        for obj in tmx_data.objects:
+            self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)

@@ -15,34 +15,32 @@ class BattleWindow(object):
     def __init__(self, width=900, height=800, fps=60):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
-        pygame.display.set_caption("Press ESC to quit")
+        pygame.font.init()
         self.screen = pygame.display.set_mode((width, height), pygame.DOUBLEBUF)
 
         self.clock = pygame.time.Clock()
         self.fps = fps
-        self.playtime = 0.0
         self.font = pygame.font.SysFont('mono', 14)
 
         self.map = Map('resources/maps/area01/new.tmx', width, height, 3)
 
         self.player = []
-        self.player.append(Hero((0, 0), data.heroes.alagos.BMP))
+        self.player.append(Hero((320, 320), data.heroes.alagos.BMP))
         self.map.group.add(self.player[0])
 
         # i = 0
         # for hero_raw in Output.HERO_SORT:
         #     hero = data.heroes[hero_raw]
         #     if hero in data.party:
-        #         self.player.append(Hero((200+randint(1, 9)*30, 200+randint(1, 9)*30), hero.BMP))
-        #         self.group.add(self.player[i])
+        #         self.player.append(Hero((320+randint(1, 9)*30, 320+randint(1, 9)*30), hero.BMP))
+        #         self.map.group.add(self.player[i])
         #         i += 1
 
     def run(self):
         game_over = False
         while not game_over:
 
-            milliseconds = self.clock.tick(self.fps)
-            self.playtime += milliseconds / 1000.0
+            self.clock.tick(self.fps)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -51,13 +49,20 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
 
-            text = "FPS: {:6.3}{}PLAYTIME: {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime)
+            text = "Press ESC to quit.{}FPS: {:6.3}".format(" "*5, self.clock.get_fps())
             pygame.display.set_caption(text)
 
             # for i in range(len(self.player)):
             self.player[0].set_speed()
             self.player[0].handle_movement()
 
+            # loop tegen de rand van een wall aan
+            if self.player[0].rect.collidelist(self.map.walls) > -1 and \
+                    len(self.player[0].rect.collidelistall(self.map.walls)) == 1:   # er mag maar 1 wall in de lijst
+                obj_nr = self.player[0].rect.collidelist(self.map.walls)            # obj_nr is het nr van de betr. wall
+                self.player[0].move_side(self.map.walls[obj_nr])
+
+            # loop tegen een wall aan
             while self.player[0].rect.collidelist(self.map.walls) > -1:
                 self.player[0].move_back()
 
