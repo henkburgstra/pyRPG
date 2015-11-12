@@ -7,6 +7,7 @@ MOVESPEED2 = 2
 MOVESPEED3 = 4
 MOVESPEED4 = 8
 
+# todo, magic numbers opruimen
 MTS = 16  # Map Tile Size (todo, moet dit een functie parameter worden voor align_to_grid?)
 
 

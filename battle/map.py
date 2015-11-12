@@ -7,7 +7,7 @@ import pyscroll.data
 
 
 class Map(object):
-    def __init__(self, map_path, window_width, window_height, layer):
+    def __init__(self, map_path, layer, window_width, window_height):
 
         tmx_data = pytmx.load_pygame(map_path)
 
