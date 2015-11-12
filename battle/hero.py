@@ -19,6 +19,7 @@ class Pointer(pygame.sprite.Sprite):
         self.image.fill((0, 0, 0))
         self.image.set_colorkey((0, 0, 0))
         pygame.draw.circle(self.image, (255, 255, 255), (32, 32), 32, 1)
+        self.image = self.image.convert()
         self.rect = self.image.get_rect()
 
     def update(self, position):

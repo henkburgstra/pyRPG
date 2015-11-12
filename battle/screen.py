@@ -1,9 +1,9 @@
 
-# todo fullscreen
-# todo fps naar debug
 # todo debug transparant ondergrond
 # todo next unit list
 # todo frames en borders
+# todo moveranges
+# todo magic numbers opruimen, sizes en colors
 
 import os
 from random import randint
@@ -22,17 +22,19 @@ SCROLLSPEED = 120
 
 
 class BattleWindow(object):
-    def __init__(self, width=900, height=800, fps=60):
+    def __init__(self, width=1920, height=1080, fps=60):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
-        self.w, self.h = width, height
-        self.screen = pygame.display.set_mode((self.w, self.h), pygame.DOUBLEBUF)
+        self.screen = pygame.display.set_mode((width, height), pygame.DOUBLEBUF | pygame.FULLSCREEN)
+        self.screen.fill((127, 127, 127))
+        self.window = pygame.Surface((800, 600))
+        self.window = self.window.convert()
 
         self.clock = pygame.time.Clock()
         self.fps = fps
         self.font = pygame.font.SysFont('courier', 11)
 
-        self.map = Map('resources/maps/area01/new.tmx', self.w, self.h, 3)
+        self.map = Map('resources/maps/area01/new.tmx', 800, 600, 3)
 
         self.player = []
         i = 0
@@ -57,8 +59,6 @@ class BattleWindow(object):
         while not game_over:
 
             self.clock.tick(self.fps)
-            text = "Press ESC to quit.{}FPS: {:6.3}".format(" "*5, self.clock.get_fps())
-            pygame.display.set_caption(text)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -82,23 +82,26 @@ class BattleWindow(object):
 
             self.pointer.update(self.player[self.cu].rect.center)
             self.map.group.center(self.player[self.cu].rect.center)
-            self.map.group.draw(self.screen)
+            self.map.group.draw(self.window)
             if debug:
                 self.debug()
 
             pygame.display.flip()
+            self.screen.blit(self.window, (100, 100))
 
         pygame.quit()
 
     def debug(self):
-        self.screen.blit(self.font.render("press_up:    {}".format(self.player[self.cu].press_up),
+        self.window.blit(self.font.render("FPS:         {}".format(int(self.clock.get_fps())),
                                           True, (255, 255, 255)), (0, 0))
-        self.screen.blit(self.font.render("press_down:  {}".format(self.player[self.cu].press_down),
+        self.window.blit(self.font.render("press_up:    {}".format(self.player[self.cu].press_up),
                                           True, (255, 255, 255)), (0, 10))
-        self.screen.blit(self.font.render("press_left:  {}".format(self.player[self.cu].press_left),
+        self.window.blit(self.font.render("press_down:  {}".format(self.player[self.cu].press_down),
                                           True, (255, 255, 255)), (0, 20))
-        self.screen.blit(self.font.render("press_right: {}".format(self.player[self.cu].press_right),
+        self.window.blit(self.font.render("press_left:  {}".format(self.player[self.cu].press_left),
                                           True, (255, 255, 255)), (0, 30))
+        self.window.blit(self.font.render("press_right: {}".format(self.player[self.cu].press_right),
+                                          True, (255, 255, 255)), (0, 40))
 
     def end_of_turn(self):
         self.player[self.cu].align_to_grid()
@@ -121,8 +124,9 @@ class BattleWindow(object):
             tmp_y -= step_y
             self.pointer.update((tmp_x, tmp_y))
             self.map.group.center((tmp_x, tmp_y))
-            self.map.group.draw(self.screen)
+            self.map.group.draw(self.window)
             pygame.display.flip()
+            self.screen.blit(self.window, (100, 100))
 
     def check_obstacle(self):
         # loop tegen de rand van een obstacle aan
