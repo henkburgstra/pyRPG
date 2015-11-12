@@ -8,14 +8,13 @@ MOVESPEED3 = 4
 MOVESPEED4 = 8
 
 # todo, magic numbers opruimen
-MTS = 16  # Map Tile Size (todo, moet dit een functie parameter worden voor align_to_grid?)
 
 
 class Pointer(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, layer):
         pygame.sprite.Sprite.__init__(self)
 
-        self._layer = 4
+        self._layer = layer
         self.image = pygame.Surface((65, 65))   # 64 bij 64 + 1, anders niet helemaal gecentreerd
         self.image.fill((0, 0, 0))
         self.image.set_colorkey((0, 0, 0))
@@ -189,8 +188,8 @@ class Hero(pygame.sprite.Sprite):
                 self.step_animation = 0
         return frame_set[self.step_animation]
 
-    def align_to_grid(self):
-        self.rect.topleft = (round(self.rect.x / MTS) * MTS, round(self.rect.y / MTS) * MTS)
+    def align_to_grid(self, tile_size):
+        self.rect.topleft = (round(self.rect.x / tile_size) * tile_size, round(self.rect.y / tile_size) * tile_size)
 
     def move_back(self):
         if self.direction == 'west':

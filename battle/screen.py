@@ -22,7 +22,10 @@ WINDOWPOS = 100, 100
 
 FPS = 60
 SCROLLSPEED = 20        # lager is sneller
-LAYER = 3
+DEFAULTLAYER = 3
+POINTERLAYER = 4
+GRIDLAYER = 4
+TILESIZE = 32
 
 WHITE = 255, 255, 255
 BLACK = 0, 0, 0
@@ -45,7 +48,7 @@ class BattleWindow(object):
         self.font = pygame.font.SysFont('courier', 11)
         self.debug = False
 
-        self.map = Map('resources/maps/area01/new.tmx', LAYER, *WINDOWSIZE)
+        self.map = Map('resources/maps/area01/new.tmx', DEFAULTLAYER, *WINDOWSIZE)
 
         self.player = []
         i = 0
@@ -61,10 +64,10 @@ class BattleWindow(object):
         # de obstacle van de player die aan de beurt is weer verwijderen.
         self.map.del_obstacle(self.player[self.cu].rect)
 
-        self.pointer = Pointer()
+        self.pointer = Pointer(POINTERLAYER)
         self.map.group.add(self.pointer)
 
-        self.grid = Grid(self.map.width, self.map.height)
+        self.grid = Grid(self.map.width, self.map.height, TILESIZE, GRIDLAYER)
 
     def run(self):
         game_over = False
@@ -91,7 +94,7 @@ class BattleWindow(object):
                         else:
                             self.debug = True
                     if event.key == pygame.K_SPACE:
-                        self.player[self.cu].align_to_grid()
+                        self.player[self.cu].align_to_grid(TILESIZE)
                     if event.key == pygame.K_c:
                         self.end_of_turn()
 
@@ -126,7 +129,7 @@ class BattleWindow(object):
             i += 10
 
     def end_of_turn(self):
-        self.player[self.cu].align_to_grid()
+        self.player[self.cu].align_to_grid(TILESIZE)
         start_x, start_y = self.player[self.cu].rect.center
         self.map.add_obstacle(self.player[self.cu].rect)
         self.cu += 1
