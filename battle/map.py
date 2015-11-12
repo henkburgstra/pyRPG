@@ -11,6 +11,9 @@ class Map(object):
 
         tmx_data = pytmx.load_pygame(map_path)
 
+        self.width = int(tmx_data.width * tmx_data.tilewidth)
+        self.height = int(tmx_data.height * tmx_data.tileheight)
+
         self.obstacles = []
         for obj in tmx_data.objects:
             self.add_obstacle(obj)
@@ -24,3 +27,21 @@ class Map(object):
 
     def del_obstacle(self, obj):
         self.obstacles.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+
+class Grid(pygame.sprite.Sprite):
+    def __init__(self, map_width, map_height):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._layer = 4
+        self.image = pygame.Surface((map_width, map_height))
+        self.image.fill((0, 0, 0))
+        self.image.set_colorkey((0, 0, 0))
+        for i in range(0, map_width, 32):
+            pygame.draw.line(self.image, (100, 100, 100), (0, i), (map_width, i))
+        for i in range(0, map_height, 32):
+            pygame.draw.line(self.image, (100, 100, 100), (i, 0), (i, map_height))
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+
+        self.show = False

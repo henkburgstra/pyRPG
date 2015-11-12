@@ -11,6 +11,7 @@ import pygame
 from battle.hero import Hero
 from battle.hero import Pointer
 from battle.map import Map
+from battle.map import Grid
 
 import data
 from output import Output
@@ -20,7 +21,7 @@ WINDOWSIZE = 800, 600
 WINDOWPOS = 100, 100
 
 FPS = 60
-SCROLLSPEED = 120
+SCROLLSPEED = 20        # lager is sneller
 LAYER = 3
 
 WHITE = 255, 255, 255
@@ -34,7 +35,7 @@ class BattleWindow(object):
         pygame.init()
         self.screen = pygame.display.set_mode(SCREENSIZE, pygame.DOUBLEBUF)  # | pygame.FULLSCREEN)
         self.background = pygame.Surface(self.screen.get_size())
-        self.background.fill(GRAY)
+        self.background.fill(BLACK)
         self.background = self.background.convert()
         self.window = pygame.Surface(WINDOWSIZE)
         self.window = self.window.convert()
@@ -63,6 +64,8 @@ class BattleWindow(object):
         self.pointer = Pointer()
         self.map.group.add(self.pointer)
 
+        self.grid = Grid(self.map.width, self.map.height)
+
     def run(self):
         game_over = False
         while not game_over:
@@ -75,6 +78,13 @@ class BattleWindow(object):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
+                    if event.key == pygame.K_F10:
+                        if self.grid.show:
+                            self.grid.show = False
+                            self.map.group.remove(self.grid)
+                        else:
+                            self.grid.show = True
+                            self.map.group.add(self.grid)
                     if event.key == pygame.K_F12:
                         if self.debug:
                             self.debug = False
@@ -96,12 +106,12 @@ class BattleWindow(object):
         pygame.quit()
 
     def draw(self):
-            self.map.group.draw(self.window)
-            if self.debug:
-                self.show_debug()
-            self.screen.blit(self.window, WINDOWPOS)
-            pygame.display.flip()
-            self.screen.blit(self.background, (0, 0))
+        self.map.group.draw(self.window)
+        if self.debug:
+            self.show_debug()
+        self.screen.blit(self.window, WINDOWPOS)
+        pygame.display.flip()
+        self.screen.blit(self.background, (0, 0))
 
     def show_debug(self):
         text = ("FPS:         {}".format(int(self.clock.get_fps())),
@@ -120,7 +130,7 @@ class BattleWindow(object):
         start_x, start_y = self.player[self.cu].rect.center
         self.map.add_obstacle(self.player[self.cu].rect)
         self.cu += 1
-        if self.cu > 4:
+        if self.cu > len(data.party) - 1:
             self.cu = 0
         end_x, end_y = self.player[self.cu].rect.center
         self.map.del_obstacle(self.player[self.cu].rect)
@@ -132,6 +142,7 @@ class BattleWindow(object):
         tmp_x = start_x
         tmp_y = start_y
         for _ in range(SCROLLSPEED):
+            self.clock.tick(self.fps)
             tmp_x -= step_x
             tmp_y -= step_y
             self.pointer.update((tmp_x, tmp_y))
