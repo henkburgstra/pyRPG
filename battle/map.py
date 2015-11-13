@@ -45,3 +45,17 @@ class Grid(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.show = False
+
+
+class Info(pygame.sprite.Sprite):
+    def __init__(self, obj, layer):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._layer = layer
+        self.image = pygame.Surface((obj.width, obj.height))
+        self.image.fill((0, 0, 0))
+        self.image.set_colorkey((0, 0, 0))
+        pygame.draw.rect(self.image, (255, 0, 0), (0, 0, obj.width, obj.height), 1)
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.topleft = obj.topleft

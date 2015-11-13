@@ -1,4 +1,5 @@
 
+# todo bij info bomen en spelers andere kleur geven
 # todo next unit list
 # todo frames en borders
 # todo moveranges
@@ -12,6 +13,7 @@ from battle.hero import Hero
 from battle.hero import Pointer
 from battle.map import Map
 from battle.map import Grid
+from battle.map import Info
 
 import data
 from output import Output
@@ -46,7 +48,9 @@ class BattleWindow(object):
         self.clock = pygame.time.Clock()
         self.fps = FPS
         self.font = pygame.font.SysFont('courier', 11)
+
         self.debug = False
+        self.info = False
 
         self.map = Map('resources/maps/area01/new.tmx', DEFAULTLAYER, *WINDOWSIZE)
 
@@ -68,6 +72,7 @@ class BattleWindow(object):
         self.map.group.add(self.pointer)
 
         self.grid = Grid(self.map.width, self.map.height, TILESIZE, GRIDLAYER)
+        self.infol = []
 
     def run(self):
         game_over = False
@@ -88,6 +93,8 @@ class BattleWindow(object):
                         else:
                             self.grid.show = True
                             self.map.group.add(self.grid)
+                    if event.key == pygame.K_F11:
+                        self.show_info(1)
                     if event.key == pygame.K_F12:
                         if self.debug:
                             self.debug = False
@@ -116,6 +123,25 @@ class BattleWindow(object):
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
 
+    def show_info(self, status):
+        if status == 1:
+            if self.info:
+                self.info = False
+                self.map.group.remove(self.infol)
+                self.infol = []
+            else:
+                self.info = True
+                for obj in self.map.obstacles:
+                    self.infol.append(Info(obj, GRIDLAYER))
+                self.map.group.add(self.infol)
+        if status == 0:
+            if self.info:
+                self.map.group.remove(self.infol)
+                self.infol = []
+                for obj in self.map.obstacles:
+                    self.infol.append(Info(obj, GRIDLAYER))
+                self.map.group.add(self.infol)
+
     def show_debug(self):
         text = ("FPS:         {}".format(int(self.clock.get_fps())),
                 "press_up:    {}".format(self.player[self.cu].press_up),
@@ -138,6 +164,7 @@ class BattleWindow(object):
         end_x, end_y = self.player[self.cu].rect.center
         self.map.del_obstacle(self.player[self.cu].rect)
         self.scroll_map(start_x, start_y, end_x, end_y)
+        self.show_info(0)
 
     def scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED
