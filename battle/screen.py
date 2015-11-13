@@ -1,6 +1,4 @@
 
-# todo start_pos gaat nog niet goed
-# todo x en y ed in debug view
 # todo next unit list
 # todo frames en borders
 # todo moveranges
@@ -29,6 +27,7 @@ DEFAULTLAYER = 3
 POINTERLAYER = 4
 GRIDLAYER = 4
 TILESIZE = 32
+GRIDSIZE = 16
 
 WHITE = 255, 255, 255
 BLACK = 0, 0, 0
@@ -68,7 +67,7 @@ class BattleWindow(object):
 
         self.cu = 0
         # de obstacle van de player die aan de beurt is weer verwijderen.
-        self.map.start_pos = self.player[self.cu].rect
+        self.map.add_object(self.player[self.cu].rect, self.map.start_pos)
         self.map.del_object(self.player[self.cu].rect, self.map.heroes)
         self.map.del_object(self.player[self.cu].rect, self.map.obstacles)
 
@@ -105,7 +104,7 @@ class BattleWindow(object):
                         else:
                             self.debug = True
                     if event.key == pygame.K_SPACE:
-                        self.player[self.cu].align_to_grid(TILESIZE)
+                        self.player[self.cu].align_to_grid(GRIDSIZE)
                     if event.key == pygame.K_c:
                         self.end_of_turn()
 
@@ -121,9 +120,9 @@ class BattleWindow(object):
 
     def draw(self):
         self.map.group.draw(self.window)
+        self.screen.blit(self.window, WINDOWPOS)
         if self.debug:
             self.show_debug()
-        self.screen.blit(self.window, WINDOWPOS)
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
 
@@ -135,7 +134,8 @@ class BattleWindow(object):
                 self.infol = []
             else:
                 self.infob = True
-                self.infol.append(Info(self.map.start_pos, 'start', GRIDLAYER))
+                for obj in self.map.start_pos:
+                    self.infol.append(Info(obj, 'start', GRIDLAYER))
                 for obj in self.map.heroes:
                     self.infol.append(Info(obj, 'hero', GRIDLAYER))
                 for obj in self.map.trees:
@@ -145,7 +145,8 @@ class BattleWindow(object):
             if self.infob:
                 self.map.group.remove(self.infol)
                 self.infol = []
-                self.infol.append(Info(self.map.start_pos, 'start', GRIDLAYER))
+                for obj in self.map.start_pos:
+                    self.infol.append(Info(obj, 'start', GRIDLAYER))
                 for obj in self.map.heroes:
                     self.infol.append(Info(obj, 'hero', GRIDLAYER))
                 for obj in self.map.trees:
@@ -153,11 +154,21 @@ class BattleWindow(object):
                 self.map.group.add(self.infol)
 
     def show_debug(self):
-        text = ("FPS:         {}".format(int(self.clock.get_fps())),
-                "press_up:    {}".format(self.player[self.cu].press_up),
-                "press_down:  {}".format(self.player[self.cu].press_down),
-                "press_left:  {}".format(self.player[self.cu].press_left),
-                "press_right: {}".format(self.player[self.cu].press_right)
+        text = ("FPS:            {}".format(int(self.clock.get_fps())),
+                "press_up:       {}".format(self.player[self.cu].press_up),
+                "press_down:     {}".format(self.player[self.cu].press_down),
+                "press_left:     {}".format(self.player[self.cu].press_left),
+                "press_right:    {}".format(self.player[self.cu].press_right),
+                "direction:      {}".format(self.player[self.cu].direction),
+                "movespeed:      {}".format(self.player[self.cu].movespeed),
+                "cu:             {}".format(self.cu),
+                "start_pos.x:    {}".format(self.map.start_pos[0].left),
+                "start_pos.y     {}".format(self.map.start_pos[0].top),
+                "player.x:       {}".format(self.player[self.cu].rect.left),
+                "player.y:       {}".format(self.player[self.cu].rect.top),
+                "step_count:     {}".format(self.player[self.cu].step_count),
+                "step_animation: {}".format(self.player[self.cu].step_animation),
+                "step_delay:     {}".format(self.player[self.cu].step_delay),
                 )
         i = 0
         for line in text:
@@ -165,18 +176,18 @@ class BattleWindow(object):
             i += 10
 
     def end_of_turn(self):
-        self.player[self.cu].align_to_grid(TILESIZE)
+        self.player[self.cu].align_to_grid(GRIDSIZE)
         start_x, start_y = self.player[self.cu].rect.center
         self.map.add_object(self.player[self.cu].rect, self.map.heroes)
         self.map.add_object(self.player[self.cu].rect, self.map.obstacles)
-        self.map.start_pos = None
+        self.map.start_pos = []
         self.cu += 1
         if self.cu > len(data.party) - 1:
             self.cu = 0
         end_x, end_y = self.player[self.cu].rect.center
         self.map.del_object(self.player[self.cu].rect, self.map.heroes)
         self.map.del_object(self.player[self.cu].rect, self.map.obstacles)
-        self.map.start_pos = self.player[self.cu].rect
+        self.map.add_object(self.player[self.cu].rect, self.map.start_pos)
         self.scroll_map(start_x, start_y, end_x, end_y)
         self.show_info(0)
 

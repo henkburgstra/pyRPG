@@ -21,7 +21,7 @@ class Map(object):
         self.width = int(tmx_data.width * tmx_data.tilewidth)
         self.height = int(tmx_data.height * tmx_data.tileheight)
 
-        self.start_pos = None
+        self.start_pos = []
         self.trees = []
         self.heroes = []
         self.obstacles = []
