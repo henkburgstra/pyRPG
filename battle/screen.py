@@ -155,20 +155,20 @@ class BattleWindow(object):
 
     def show_debug(self):
         text = ("FPS:            {}".format(int(self.clock.get_fps())),
-                "press_up:       {}".format(self.player[self.cu].press_up),
-                "press_down:     {}".format(self.player[self.cu].press_down),
-                "press_left:     {}".format(self.player[self.cu].press_left),
-                "press_right:    {}".format(self.player[self.cu].press_right),
-                "direction:      {}".format(self.player[self.cu].direction),
-                "movespeed:      {}".format(self.player[self.cu].movespeed),
+                "press_up:       {}".format(self.player[self.cu]._press_up),
+                "press_down:     {}".format(self.player[self.cu]._press_down),
+                "press_left:     {}".format(self.player[self.cu]._press_left),
+                "press_right:    {}".format(self.player[self.cu]._press_right),
+                "direction:      {}".format(self.player[self.cu]._direction),
+                "movespeed:      {}".format(self.player[self.cu]._movespeed),
                 "cu:             {}".format(self.cu),
                 "start_pos.x:    {}".format(self.map.start_pos[0].left),
                 "start_pos.y     {}".format(self.map.start_pos[0].top),
                 "player.x:       {}".format(self.player[self.cu].rect.left),
                 "player.y:       {}".format(self.player[self.cu].rect.top),
-                "step_count:     {}".format(self.player[self.cu].step_count),
-                "step_animation: {}".format(self.player[self.cu].step_animation),
-                "step_delay:     {}".format(self.player[self.cu].step_delay),
+                "step_count:     {}".format(self.player[self.cu]._step_count),
+                "step_animation: {}".format(self.player[self.cu]._step_animation),
+                "step_delay:     {}".format(self.player[self.cu]._step_delay),
                 )
         i = 0
         for line in text:
