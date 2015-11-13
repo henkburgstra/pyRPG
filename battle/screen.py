@@ -1,5 +1,6 @@
 
-# todo bij info bomen en spelers andere kleur geven
+# todo start_pos gaat nog niet goed
+# todo x en y ed in debug view
 # todo next unit list
 # todo frames en borders
 # todo moveranges
@@ -50,7 +51,7 @@ class BattleWindow(object):
         self.font = pygame.font.SysFont('courier', 11)
 
         self.debug = False
-        self.info = False
+        self.infob = False  # info boolean
 
         self.map = Map('resources/maps/area01/new.tmx', DEFAULTLAYER, *WINDOWSIZE)
 
@@ -61,18 +62,21 @@ class BattleWindow(object):
             if hero in data.party:
                 self.player.append(Hero((320+randint(1, 9)*32, 320+randint(1, 9)*32), hero.BMP))
                 self.map.group.add(self.player[i])
-                self.map.add_obstacle(self.player[i].rect)
+                self.map.add_object(self.player[i].rect, self.map.heroes)
+                self.map.add_object(self.player[i].rect, self.map.obstacles)
                 i += 1
 
         self.cu = 0
         # de obstacle van de player die aan de beurt is weer verwijderen.
-        self.map.del_obstacle(self.player[self.cu].rect)
+        self.map.start_pos = self.player[self.cu].rect
+        self.map.del_object(self.player[self.cu].rect, self.map.heroes)
+        self.map.del_object(self.player[self.cu].rect, self.map.obstacles)
 
         self.pointer = Pointer(POINTERLAYER)
         self.map.group.add(self.pointer)
 
         self.grid = Grid(self.map.width, self.map.height, TILESIZE, GRIDLAYER)
-        self.infol = []
+        self.infol = []     # info list
 
     def run(self):
         game_over = False
@@ -124,22 +128,28 @@ class BattleWindow(object):
         self.screen.blit(self.background, (0, 0))
 
     def show_info(self, status):
-        if status == 1:
-            if self.info:
-                self.info = False
+        if status == 1:     # active, with key press
+            if self.infob:
+                self.infob = False
                 self.map.group.remove(self.infol)
                 self.infol = []
             else:
-                self.info = True
-                for obj in self.map.obstacles:
-                    self.infol.append(Info(obj, GRIDLAYER))
+                self.infob = True
+                self.infol.append(Info(self.map.start_pos, 'start', GRIDLAYER))
+                for obj in self.map.heroes:
+                    self.infol.append(Info(obj, 'hero', GRIDLAYER))
+                for obj in self.map.trees:
+                    self.infol.append(Info(obj, 'tree', GRIDLAYER))
                 self.map.group.add(self.infol)
-        if status == 0:
-            if self.info:
+        if status == 0:     # passive, already on
+            if self.infob:
                 self.map.group.remove(self.infol)
                 self.infol = []
-                for obj in self.map.obstacles:
-                    self.infol.append(Info(obj, GRIDLAYER))
+                self.infol.append(Info(self.map.start_pos, 'start', GRIDLAYER))
+                for obj in self.map.heroes:
+                    self.infol.append(Info(obj, 'hero', GRIDLAYER))
+                for obj in self.map.trees:
+                    self.infol.append(Info(obj, 'tree', GRIDLAYER))
                 self.map.group.add(self.infol)
 
     def show_debug(self):
@@ -157,12 +167,16 @@ class BattleWindow(object):
     def end_of_turn(self):
         self.player[self.cu].align_to_grid(TILESIZE)
         start_x, start_y = self.player[self.cu].rect.center
-        self.map.add_obstacle(self.player[self.cu].rect)
+        self.map.add_object(self.player[self.cu].rect, self.map.heroes)
+        self.map.add_object(self.player[self.cu].rect, self.map.obstacles)
+        self.map.start_pos = None
         self.cu += 1
         if self.cu > len(data.party) - 1:
             self.cu = 0
         end_x, end_y = self.player[self.cu].rect.center
-        self.map.del_obstacle(self.player[self.cu].rect)
+        self.map.del_object(self.player[self.cu].rect, self.map.heroes)
+        self.map.del_object(self.player[self.cu].rect, self.map.obstacles)
+        self.map.start_pos = self.player[self.cu].rect
         self.scroll_map(start_x, start_y, end_x, end_y)
         self.show_info(0)
 
