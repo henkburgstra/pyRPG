@@ -25,13 +25,10 @@ FPS = 60
 SCROLLSPEED = 20        # lager is sneller
 DEFAULTLAYER = 3
 POINTERLAYER = 4
-GRIDLAYER = 4
-TILESIZE = 32
 GRIDSIZE = 16
 
 WHITE = 255, 255, 255
 BLACK = 0, 0, 0
-GRAY = 128, 128, 128
 
 
 class BattleWindow(object):
@@ -50,7 +47,6 @@ class BattleWindow(object):
         self.font = pygame.font.SysFont('courier', 11)
 
         self.debug = False
-        self.infob = False  # info boolean
 
         self.map = Map('resources/maps/area01/new.tmx', DEFAULTLAYER, *WINDOWSIZE)
 
@@ -74,9 +70,6 @@ class BattleWindow(object):
         self.pointer = Pointer(POINTERLAYER)
         self.map.group.add(self.pointer)
 
-        self.grid = Grid(self.map.width, self.map.height, TILESIZE, GRIDLAYER)
-        self.infol = []     # info list
-
     def run(self):
         game_over = False
         while not game_over:
@@ -90,14 +83,9 @@ class BattleWindow(object):
                     if event.key == pygame.K_ESCAPE:
                         game_over = True
                     if event.key == pygame.K_F10:
-                        if self.grid.show:
-                            self.grid.show = False
-                            self.map.group.remove(self.grid)
-                        else:
-                            self.grid.show = True
-                            self.map.group.add(self.grid)
+                        self.map.show_grid()
                     if event.key == pygame.K_F11:
-                        self.show_info(1)
+                        self.map.show_info(1)
                     if event.key == pygame.K_F12:
                         if self.debug:
                             self.debug = False
@@ -125,33 +113,6 @@ class BattleWindow(object):
             self.show_debug()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
-
-    def show_info(self, status):
-        if status == 1:     # active, with key press
-            if self.infob:
-                self.infob = False
-                self.map.group.remove(self.infol)
-                self.infol = []
-            else:
-                self.infob = True
-                for obj in self.map.start_pos:
-                    self.infol.append(Info(obj, 'start', GRIDLAYER))
-                for obj in self.map.heroes:
-                    self.infol.append(Info(obj, 'hero', GRIDLAYER))
-                for obj in self.map.trees:
-                    self.infol.append(Info(obj, 'tree', GRIDLAYER))
-                self.map.group.add(self.infol)
-        if status == 0:     # passive, already on
-            if self.infob:
-                self.map.group.remove(self.infol)
-                self.infol = []
-                for obj in self.map.start_pos:
-                    self.infol.append(Info(obj, 'start', GRIDLAYER))
-                for obj in self.map.heroes:
-                    self.infol.append(Info(obj, 'hero', GRIDLAYER))
-                for obj in self.map.trees:
-                    self.infol.append(Info(obj, 'tree', GRIDLAYER))
-                self.map.group.add(self.infol)
 
     def show_debug(self):
         text = ("FPS:            {}".format(int(self.clock.get_fps())),
@@ -189,7 +150,7 @@ class BattleWindow(object):
         self.map.del_object(self.player[self.cu].rect, self.map.obstacles)
         self.map.add_object(self.player[self.cu].rect, self.map.start_pos)
         self.scroll_map(start_x, start_y, end_x, end_y)
-        self.show_info(0)
+        self.map.show_info(0)
 
     def scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED
