@@ -1,7 +1,7 @@
 
-from .hero import Hero
-from .hero import Pointer
-from .map import Map
-from .map import Grid
-from .map import Info
 from .screen import BattleWindow
+from .map import Map
+from .hero import Hero
+from .drawings import Pointer
+from .drawings import Grid
+from .drawings import Info

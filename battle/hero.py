@@ -10,22 +10,6 @@ MOVESPEED4 = 8
 # todo, magic numbers opruimen
 
 
-class Pointer(pygame.sprite.Sprite):
-    def __init__(self, layer):
-        pygame.sprite.Sprite.__init__(self)
-
-        self._layer = layer
-        self.image = pygame.Surface((65, 65))   # 64 bij 64 + 1, anders niet helemaal gecentreerd
-        self.image.fill((0, 0, 0))
-        self.image.set_colorkey((0, 0, 0))
-        pygame.draw.circle(self.image, (255, 255, 255), (32, 32), 32, 1)
-        self.image = self.image.convert()
-        self.rect = self.image.get_rect()
-
-    def update(self, position):
-        self.rect.center = position
-
-
 # Hero extends the pygame.sprite.Sprite class
 class Hero(pygame.sprite.Sprite):
     # In the main program, we will pass a spritesheet and x-y values to the constructor
@@ -104,20 +88,20 @@ class Hero(pygame.sprite.Sprite):
 
         # Als je meerdere knoppen indrukt, ga dan naar de richting van de laatst ingedrukte knop.
         if self._press_up > 0 and ((self._press_up <= self._press_down and self._press_down > 0) or
-                                  (self._press_up <= self._press_left and self._press_left > 0) or
-                                  (self._press_up <= self._press_right and self._press_right > 0)):
+                                   (self._press_up <= self._press_left and self._press_left > 0) or
+                                   (self._press_up <= self._press_right and self._press_right > 0)):
             self._direction = 'north'
         elif self._press_down > 0 and ((self._press_down <= self._press_up and self._press_up > 0) or
-                                      (self._press_down <= self._press_left and self._press_left > 0) or
-                                      (self._press_down <= self._press_right and self._press_right > 0)):
+                                       (self._press_down <= self._press_left and self._press_left > 0) or
+                                       (self._press_down <= self._press_right and self._press_right > 0)):
             self._direction = 'south'
         elif self._press_left > 0 and ((self._press_left <= self._press_up and self._press_up > 0) or
-                                      (self._press_left <= self._press_down and self._press_down > 0) or
-                                      (self._press_left <= self._press_right and self._press_right > 0)):
+                                       (self._press_left <= self._press_down and self._press_down > 0) or
+                                       (self._press_left <= self._press_right and self._press_right > 0)):
             self._direction = 'west'
         elif self._press_right > 0 and ((self._press_right <= self._press_up and self._press_up > 0) or
-                                       (self._press_right <= self._press_down and self._press_down > 0) or
-                                       (self._press_right <= self._press_left and self._press_left > 0)):
+                                        (self._press_right <= self._press_down and self._press_down > 0) or
+                                        (self._press_right <= self._press_left and self._press_left > 0)):
             self._direction = 'east'
         # Of ga in de richting van de enige knop die je indrukt.
         elif self._press_up > 0:
