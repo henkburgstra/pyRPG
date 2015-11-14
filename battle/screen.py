@@ -92,27 +92,27 @@ class BattleWindow(object):
                     if event.key == pygame.K_SPACE:
                         self._player[self._cu].align_to_grid(GRIDSIZE)
                     if event.key == pygame.K_c:
-                        self.end_of_turn()
+                        self._end_of_turn()
 
             self._player[self._cu].set_speed()
             self._player[self._cu].handle_movement()
-            self.check_obstacle()
+            self._check_obstacle()
 
             self._pointer.update(self._player[self._cu].rect.center)
             self._map.group.center(self._player[self._cu].rect.center)
-            self.draw()
+            self._draw()
 
         pygame.quit()
 
-    def draw(self):
+    def _draw(self):
         self._map.group.draw(self._window)
         self._screen.blit(self._window, WINDOWPOS)
         if self._debug:
-            self.show_debug()
+            self._show_debug()
         pygame.display.flip()
         self._screen.blit(self._background, (0, 0))
 
-    def show_debug(self):
+    def _show_debug(self):
         # noinspection PyProtectedMember
         text = ("FPS:            {}".format(int(self._clock.get_fps())),
                 "press_up:       {}".format(self._player[self._cu]._press_up),
@@ -135,7 +135,7 @@ class BattleWindow(object):
             self._screen.blit(self._font.render(line, True, WHITE), (0, i))
             i += 10
 
-    def end_of_turn(self):
+    def _end_of_turn(self):
         self._player[self._cu].align_to_grid(GRIDSIZE)
         start_x, start_y = self._player[self._cu].rect.center
         self._map.add_object(self._player[self._cu].rect, self._map.heroes)
@@ -148,10 +148,10 @@ class BattleWindow(object):
         self._map.del_object(self._player[self._cu].rect, self._map.heroes)
         self._map.del_object(self._player[self._cu].rect, self._map.obstacles)
         self._map.add_object(self._player[self._cu].rect, self._map.start_pos)
-        self.scroll_map(start_x, start_y, end_x, end_y)
+        self._scroll_map(start_x, start_y, end_x, end_y)
         self._map.show_info(0)
 
-    def scroll_map(self, start_x, start_y, end_x, end_y):
+    def _scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED
         step_y = (start_y - end_y) / SCROLLSPEED
         tmp_x = start_x
@@ -162,9 +162,9 @@ class BattleWindow(object):
             tmp_y -= step_y
             self._pointer.update((tmp_x, tmp_y))
             self._map.group.center((tmp_x, tmp_y))
-            self.draw()
+            self._draw()
 
-    def check_obstacle(self):
+    def _check_obstacle(self):
         # loop tegen de rand van een obstacle aan
         if self._player[self._cu].rect.collidelist(self._map.obstacles) > -1 and \
                 len(self._player[self._cu].rect.collidelistall(self._map.obstacles)) == 1:
