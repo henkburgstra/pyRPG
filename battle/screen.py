@@ -1,4 +1,5 @@
 
+# todo layerprobleem oplossen
 # todo next unit list
 # todo frames en borders
 # todo moveranges
@@ -21,8 +22,8 @@ WINDOWPOS = 100, 100
 
 FPS = 60
 SCROLLSPEED = 20        # lager is sneller
-DEFAULTLAYER = 3
-POINTERLAYER = 4
+PLAYERLAYER = 3
+POINTERLAYER = 5
 GRIDSIZE = 16
 
 WHITE = 255, 255, 255
@@ -46,7 +47,7 @@ class BattleWindow(object):
 
         self._debug = False
 
-        self._map = Map('resources/maps/area01/new.tmx', DEFAULTLAYER, *WINDOWSIZE)
+        self._map = Map('resources/maps/area01/new.tmx', PLAYERLAYER, *WINDOWSIZE)
 
         self._player = []
         i = 0
@@ -67,6 +68,7 @@ class BattleWindow(object):
 
         self._pointer = Pointer(POINTERLAYER)
         self._map.group.add(self._pointer)
+        self._map.show_moverange(self._player[self._cu].rect.center)
 
     def run(self):
         game_over = False
@@ -150,6 +152,7 @@ class BattleWindow(object):
         self._map.add_object(self._player[self._cu].rect, self._map.start_pos)
         self._scroll_map(start_x, start_y, end_x, end_y)
         self._map.show_info(0)
+        self._map.show_moverange(self._player[self._cu].rect.center)
 
     def _scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED

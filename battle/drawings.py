@@ -25,6 +25,34 @@ class Pointer(pygame.sprite.Sprite):
         self.rect.center = position
 
 
+class MoveRange(pygame.sprite.Sprite):
+    def __init__(self, size, layer):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._layer = layer
+        self.image = pygame.Surface((size, size))
+        circle1 = pygame.Surface((size, size))
+        circle2 = pygame.Surface((size, size))
+        self.image.fill(BLACK)
+        circle1.fill(BLUE)
+        circle2.fill(BLACK)
+        self.image.set_colorkey(BLACK)
+        circle1.set_colorkey(BLUE)
+        circle2.set_colorkey(BLACK)
+        pygame.draw.circle(circle1, BLACK, (size // 2, size // 2), size // 2, 0)
+        pygame.draw.circle(circle2, WHITE, (size // 2, size // 2), size // 2, 1)
+        circle1.set_alpha(48)
+        self.image = self.image.convert_alpha()
+        circle1 = circle1.convert_alpha(circle1)
+        circle2 = circle2.convert_alpha(circle2)
+        self.image.blit(circle1, (0, 0))
+        self.image.blit(circle2, (0, 0))
+        self.rect = self.image.get_rect()
+
+    def update(self, position):
+        self.rect.center = position
+
+
 class Grid(pygame.sprite.Sprite):
     def __init__(self, map_width, map_height, tile_size, layer):
         pygame.sprite.Sprite.__init__(self)

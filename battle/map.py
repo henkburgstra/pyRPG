@@ -5,10 +5,13 @@ import pytmx
 import pyscroll
 import pyscroll.data
 
+from battle.drawings import MoveRange
 from battle.drawings import Grid
 from battle.drawings import Info
 
-GRIDLAYER = 4
+MOVERANGELAYER = 1
+GRIDLAYER = 5
+MOVERANGESIZE = 400
 TILESIZE = 32
 
 
@@ -32,6 +35,9 @@ class Map(object):
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
+        self._moverange = MoveRange(MOVERANGESIZE, MOVERANGELAYER)
+        self.group.add(self._moverange)
+
         self._grid = Grid(self._width, self._height, TILESIZE, GRIDLAYER)
         self._infob = False  # info boolean
         self._infol = []     # info list
@@ -43,6 +49,9 @@ class Map(object):
     @staticmethod
     def del_object(obj, object_type):
         object_type.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+    def show_moverange(self, position):
+        self._moverange.update(position)
 
     def show_grid(self):
         if self._grid.show:
