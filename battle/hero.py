@@ -1,7 +1,6 @@
 
 import pygame
 
-
 MOVESPEED1 = 1
 MOVESPEED2 = 2
 MOVESPEED3 = 4

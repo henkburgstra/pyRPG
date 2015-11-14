@@ -17,8 +17,8 @@ class Map(object):
 
         tmx_data = pytmx.load_pygame(map_path)
 
-        self.width = int(tmx_data.width * tmx_data.tilewidth)
-        self.height = int(tmx_data.height * tmx_data.tileheight)
+        self._width = int(tmx_data.width * tmx_data.tilewidth)
+        self._height = int(tmx_data.height * tmx_data.tileheight)
 
         self.start_pos = []
         self.trees = []
@@ -32,9 +32,9 @@ class Map(object):
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
-        self.grid = Grid(self.width, self.height, TILESIZE, GRIDLAYER)
-        self.infob = False  # info boolean
-        self.infol = []     # info list
+        self._grid = Grid(self._width, self._height, TILESIZE, GRIDLAYER)
+        self._infob = False  # info boolean
+        self._infol = []     # info list
 
     @staticmethod
     def add_object(obj, object_type):
@@ -45,34 +45,34 @@ class Map(object):
         object_type.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
     def show_grid(self):
-        if self.grid.show:
-            self.grid.show = False
-            self.group.remove(self.grid)
+        if self._grid.show:
+            self._grid.show = False
+            self.group.remove(self._grid)
         else:
-            self.grid.show = True
-            self.group.add(self.grid)
+            self._grid.show = True
+            self.group.add(self._grid)
 
     def show_info(self, status):
         if status == 1:     # active, with key press
-            if self.infob:
-                self.infob = False
-                self.group.remove(self.infol)
-                self.infol = []
+            if self._infob:
+                self._infob = False
+                self.group.remove(self._infol)
+                self._infol = []
             else:
-                self.infob = True
-                self.fill_info_list()
-                self.group.add(self.infol)
+                self._infob = True
+                self._fill_info_list()
+                self.group.add(self._infol)
         if status == 0:     # passive, already on
-            if self.infob:
-                self.group.remove(self.infol)
-                self.infol = []
-                self.fill_info_list()
-                self.group.add(self.infol)
+            if self._infob:
+                self.group.remove(self._infol)
+                self._infol = []
+                self._fill_info_list()
+                self.group.add(self._infol)
 
-    def fill_info_list(self):
+    def _fill_info_list(self):
         for obj in self.start_pos:
-            self.infol.append(Info(obj, 'start', GRIDLAYER))
+            self._infol.append(Info(obj, 'start', GRIDLAYER))
         for obj in self.heroes:
-            self.infol.append(Info(obj, 'hero', GRIDLAYER))
+            self._infol.append(Info(obj, 'hero', GRIDLAYER))
         for obj in self.trees:
-            self.infol.append(Info(obj, 'tree', GRIDLAYER))
+            self._infol.append(Info(obj, 'tree', GRIDLAYER))
