@@ -9,6 +9,7 @@ BLUE = 0, 0, 255
 PURPLE = 255, 0, 255
 
 # todo, magic numbers opruimen
+# todo, transparant moverange weer aanzetten wanneer mogelijk
 
 
 class Pointer(pygame.sprite.Sprite):

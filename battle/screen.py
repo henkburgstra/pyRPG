@@ -1,6 +1,5 @@
 
 
-# todo showinfo doet het op het moment niet
 # todo layerprobleem oplossen, wanneer een lagere layer 2 bovenliggende layers overlapt, laat hij informatie weg.
 # je kunt dan de lagere layer omhoog halen, maar dat betekent dat er geen (doorzichtige) inhoud in die layer kan zitten
 # todo next unit list

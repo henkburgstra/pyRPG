@@ -34,7 +34,7 @@ class Map(object):
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
         self._grid = Grid(self._width, self._height, TILESIZE, GRIDLAYER)
-        self._infol = []     # info list
+        self._infol = []     # info list, list van classes zoals grid
         self._infob = False  # info boolean
 
     @staticmethod
