@@ -28,10 +28,12 @@ class Hero(pygame.sprite.Sprite):
         # Create a rect to animate around the screen
         self.image = self._full_sprite.subsurface(self._full_sprite.get_clip())
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
         # Assign the position parameter value to the topleft x-y values of the rect
         self.rect.topleft = position
 
+        self._fallback_pos = None
         self._direction = 'north'
         self._step_count = 0
         self._step_animation = 0
@@ -56,6 +58,12 @@ class Hero(pygame.sprite.Sprite):
         elif not keys[pygame.K_LSHIFT] and not keys[pygame.K_RSHIFT] and \
                 not keys[pygame.K_LCTRL] and not keys[pygame.K_RCTRL]:
             self._movespeed = MOVESPEED2
+
+    def set_fallback(self):
+        self._fallback_pos = self.rect.topleft
+
+    def fallback(self):
+        self.rect.topleft = self._fallback_pos
 
     def handle_movement(self):
         keys = pygame.key.get_pressed()

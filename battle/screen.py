@@ -59,7 +59,7 @@ class BattleWindow(object):
         for hero_raw in Output.HERO_SORT:
             hero = data.heroes[hero_raw]
             if hero in data.party:
-                self._player.append(Hero((320 + randint(1, 9) * 32, 320 + randint(1, 9) * 32), hero.BMP))
+                self._player.append(Hero((336 + i * 32, 272 + i * 32), hero.BMP))
                 # vul in de map de lijst van rects van alle heroes
                 self._map.add_rect_to_list(self._player[i].rect, self._map.heroes)
                 self._map.add_rect_to_list(self._player[i].rect, self._map.obstacles)
@@ -128,6 +128,7 @@ class BattleWindow(object):
                         self._end_of_turn()
 
             self._player[self._cu].set_speed()
+            self._player[self._cu].set_fallback()
             self._player[self._cu].handle_movement()
             self._check_obstacle()
 
@@ -184,13 +185,27 @@ class BattleWindow(object):
 
     def _check_obstacle(self):
         # loop tegen de rand van een obstacle aan
-        if self._player[self._cu].rect.collidelist(self._map.obstacles) > -1 and \
-                len(self._player[self._cu].rect.collidelistall(self._map.obstacles)) == 1:
-                # er mag maar 1 obstacle in deze lijst hierboven zijn
+        # er mag maar 1 obstacle in deze lijst zijn
+        if len(self._player[self._cu].rect.collidelistall(self._map.obstacles)) == 1:
             # obj_nr is het nummer van de betreffende obstacle
             obj_nr = self._player[self._cu].rect.collidelist(self._map.obstacles)
             self._player[self._cu].move_side(self._map.obstacles[obj_nr])
 
-        # loop tegen een obstacle aan
-        while self._player[self._cu].rect.collidelist(self._map.obstacles) > -1:
+        # loop tegen de rand van een low obstacle aan, bijv water
+        if len(self._player[self._cu].rect.collidelistall(self._map.low_obst)) == 1:
+            obj_nr = self._player[self._cu].rect.collidelist(self._map.low_obst)
+            self._player[self._cu].move_side(self._map.low_obst[obj_nr])
+
+        # loop tegen de rand van je moverange
+        if pygame.sprite.collide_mask(self._player[self._cu], self._moverange):
+            self._player[self._cu].fallback()
+
+        # loop tegen een obstacle of low_obst aan
+        while self._player[self._cu].rect.collidelist(self._map.obstacles) > -1 or \
+                self._player[self._cu].rect.collidelist(self._map.low_obst) > -1:
             self._player[self._cu].move_back()
+
+        # voor als je toch perongeluk buiten je moverange komt (niet meer nodig)
+        # if abs(self._player[self._cu].rect.top - self._map.start_pos[0].top) > MOVERANGESIZE / 2 or \
+        #    abs(self._player[self._cu].rect.left - self._map.start_pos[0].left) > MOVERANGESIZE / 2:
+        #     self._player[self._cu].rect.topleft = self._map.start_pos[0].topleft
