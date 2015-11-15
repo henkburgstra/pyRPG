@@ -8,6 +8,8 @@ GREEN = 32, 128, 32
 BLUE = 0, 0, 255
 PURPLE = 255, 0, 255
 
+# todo, magic numbers opruimen
+
 
 class Pointer(pygame.sprite.Sprite):
     def __init__(self, layer):
@@ -31,22 +33,22 @@ class MoveRange(pygame.sprite.Sprite):
 
         self._layer = layer
         self.image = pygame.Surface((size, size))
-        circle1 = pygame.Surface((size, size))
-        circle2 = pygame.Surface((size, size))
+        # self.circle1 = pygame.Surface((size, size))
+        # self.circle2 = pygame.Surface((size, size))
         self.image.fill(BLACK)
-        circle1.fill(BLUE)
-        circle2.fill(BLACK)
+        # self.circle1.fill(BLUE)
+        # self.circle2.fill(BLACK)
         self.image.set_colorkey(BLACK)
-        circle1.set_colorkey(BLUE)
-        circle2.set_colorkey(BLACK)
-        pygame.draw.circle(circle1, BLACK, (size // 2, size // 2), size // 2, 0)
-        pygame.draw.circle(circle2, WHITE, (size // 2, size // 2), size // 2, 1)
-        circle1.set_alpha(48)
-        self.image = self.image.convert_alpha()
-        circle1 = circle1.convert_alpha(circle1)
-        circle2 = circle2.convert_alpha(circle2)
-        self.image.blit(circle1, (0, 0))
-        self.image.blit(circle2, (0, 0))
+        # self.circle1.set_colorkey(BLUE)
+        # self.circle2.set_colorkey(BLACK)
+        # pygame.draw.circle(self.circle1, BLACK, (size // 2, size // 2), size // 2, 0)
+        pygame.draw.circle(self.image, WHITE, (size // 2, size // 2), size // 2, 2)
+        # self.circle1.set_alpha(48)
+        self.image = self.image.convert()
+        # self.circle1 = self.circle1.convert()
+        # self.circle2 = self.circle2.convert()
+        # self.image.blit(self.circle1, (0, 0))
+        # self.image.blit(self.circle2, (0, 0))
         self.rect = self.image.get_rect()
 
     def update(self, position):
@@ -72,24 +74,24 @@ class Grid(pygame.sprite.Sprite):
 
 
 class Info(pygame.sprite.Sprite):
-    def __init__(self, obj, object_type, layer):
+    def __init__(self, rect, rect_type, layer):
         pygame.sprite.Sprite.__init__(self)
 
         self._layer = layer
-        self.image = pygame.Surface((obj.width, obj.height))
+        self.image = pygame.Surface((rect.width, rect.height))
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
-        self.object_type = object_type
-        pygame.draw.rect(self.image, self._color, (0, 0, obj.width, obj.height), 1)
+        self.rect_type = rect_type
+        pygame.draw.rect(self.image, self._color, (0, 0, rect.width, rect.height), 1)
         self.image = self.image.convert()
         self.rect = self.image.get_rect()
-        self.rect.topleft = obj.topleft
+        self.rect.topleft = rect.topleft
 
     @property
     def _color(self):
-        if self.object_type == 'start':
+        if self.rect_type == 'start':
             return GREEN
-        if self.object_type == 'hero':
+        if self.rect_type == 'hero':
             return BLUE
-        if self.object_type == 'tree':
+        if self.rect_type == 'tree':
             return PURPLE

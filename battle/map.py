@@ -5,13 +5,10 @@ import pytmx
 import pyscroll
 import pyscroll.data
 
-from battle.drawings import MoveRange
 from battle.drawings import Grid
 from battle.drawings import Info
 
-MOVERANGELAYER = 1
-GRIDLAYER = 5
-MOVERANGESIZE = 400
+GRIDLAYER = 4
 TILESIZE = 32
 
 
@@ -23,35 +20,33 @@ class Map(object):
         self._width = int(tmx_data.width * tmx_data.tilewidth)
         self._height = int(tmx_data.height * tmx_data.tileheight)
 
-        self.start_pos = []
-        self.trees = []
+        self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
+        self.trees = []         # een lijst van rects van alle bomen
         self.heroes = []
         self.obstacles = []
-        for obj in tmx_data.objects:
-            self.add_object(obj, self.trees)
-            self.add_object(obj, self.obstacles)
+
+        for rect in tmx_data.objects:
+            self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
+            self.add_rect_to_list(rect, self.obstacles)
 
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
-        self._moverange = MoveRange(MOVERANGESIZE, MOVERANGELAYER)
-        self.group.add(self._moverange)
-
         self._grid = Grid(self._width, self._height, TILESIZE, GRIDLAYER)
-        self._infob = False  # info boolean
         self._infol = []     # info list
+        self._infob = False  # info boolean
 
     @staticmethod
-    def add_object(obj, object_type):
-        object_type.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+    def add_rect_to_list(rect, alist):
+        alist.append(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
 
     @staticmethod
-    def del_object(obj, object_type):
-        object_type.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+    def del_rect_from_list(rect, alist):
+        alist.remove(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
 
-    def show_moverange(self, position):
-        self._moverange.update(position)
+    def add_sprite_to_map_layer_group(self, sprite):
+        self.group.add(sprite)
 
     def show_grid(self):
         if self._grid.show:
@@ -79,9 +74,9 @@ class Map(object):
                 self.group.add(self._infol)
 
     def _fill_info_list(self):
-        for obj in self.start_pos:
-            self._infol.append(Info(obj, 'start', GRIDLAYER))
-        for obj in self.heroes:
-            self._infol.append(Info(obj, 'hero', GRIDLAYER))
-        for obj in self.trees:
-            self._infol.append(Info(obj, 'tree', GRIDLAYER))
+        for rect in self.start_pos:
+            self._infol.append(Info(rect, 'start', GRIDLAYER))
+        for rect in self.heroes:
+            self._infol.append(Info(rect, 'hero', GRIDLAYER))
+        for rect in self.trees:
+            self._infol.append(Info(rect, 'tree', GRIDLAYER))

@@ -6,14 +6,14 @@
  <tileset firstgid="769" name="telles0808" tilewidth="16" tileheight="16" tilecount="8064">
   <image source="tilesets/telles0808.png" width="1024" height="2016"/>
  </tileset>
- <layer name="under0 grass" width="64" height="64">
-  <data encoding="base64" compression="zlib">
-   eJzl0LERADAIxLCHTZL9h4QtVFD41LuS9FZHfds/rP6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9XztlvBgQ
-  </data>
- </layer>
- <layer name="under1 moverange" width="64" height="64" visible="0">
+ <layer name="under0" width="64" height="64">
   <data encoding="base64" compression="zlib">
    eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAACAtwFAAAAB
+  </data>
+ </layer>
+ <layer name="under1 grass" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzl0LERADAIxLCHTZL9h4QtVFD41LuS9FZHfds/rP6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9XztlvBgQ
   </data>
  </layer>
  <layer name="under2 bomen" width="64" height="64">
@@ -21,19 +21,9 @@
    eJzt1bkNACAMA8CMwf778IwENQ3QAbqTXKW1nAgAIKeIMlJHWjq/A//Y3YMVe/G3uSf+BMBb7DgAAAAAAAAAAAAAcKsOVtoc0Q==
   </data>
  </layer>
- <layer name="under3 players" width="64" height="64" visible="0">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAACAtwFAAAAB
-  </data>
- </layer>
  <layer name="over0 bomen" width="64" height="64">
   <data encoding="base64" compression="zlib">
    eJzt1kkKhDAQheFcwGFpHcrhYg4X0+4j9YPeJYpxZ4r/g4cUwUXBIyQEAPiruhBqpVHa7vl56XrtNCijMp3sd3deulk7LcqqbCf7XZ3HvfDek1jcCy89yb0PKtNXaZTW0rnUHuTeB712HJRRmSydS+1B7n0wa8dFWZXN0vnqfy927XgoH+Vr6exd3JO73gB4H95xPt9xubjHAQAAAAAAAAAAAAAAAAAAAOCdfjGyN2E=
-  </data>
- </layer>
- <layer name="over1 grid info pointer" width="64" height="64" visible="0">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAACAtwFAAAAB
   </data>
  </layer>
  <objectgroup name="walls" visible="0">
