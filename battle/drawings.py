@@ -43,14 +43,15 @@ class MoveRange(pygame.sprite.Sprite):
         # self.circle1.set_colorkey(BLUE)
         # self.circle2.set_colorkey(BLACK)
         # pygame.draw.circle(self.circle1, BLACK, (size // 2, size // 2), size // 2, 0)
-        pygame.draw.circle(self.image, WHITE, (size // 2, size // 2), size // 2, 2)
-        # self.circle1.set_alpha(48)
+        pygame.draw.circle(self.image, WHITE, (size // 2, size // 2), size // 2, 4)
+        self.image.set_alpha(64)
         self.image = self.image.convert()
         # self.circle1 = self.circle1.convert()
         # self.circle2 = self.circle2.convert()
         # self.image.blit(self.circle1, (0, 0))
         # self.image.blit(self.circle2, (0, 0))
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, position):
         self.rect.center = position
@@ -96,3 +97,5 @@ class Info(pygame.sprite.Sprite):
             return BLUE
         if self.rect_type == 'tree':
             return PURPLE
+        if self.rect_type == 'water':
+            return BLUE

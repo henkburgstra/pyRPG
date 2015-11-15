@@ -22,12 +22,18 @@ class Map(object):
 
         self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
         self.trees = []         # een lijst van rects van alle bomen
+        self.waters = []
         self.heroes = []
         self.obstacles = []
+        self.low_obst = []
 
-        for rect in tmx_data.objects:
+        for rect in tmx_data.get_layer_by_name("trees"):
             self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
             self.add_rect_to_list(rect, self.obstacles)
+
+        for rect in tmx_data.get_layer_by_name("water"):
+            self.add_rect_to_list(rect, self.waters)
+            self.add_rect_to_list(rect, self.low_obst)
 
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
@@ -80,3 +86,5 @@ class Map(object):
             self._infol.append(Info(rect, 'hero', GRIDLAYER))
         for rect in self.trees:
             self._infol.append(Info(rect, 'tree', GRIDLAYER))
+        for rect in self.waters:
+            self._infol.append(Info(rect, 'water', GRIDLAYER))
