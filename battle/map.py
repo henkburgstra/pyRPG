@@ -17,8 +17,8 @@ class Map(object):
 
         tmx_data = pytmx.load_pygame(map_path)
 
-        self._width = int(tmx_data.width * tmx_data.tilewidth)
-        self._height = int(tmx_data.height * tmx_data.tileheight)
+        self.width = int(tmx_data.width * tmx_data.tilewidth)
+        self.height = int(tmx_data.height * tmx_data.tileheight)
 
         self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
         self.trees = []         # een lijst van rects van alle bomen
@@ -39,7 +39,7 @@ class Map(object):
         map_layer = pyscroll.BufferedRenderer(map_data, (window_width, window_height), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
-        self._grid = Grid(self._width, self._height, TILESIZE, GRIDLAYER)
+        self._grid = Grid(self.width, self.height, TILESIZE, GRIDLAYER)
         self._infol = []     # info list, list van classes zoals grid
         self._infob = False  # info boolean
 

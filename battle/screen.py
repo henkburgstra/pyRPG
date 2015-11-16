@@ -5,7 +5,6 @@
 # todo next unit list
 # todo frames en borders
 # todo moveranges
-# todo view mode, niet verder dan de map
 # todo knoppen weergeven, v c up down etc
 # todo attack animatie
 
@@ -151,7 +150,7 @@ class BattleWindow(object):
                             self._end_of_turn()
 
             if self._isViewing:
-                self._move_map()
+                self._view_map()
             else:
                 self._player[self._cu].set_speed()
                 self._player[self._cu].set_fallback()
@@ -200,7 +199,7 @@ class BattleWindow(object):
             self._screen.blit(self._font.render(line, True, WHITE), (0, i))
             i += 10
 
-    def _move_map(self):
+    def _view_map(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self._viewY -= VIEWSPEED
@@ -210,6 +209,15 @@ class BattleWindow(object):
             self._viewX -= VIEWSPEED
         if keys[pygame.K_RIGHT]:
             self._viewX += VIEWSPEED
+
+        if self._viewX < 0:
+            self._viewX = 0
+        if self._viewY < 0:
+            self._viewY = 0
+        if self._viewX > self._map.width:
+            self._viewX = self._map.width
+        if self._viewY > self._map.height:
+            self._viewY = self._map.height
 
         self._pointer.update((self._viewX, self._viewY))
         self._map.group.center((self._viewX, self._viewY))
