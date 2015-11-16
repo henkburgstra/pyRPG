@@ -30,6 +30,20 @@
     <frame tileid="154" duration="500"/>
    </animation>
   </tile>
+  <tile id="177">
+   <animation>
+    <frame tileid="177" duration="500"/>
+    <frame tileid="181" duration="500"/>
+    <frame tileid="185" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="178">
+   <animation>
+    <frame tileid="178" duration="500"/>
+    <frame tileid="182" duration="500"/>
+    <frame tileid="186" duration="500"/>
+   </animation>
+  </tile>
  </tileset>
  <tileset firstgid="769" name="tilea2" tilewidth="16" tileheight="16" tilecount="768">
   <image source="tilesets/tilea2.png" width="512" height="384"/>
