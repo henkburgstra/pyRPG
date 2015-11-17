@@ -141,9 +141,14 @@ class BattleWindow(object):
 
             self._clock.tick(self._fps)
 
+            if pygame.mouse.get_pressed()[0]:
+                pipo = list(pygame.key.get_pressed())
+                pipo[pygame.K_UP] = pygame.K_UP
+                self._player[self._cu].handle_movement(pipo)
+
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                # if 'down' in self._button_up.handleEvent(event):
+                # if event.type == pygame.MOUSEBUTTONDOWN:
+                if 'down' in self._button_up.handleEvent(event):
                     pipo = list(pygame.key.get_pressed())
                     pipo[pygame.K_UP] = pygame.K_UP
                     self._player[self._cu].handle_movement(pipo)
