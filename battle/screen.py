@@ -9,15 +9,16 @@
 # todo attack animatie
 
 import os
-from random import randint
+# from random import randint
 
 import pygame
-import pygbutton
+# import pygbutton
 
 from battle.map import Map
 from battle.hero import Hero
 from battle.drawings import MoveRange
 from battle.drawings import Pointer
+from battle.drawings import Button
 
 import data
 from output import Output
@@ -89,18 +90,12 @@ class BattleWindow(object):
         self._map.add_sprite_to_map_layer_group(self._pointer)
 
     def _init_buttons(self):
-        self._button_view = pygbutton.PygButton(
-            (SCREENWIDTH-200, SCREENHEIGHT-300, 40, 40), "V", BLACK, WHITE, self._buttonfont)
-        self._button_up = pygbutton.PygButton(
-            (SCREENWIDTH-150, SCREENHEIGHT-300, 40, 40), "Up", BLACK, WHITE, self._buttonfont)
-        self._button_down = pygbutton.PygButton(
-            (SCREENWIDTH-150, SCREENHEIGHT-250, 40, 40), "Down", BLACK, WHITE, self._buttonfont)
-        self._button_left = pygbutton.PygButton(
-            (SCREENWIDTH-200, SCREENHEIGHT-250, 40, 40), "Left", BLACK, WHITE, self._buttonfont)
-        self._button_right = pygbutton.PygButton(
-            (SCREENWIDTH-100, SCREENHEIGHT-250, 40, 40), "Left", BLACK, WHITE, self._buttonfont)
-        self._button_cancel = pygbutton.PygButton(
-            (SCREENWIDTH-100, SCREENHEIGHT-200, 40, 40), "C", BLACK, WHITE, self._buttonfont)
+        self._button_view = Button((SCREENWIDTH-200,   SCREENHEIGHT-300), "V")
+        self._button_up = Button((SCREENWIDTH-150,     SCREENHEIGHT-300), "Up")
+        self._button_down = Button((SCREENWIDTH-150,   SCREENHEIGHT-250), "Down")
+        self._button_left = Button((SCREENWIDTH-200,   SCREENHEIGHT-250), "Left")
+        self._button_right = Button((SCREENWIDTH-100,  SCREENHEIGHT-250), "Right")
+        self._button_cancel = Button((SCREENWIDTH-100, SCREENHEIGHT-200), "C")
 
         self._buttons = [self._button_view, self._button_up, self._button_down, self._button_left, self._button_right,
                          self._button_cancel]
@@ -141,17 +136,17 @@ class BattleWindow(object):
 
             self._clock.tick(self._fps)
 
-            if pygame.mouse.get_pressed()[0]:
-                pipo = list(pygame.key.get_pressed())
-                pipo[pygame.K_UP] = pygame.K_UP
-                self._player[self._cu].handle_movement(pipo)
+            # if pygame.mouse.get_pressed()[0]:
+            #     pipo = list(pygame.key.get_pressed())
+            #     pipo[pygame.K_UP] = pygame.K_UP
+            #     self._player[self._cu].handle_movement(pipo)
 
             for event in pygame.event.get():
                 # if event.type == pygame.MOUSEBUTTONDOWN:
-                if 'down' in self._button_up.handleEvent(event):
-                    pipo = list(pygame.key.get_pressed())
-                    pipo[pygame.K_UP] = pygame.K_UP
-                    self._player[self._cu].handle_movement(pipo)
+                # if 'down' in self._button_up.handleEvent(event):
+                #     pipo = list(pygame.key.get_pressed())
+                #     pipo[pygame.K_UP] = pygame.K_UP
+                #     self._player[self._cu].handle_movement(pipo)
                 if event.type == pygame.QUIT:
                     game_over = True
                 elif event.type == pygame.KEYDOWN:
@@ -196,8 +191,10 @@ class BattleWindow(object):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
                 self._button_up.bgcolor = DARKGRAY
+                self._button_up.update()
             else:
                 self._button_up.bgcolor = BLACK
+                self._button_up.update()
 
             self._draw()
 
@@ -206,6 +203,7 @@ class BattleWindow(object):
     def _draw(self):
         for button in self._buttons:
             button.draw(self._background)
+        self._button_view.draw(self._background)
         self._map.show_info(0)
         self._map.group.draw(self._window)
         self._screen.blit(self._window, WINDOWPOS)
