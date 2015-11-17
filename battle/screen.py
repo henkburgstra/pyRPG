@@ -12,6 +12,7 @@ import os
 from random import randint
 
 import pygame
+import pygbutton
 
 from battle.map import Map
 from battle.hero import Hero
@@ -21,7 +22,8 @@ from battle.drawings import Pointer
 import data
 from output import Output
 
-SCREENSIZE = 1600, 800  # 1920, 1080
+SCREENWIDTH = 1600
+SCREENHEIGHT = 800  # 1600, 800  # 1920, 1080
 WINDOWSIZE = 800, 600
 WINDOWPOS = 100, 100
 
@@ -36,14 +38,15 @@ MOVERANGESIZE = 400
 
 WHITE = 255, 255, 255
 BLACK = 0, 0, 0
-CLEARPOS = -SCREENSIZE[0], -SCREENSIZE[1]       # ergens ver weg buiten beeld
+DARKGRAY = 32, 32, 32
+CLEARPOS = -SCREENWIDTH, -SCREENHEIGHT  # ergens ver weg buiten beeld
 
 
 class BattleWindow(object):
     def __init__(self):
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
-        self._screen = pygame.display.set_mode(SCREENSIZE, pygame.DOUBLEBUF)  # | pygame.FULLSCREEN)
+        self._screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT), pygame.DOUBLEBUF)  # | pygame.FULLSCREEN)
         self._background = pygame.Surface(self._screen.get_size())
         self._background.fill(BLACK)
         self._background = self._background.convert()
@@ -52,12 +55,15 @@ class BattleWindow(object):
 
         self._clock = pygame.time.Clock()
         self._fps = FPS
-        self._font = pygame.font.SysFont('courier', 11)
+        self._debugfont = pygame.font.SysFont('courier', 11)
+        self._buttonfont = pygame.font.SysFont('sans', 14)
 
         self._debug = False
 
-        self._isViewing = False
-        self._viewX, self._viewY = (0, 0)
+        self._is_viewing = False
+        self._view_x, self._view_y = (0, 0)
+
+        self._init_buttons()
 
         self._map = Map('resources/maps/area01/new.tmx', PLAYERLAYER, *WINDOWSIZE)
         self._player = []       # lijst van hero sprite classes, incl rect voor visuele locatie
@@ -81,6 +87,23 @@ class BattleWindow(object):
         # voeg de LIJST van hero sprites toe aan de visuele groep
         self._map.add_sprite_to_map_layer_group(self._player)
         self._map.add_sprite_to_map_layer_group(self._pointer)
+
+    def _init_buttons(self):
+        self._button_view = pygbutton.PygButton(
+            (SCREENWIDTH-200, SCREENHEIGHT-300, 40, 40), "V", BLACK, WHITE, self._buttonfont)
+        self._button_up = pygbutton.PygButton(
+            (SCREENWIDTH-150, SCREENHEIGHT-300, 40, 40), "Up", BLACK, WHITE, self._buttonfont)
+        self._button_down = pygbutton.PygButton(
+            (SCREENWIDTH-150, SCREENHEIGHT-250, 40, 40), "Down", BLACK, WHITE, self._buttonfont)
+        self._button_left = pygbutton.PygButton(
+            (SCREENWIDTH-200, SCREENHEIGHT-250, 40, 40), "Left", BLACK, WHITE, self._buttonfont)
+        self._button_right = pygbutton.PygButton(
+            (SCREENWIDTH-100, SCREENHEIGHT-250, 40, 40), "Left", BLACK, WHITE, self._buttonfont)
+        self._button_cancel = pygbutton.PygButton(
+            (SCREENWIDTH-100, SCREENHEIGHT-200, 40, 40), "C", BLACK, WHITE, self._buttonfont)
+
+        self._buttons = [self._button_view, self._button_up, self._button_down, self._button_left, self._button_right,
+                         self._button_cancel]
 
     def _start_of_turn(self):
         # de rect van de player die aan de beurt is weer verwijderen en ken de start_pos toe
@@ -109,8 +132,8 @@ class BattleWindow(object):
         self._start_of_turn()
 
     def _reset_vars(self):
-        self._isViewing = False
-        self._viewX, self._viewY = self._player[self._cu].rect.center
+        self._is_viewing = False
+        self._view_x, self._view_y = self._player[self._cu].rect.center
 
     def run(self):
         game_over = False
@@ -119,6 +142,11 @@ class BattleWindow(object):
             self._clock.tick(self._fps)
 
             for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                # if 'down' in self._button_up.handleEvent(event):
+                    pipo = list(pygame.key.get_pressed())
+                    pipo[pygame.K_UP] = pygame.K_UP
+                    self._player[self._cu].handle_movement(pipo)
                 if event.type == pygame.QUIT:
                     game_over = True
                 elif event.type == pygame.KEYDOWN:
@@ -136,35 +164,43 @@ class BattleWindow(object):
                     if event.key == pygame.K_SPACE:
                         self._player[self._cu].align_to_grid(GRIDSIZE)
                     if event.key == pygame.K_v:
-                        if self._isViewing:
-                            self._isViewing = False
-                            self._scroll_map(self._viewX, self._viewY, *self._player[self._cu].rect.center)
+                        if self._is_viewing:
+                            self._is_viewing = False
+                            self._scroll_map(self._view_x, self._view_y, *self._player[self._cu].rect.center)
                         else:
-                            self._isViewing = True
-                            self._viewX, self._viewY = self._player[self._cu].rect.center
+                            self._is_viewing = True
+                            self._view_x, self._view_y = self._player[self._cu].rect.center
                     if event.key == pygame.K_c:
-                        if self._isViewing:
-                            self._isViewing = False
-                            self._scroll_map(self._viewX, self._viewY, *self._player[self._cu].rect.center)
+                        if self._is_viewing:
+                            self._is_viewing = False
+                            self._scroll_map(self._view_x, self._view_y, *self._player[self._cu].rect.center)
                         else:
                             self._end_of_turn()
 
-            if self._isViewing:
-                self._view_map()
+            if self._is_viewing:
+                self._view_map(pygame.key.get_pressed())
             else:
-                self._player[self._cu].set_speed()
+                self._player[self._cu].set_speed(pygame.key.get_pressed())
                 self._player[self._cu].set_fallback()
-                self._player[self._cu].handle_movement()
+                self._player[self._cu].handle_movement(pygame.key.get_pressed())
                 self._check_obstacle()
 
                 self._pointer.update(self._player[self._cu].rect.center)
                 self._map.group.center(self._player[self._cu].rect.center)
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_UP]:
+                self._button_up.bgcolor = DARKGRAY
+            else:
+                self._button_up.bgcolor = BLACK
 
             self._draw()
 
         pygame.quit()
 
     def _draw(self):
+        for button in self._buttons:
+            button.draw(self._background)
         self._map.show_info(0)
         self._map.group.draw(self._window)
         self._screen.blit(self._window, WINDOWPOS)
@@ -187,40 +223,39 @@ class BattleWindow(object):
                 "start_pos.y     {}".format(self._map.start_pos[0].top if self._map.start_pos != [] else "None"),
                 "player.x:       {}".format(self._player[self._cu].rect.left),
                 "player.y:       {}".format(self._player[self._cu].rect.top),
-                "viewX:          {}".format(self._viewX),
-                "viewY:          {}".format(self._viewY),
+                "view.x:         {}".format(self._view_x),
+                "view.y:         {}".format(self._view_y),
                 "step_count:     {}".format(self._player[self._cu]._step_count),
                 "step_animation: {}".format(self._player[self._cu]._step_animation),
                 "step_delay:     {}".format(self._player[self._cu]._step_delay),
-                "isViewing:      {}".format(self._isViewing),
+                "is_viewing:     {}".format(self._is_viewing),
                 )
         i = 0
         for line in text:
-            self._screen.blit(self._font.render(line, True, WHITE), (0, i))
+            self._screen.blit(self._debugfont.render(line, True, WHITE), (0, i))
             i += 10
 
-    def _view_map(self):
-        keys = pygame.key.get_pressed()
+    def _view_map(self, keys):
         if keys[pygame.K_UP]:
-            self._viewY -= VIEWSPEED
+            self._view_y -= VIEWSPEED
         if keys[pygame.K_DOWN]:
-            self._viewY += VIEWSPEED
+            self._view_y += VIEWSPEED
         if keys[pygame.K_LEFT]:
-            self._viewX -= VIEWSPEED
+            self._view_x -= VIEWSPEED
         if keys[pygame.K_RIGHT]:
-            self._viewX += VIEWSPEED
+            self._view_x += VIEWSPEED
 
-        if self._viewX < 0:
-            self._viewX = 0
-        if self._viewY < 0:
-            self._viewY = 0
-        if self._viewX > self._map.width:
-            self._viewX = self._map.width
-        if self._viewY > self._map.height:
-            self._viewY = self._map.height
+        if self._view_x < 0:
+            self._view_x = 0
+        if self._view_y < 0:
+            self._view_y = 0
+        if self._view_x > self._map.width:
+            self._view_x = self._map.width
+        if self._view_y > self._map.height:
+            self._view_y = self._map.height
 
-        self._pointer.update((self._viewX, self._viewY))
-        self._map.group.center((self._viewX, self._viewY))
+        self._pointer.update((self._view_x, self._view_y))
+        self._map.group.center((self._view_x, self._view_y))
 
     def _scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED

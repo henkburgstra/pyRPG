@@ -46,8 +46,7 @@ class Hero(pygame.sprite.Sprite):
 
         self._movespeed = MOVESPEED2
 
-    def set_speed(self):
-        keys = pygame.key.get_pressed()
+    def set_speed(self, keys):
 
         if (keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]) and (keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]):
             self._movespeed = MOVESPEED4
@@ -65,8 +64,7 @@ class Hero(pygame.sprite.Sprite):
     def fallback(self):
         self.rect.topleft = self._fallback_pos
 
-    def handle_movement(self):
-        keys = pygame.key.get_pressed()
+    def handle_movement(self, keys):
 
         if keys[pygame.K_UP]:
             self._press_up += 1
