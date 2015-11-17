@@ -45,6 +45,8 @@ def todo():
     suggestie van kasper's mail bekijken (onnodig?)
 
     suggestie van kasper om 1 gear class te hebben en de rest daarvan afleiden
+
+    todo, health bars aanpassen naar dc draw rect. http://zetcode.com/wxpython/gdi/
     """
 
 
