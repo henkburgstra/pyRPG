@@ -19,32 +19,50 @@ class Button(pygame.sprite.Sprite):
         self._width = 40
         self._height = 40
         self._position = position
-        self.bgcolor = BLACK
+        self._bgcolor = BLACK
+        self._visible = True
+
         self.image = pygame.Surface((self._width, self._height))
-        self.image.fill(self.bgcolor)
-        pygame.draw.rect(self.image, WHITE, (0, 0, self._width, self._height), 1)
         self.rect = self.image.get_rect()
 
         self._font = pygame.font.SysFont('sans', 14)
         self._caption = self._font.render(caption, True, WHITE)
         self._caprect = self._caption.get_rect()
+        self._caprect.center = self.rect.width / 2, self.rect.height / 2
 
-        self._centerx = (self.rect.width / 2) - (self._caprect.width / 2)
-        self._centery = (self.rect.height / 2) - (self._caprect.height / 2)
-        self.image.blit(self._caption, (self._centerx, self._centery))
-        self.image = self.image.convert()
         self.mask = pygame.mask.from_surface(self.image)
+        self._update()
+
+    def handle_event(self, event):
+        pass
 
     def draw(self, surface):
-        surface.blit(self.image, self._position)
+        if self._visible:
+            surface.blit(self.image, self._position)
 
-    def update(self):
+    def _update(self):
         self.image.fill(self.bgcolor)
         pygame.draw.rect(self.image, WHITE, (0, 0, self._width, self._height), 1)
-        self.image.blit(self._caption, (self._centerx, self._centery))
+        self.image.blit(self._caption, self._caprect)
         self.image = self.image.convert()
 
-        # todo, maak een property van bgcolor
+    @property
+    def bgcolor(self):
+        return self._bgcolor
+
+    @bgcolor.setter
+    def bgcolor(self, value):
+        self._bgcolor = value
+        self._update()
+
+    @property
+    def visible(self):
+        return self._visible
+
+    @visible.setter
+    def visible(self, value):
+        self._visible = value
+        self._update()
 
 
 class Pointer(pygame.sprite.Sprite):
