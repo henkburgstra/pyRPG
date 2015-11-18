@@ -18,12 +18,12 @@ class Button(pygame.sprite.Sprite):
 
         self._width = 40
         self._height = 40
-        self._position = position
         self._bgcolor = BLACK
         self._visible = True
 
         self.image = pygame.Surface((self._width, self._height))
         self.rect = self.image.get_rect()
+        self.rect.topleft = position
 
         self._font = pygame.font.SysFont('sans', 14)
         self._caption = self._font.render(caption, True, WHITE)
@@ -42,7 +42,7 @@ class Button(pygame.sprite.Sprite):
 
     def draw(self, surface):
         if self._visible:
-            surface.blit(self.image, self._position)
+            surface.blit(self.image, self.rect.topleft)
 
     def _update(self):
         self.image.fill(self.bgcolor)

@@ -5,8 +5,8 @@
 # todo next unit list
 # todo frames en borders
 # todo moveranges
-# todo knoppen weergeven, v c up down etc
 # todo attack animatie
+# todo ugur, mvc, heroes in dict en dynamische posities, niet opslaan in map, maar realtime opslaan in (evt) map
 
 import os
 # from random import randint

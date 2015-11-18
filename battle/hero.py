@@ -7,6 +7,10 @@ MOVESPEED3 = 4
 MOVESPEED4 = 8
 
 # todo, magic numbers opruimen
+# todo, vervang direction met enum states?
+# todo, handle movement uit deze class
+# todo, zie demo van pyscroll betreffende movement ed
+
 
 
 # Hero extends the pygame.sprite.Sprite class
