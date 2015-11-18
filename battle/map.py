@@ -54,6 +54,12 @@ class Map(object):
     def add_sprite_to_map_layer_group(self, sprite):
         self.group.add(sprite)
 
+    def draw_group(self, surface):
+        self.group.draw(surface)
+
+    def center_window(self, pixel):
+        self.group.center(pixel)
+
     def show_grid(self):
         if self._grid.show:
             self._grid.show = False

@@ -30,11 +30,15 @@ class Button(pygame.sprite.Sprite):
         self._caprect = self._caption.get_rect()
         self._caprect.center = self.rect.width / 2, self.rect.height / 2
 
-        self.mask = pygame.mask.from_surface(self.image)
         self._update()
 
-    def handle_event(self, event):
-        pass
+    def handle_event(self):
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
+            if self.rect.collidepoint(pos):
+                pipo = list(pygame.key.get_pressed())
+                pipo[pygame.K_UP] = pygame.K_UP
+                return pipo
 
     def draw(self, surface):
         if self._visible:

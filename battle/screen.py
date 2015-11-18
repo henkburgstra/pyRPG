@@ -64,6 +64,7 @@ class BattleWindow(object):
         self._is_viewing = False
         self._view_x, self._view_y = (0, 0)
 
+        self._key_input = None
         self._init_buttons()
 
         self._map = Map('resources/maps/area01/new.tmx', PLAYERLAYER, *WINDOWSIZE)
@@ -99,6 +100,8 @@ class BattleWindow(object):
 
         self._buttons = [self._button_view, self._button_up, self._button_down, self._button_left, self._button_right,
                          self._button_cancel]
+        self._keys = [pygame.K_v, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT,
+                      pygame.K_c]
 
     def _start_of_turn(self):
         # de rect van de player die aan de beurt is weer verwijderen en ken de start_pos toe
@@ -135,14 +138,13 @@ class BattleWindow(object):
         while not game_over:
 
             self._clock.tick(self._fps)
-
-            # if pygame.mouse.get_pressed()[0]:
-            #     pipo = list(pygame.key.get_pressed())
-            #     pipo[pygame.K_UP] = pygame.K_UP
-            #     self._player[self._cu].handle_movement(pipo)
+            self._key_input = pygame.key.get_pressed()
 
             for event in pygame.event.get():
-                # if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for button in self._buttons:
+                        self._key_input = button.handle_event()
+
                 # if 'down' in self._button_up.handleEvent(event):
                 #     pipo = list(pygame.key.get_pressed())
                 #     pipo[pygame.K_UP] = pygame.K_UP
@@ -178,39 +180,40 @@ class BattleWindow(object):
                             self._end_of_turn()
 
             if self._is_viewing:
-                self._view_map(pygame.key.get_pressed())
+                self._view_map(self._key_input)
             else:
-                self._player[self._cu].set_speed(pygame.key.get_pressed())
+                self._player[self._cu].set_speed(self._key_input)
                 self._player[self._cu].set_fallback()
-                self._player[self._cu].handle_movement(pygame.key.get_pressed())
+                self._player[self._cu].handle_movement(self._key_input)
                 self._check_obstacle()
 
                 self._pointer.update(self._player[self._cu].rect.center)
-                self._map.group.center(self._player[self._cu].rect.center)
-
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
-                self._button_up.bgcolor = DARKGRAY
-                self._button_up.update()
-            else:
-                self._button_up.bgcolor = BLACK
-                self._button_up.update()
+                self._map.center_window(self._player[self._cu].rect.center)
 
             self._draw()
 
         pygame.quit()
 
     def _draw(self):
-        for button in self._buttons:
-            button.draw(self._background)
+        self._show_buttons()
         self._button_view.draw(self._background)
         self._map.show_info(0)
-        self._map.group.draw(self._window)
+        self._map.draw_group(self._window)
         self._screen.blit(self._window, WINDOWPOS)
         if self._debug:
             self._show_debug()
         pygame.display.flip()
         self._screen.blit(self._background, (0, 0))
+
+    def _show_buttons(self):
+        for count, key in enumerate(self._keys):
+            if self._key_input[key]:
+                self._buttons[count].bgcolor = DARKGRAY
+            else:
+                self._buttons[count].bgcolor = BLACK
+
+        for button in self._buttons:
+            button.draw(self._background)
 
     def _show_debug(self):
         # noinspection PyProtectedMember
@@ -233,10 +236,8 @@ class BattleWindow(object):
                 "step_delay:     {}".format(self._player[self._cu]._step_delay),
                 "is_viewing:     {}".format(self._is_viewing),
                 )
-        i = 0
-        for line in text:
-            self._screen.blit(self._debugfont.render(line, True, WHITE), (0, i))
-            i += 10
+        for count, line in enumerate(text):
+            self._screen.blit(self._debugfont.render(line, True, WHITE), (0, count * 10))
 
     def _view_map(self, keys):
         if keys[pygame.K_UP]:
@@ -258,7 +259,7 @@ class BattleWindow(object):
             self._view_y = self._map.height
 
         self._pointer.update((self._view_x, self._view_y))
-        self._map.group.center((self._view_x, self._view_y))
+        self._map.center_window((self._view_x, self._view_y))
 
     def _scroll_map(self, start_x, start_y, end_x, end_y):
         step_x = (start_x - end_x) / SCROLLSPEED
@@ -270,7 +271,7 @@ class BattleWindow(object):
             tmp_x -= step_x
             tmp_y -= step_y
             self._pointer.update((tmp_x, tmp_y))
-            self._map.group.center((tmp_x, tmp_y))
+            self._map.center_window((tmp_x, tmp_y))
             self._draw()
 
     def _check_obstacle(self):
