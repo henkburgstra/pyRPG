@@ -2,7 +2,8 @@
 
 import os
 import pygame
-from .eventmanager import *
+import battle2.model as model
+from battle2.eventmanager import *
 
 SCREENWIDTH = 1600
 SCREENHEIGHT = 800  # 1600, 800  # 1920, 1080
@@ -17,7 +18,7 @@ class GraphicalView(object):
     """
     Draws the model state onto the screen.
     """
-    def __init__(self, ev_manager, model):
+    def __init__(self, ev_manager, model1):
         """
         ev_manager (EventManager): Allows posting messages to the event queue.
         model (GameEngine): a strong reference to the game Model.
@@ -30,7 +31,7 @@ class GraphicalView(object):
         """
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
-        self.model = model
+        self.model = model1
         self.isinitialized = False
         self.screen = None
         self.clock = None
@@ -47,18 +48,41 @@ class GraphicalView(object):
             self.isinitialized = False
             pygame.quit()
         elif isinstance(event, TickEvent):
-            self.renderall()
-            self.clock.tick(FPS)
+            if not self.isinitialized:
+                return
+            currentstate = self.model.state.peek()
+            if currentstate == model.State.Menu:
+                self.rendermenu()
+            if currentstate == model.State.Play:
+                self.renderplay()
+            if currentstate == model.State.Help:
+                self.renderhelp()
+            self.clock.tick(FPS)            # limit the redraw speed to 60 frames per second
 
-    def renderall(self):
+    def rendermenu(self):
         """
-        Draw the current game state on screen.
-        Does nothing if isinitialized == False (pygame.init failed)
+        Render the game menu.
         """
-        if not self.isinitialized:
-            return
         self.screen.fill(BLACK)
-        somewords = self.buttonfont.render('The View is busy drawing on your screen', True, GREEN)
+        somewords = self.buttonfont.render('You are in the Menu. Space to play. Esc exits.', True, GREEN)
+        self.screen.blit(somewords, (0, 0))
+        pygame.display.flip()
+
+    def renderplay(self):
+        """
+        Render the game play.
+        """
+        self.screen.fill(BLACK)
+        somewords = self.buttonfont.render('You are playing the game. F1 for help.', True, GREEN)
+        self.screen.blit(somewords, (0, 0))
+        pygame.display.flip()
+
+    def renderhelp(self):
+        """
+        Render the help screen.
+        """
+        self.screen.fill(BLACK)
+        somewords = self.buttonfont.render('Help is here. space, escape or return.', True, GREEN)
         self.screen.blit(somewords, (0, 0))
         pygame.display.flip()
 
