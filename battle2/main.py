@@ -7,10 +7,11 @@ from battle2.controller import HumanInput
 
 def run():
     ev_manager = EventManager()
-    gamemodel = GameEngine(ev_manager)
-    h_input = HumanInput(ev_manager, gamemodel)
-    graphics = GraphicalView(ev_manager, gamemodel)
-    gamemodel.run()
+
+    model = GameEngine(ev_manager)
+    view = GraphicalView(ev_manager, model)
+    controller = HumanInput(ev_manager, model)
+    model.run()
 
 if __name__ == '__main__':
     run()

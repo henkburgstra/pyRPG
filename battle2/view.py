@@ -2,7 +2,7 @@
 
 import os
 import pygame
-import battle2.model as model
+from battle2.model import State
 from battle2.eventmanager import *
 
 SCREENWIDTH = 1600
@@ -18,7 +18,7 @@ class GraphicalView(object):
     """
     Draws the model state onto the screen.
     """
-    def __init__(self, ev_manager, model1):
+    def __init__(self, ev_manager, model):
         """
         ev_manager (EventManager): Allows posting messages to the event queue.
         model (GameEngine): a strong reference to the game Model.
@@ -31,7 +31,7 @@ class GraphicalView(object):
         """
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
-        self.model = model1
+        self.model = model
         self.isinitialized = False
         self.screen = None
         self.clock = None
@@ -51,11 +51,11 @@ class GraphicalView(object):
             if not self.isinitialized:
                 return
             currentstate = self.model.state.peek()
-            if currentstate == model.State.Menu:
+            if currentstate == State.Menu:
                 self.rendermenu()
-            if currentstate == model.State.Play:
+            if currentstate == State.Play:
                 self.renderplay()
-            if currentstate == model.State.Help:
+            if currentstate == State.Help:
                 self.renderhelp()
             self.clock.tick(FPS)            # limit the redraw speed to 60 frames per second
 
