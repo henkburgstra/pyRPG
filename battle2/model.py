@@ -41,7 +41,7 @@ class GameEngine(object):
         """
         self.running = True
         self.ev_manager.post(InitializeEvent())
-        self.state.push(State.Menu)
+        self.state.push(State.Intro)
         while self.running:
             new_tick = TickEvent()
             self.ev_manager.post(new_tick)
@@ -54,6 +54,8 @@ class State(enum.Enum):
     Help = 3
     About = 4
     Play = 5
+    Dialogue = 6
+    Settings = 7
 
 
 class StateMachine(object):

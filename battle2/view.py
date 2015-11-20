@@ -51,15 +51,33 @@ class GraphicalView(object):
             if not self.isinitialized:
                 return
             currentstate = self.model.state.peek()
+            if currentstate == State.Intro:
+                self.render_intro()
             if currentstate == State.Menu:
-                self.rendermenu()
+                self.render_menu()
             if currentstate == State.Play:
-                self.renderplay()
+                self.render_play()
             if currentstate == State.Help:
-                self.renderhelp()
+                self.render_help()
             self.clock.tick(FPS)            # limit the redraw speed to 60 frames per second
 
-    def rendermenu(self):
+    def render_intro(self):
+        """
+        Render the game intro.
+        """
+        self.screen.fill(BLACK)
+        screen_rect = self.screen.get_rect()
+
+        somewords = self.buttonfont.render('Battle...!', True, GREEN)
+        text_rect = somewords.get_rect()
+        text_rect.center = screen_rect.width/2, screen_rect.height/2
+
+        self.screen.blit(somewords, text_rect)
+        pygame.display.flip()
+
+        self.ev_manager.post(TimeEvent(2000))
+
+    def render_menu(self):
         """
         Render the game menu.
         """
@@ -68,7 +86,7 @@ class GraphicalView(object):
         self.screen.blit(somewords, (0, 0))
         pygame.display.flip()
 
-    def renderplay(self):
+    def render_play(self):
         """
         Render the game play.
         """
@@ -77,7 +95,7 @@ class GraphicalView(object):
         self.screen.blit(somewords, (0, 0))
         pygame.display.flip()
 
-    def renderhelp(self):
+    def render_help(self):
         """
         Render the help screen.
         """
@@ -97,3 +115,7 @@ class GraphicalView(object):
         self.debugfont = pygame.font.SysFont('courier', 11)
         self.buttonfont = pygame.font.SysFont('sans', 14)
         self.isinitialized = True
+
+
+class CharSprite(pygame.sprite.Sprite):
+    pass

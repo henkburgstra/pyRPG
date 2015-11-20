@@ -33,14 +33,28 @@ class InputEvent(Event):
     """
     Keyboard or mouse input event.
     """
-    def __init__(self, unicodechar, clickpos):
+    def __init__(self, unicodechar, clickpos, button):
         super().__init__()
         self.name = "Input event"
         self.char = unicodechar
         self.clickpos = clickpos
+        self.button = button
 
     def __str__(self):
-        return "{}, char={}, clickpos={}".format(self.name, self.char, self.clickpos)
+        return "{}, char={}, clickpos={}, button={}".format(self.name, self.char, self.clickpos, self.button)
+
+
+class TimeEvent(Event):
+    """
+    Time event.
+    """
+    def __init__(self, milliseconds):
+        super().__init__()
+        self.name = "Time event"
+        self.milliseconds = milliseconds
+
+    def __str__(self):
+        return "Wait for {} second(s)".format(self.milliseconds)
 
 
 class InitializeEvent(Event):

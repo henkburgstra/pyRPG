@@ -29,7 +29,8 @@ class HumanInput(object):
                     self.ev_manager.post(QuitEvent())
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.ev_manager.post(InputEvent(None, pygame.mouse.get_pos()))
+                    if event.button:
+                        self.ev_manager.post(InputEvent(None, event.pos, event.button))
 
                 if event.type == pygame.KEYDOWN:                # handle key down events
                     if event.key == pygame.K_ESCAPE:
@@ -68,4 +69,4 @@ class HumanInput(object):
         if event.key == pygame.K_F1:                            # F1 shows the help
             self.ev_manager.post(StateChangeEvent(State.Help))
         else:
-            self.ev_manager.post(InputEvent(event.unicode, None))
+            self.ev_manager.post(InputEvent(event.unicode, None, None))
