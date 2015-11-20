@@ -47,9 +47,6 @@ class GraphicalView(object):
         elif isinstance(event, QuitEvent):
             self.isinitialized = False
             pygame.quit()
-        elif isinstance(event, TimeEvent):
-            milliseconds = self.clock.tick(self.fps)
-            self.playtime += milliseconds / 1000.0
         elif isinstance(event, TickEvent):
             if not self.isinitialized:
                 return

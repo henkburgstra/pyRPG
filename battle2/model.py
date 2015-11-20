@@ -1,6 +1,9 @@
 
 import enum
+import time
 from battle2.eventmanager import *
+
+INTRO_WAIT_TIME = 2
 
 
 class GameEngine(object):
@@ -18,6 +21,7 @@ class GameEngine(object):
         ev_manager.register_listener(self)
         self.running = False
         self.state = StateMachine()
+        self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
     def notify(self, event):
         """
@@ -25,12 +29,19 @@ class GameEngine(object):
         """
         if isinstance(event, QuitEvent):
             self.running = False
-        if isinstance(event, StateChangeEvent):
-            if not event.state:                         # pop request
+        if isinstance(event, ChangeStateEvent):
+            if not event.new_state:                     # pop request
                 if not self.state.pop():                # false if no more states are left
                     self.ev_manager.post(QuitEvent())
             else:
-                self.state.push(event.state)            # push a new state on the stack
+                self.state.push(event.new_state)        # push a new state on the stack
+        if isinstance(event, TickEvent):
+            currentstate = self.state.peek()
+            if currentstate == State.Intro:
+                new_time = time.time()
+                if new_time - self.wait_timer > INTRO_WAIT_TIME:
+                    self.wait_timer = None
+                    self.ev_manager.post(ChangeStateEvent(None, currentstate))
 
     def run(self):
         """
@@ -41,9 +52,9 @@ class GameEngine(object):
         """
         self.running = True
         self.ev_manager.post(InitializeEvent())
-        self.state.push(State.Play)
-        self.state.push(State.Intro)
-        self.ev_manager.post(TimeEvent(2000))
+        self.ev_manager.post(ChangeStateEvent(State.Play))
+        self.ev_manager.post(ChangeStateEvent(State.Intro))
+        self.wait_timer = time.time()
         while self.running:
             new_tick = TickEvent()
             self.ev_manager.post(new_tick)
@@ -75,7 +86,7 @@ class StateMachine(object):
         Returns None if the stack is empty.
         """
         try:
-            return self.statestack[-1]
+            return self.statestack[-1]      # [-1] is om de laatste in een list te krijgen
         except IndexError:
             return None     # empty stack
 
