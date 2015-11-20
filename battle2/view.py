@@ -47,6 +47,8 @@ class GraphicalView(object):
         elif isinstance(event, QuitEvent):
             self.isinitialized = False
             pygame.quit()
+        elif isinstance(event, TimeEvent):
+            pass
         elif isinstance(event, TickEvent):
             if not self.isinitialized:
                 return
@@ -74,8 +76,6 @@ class GraphicalView(object):
 
         self.screen.blit(somewords, text_rect)
         pygame.display.flip()
-
-        self.ev_manager.post(TimeEvent(2000))
 
     def render_menu(self):
         """
