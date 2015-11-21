@@ -3,10 +3,6 @@
 import enum
 import time
 
-import pygame
-import pytmx
-import pyscroll.data
-
 from battle2.eventmanager import *
 
 
@@ -16,6 +12,7 @@ class GameEngine(object):
     """
 
     INTRO_WAIT_TIME = 2
+    MAP_PATH = '../resources/maps/area01/new.tmx'          # todo, dit moet uiteraard nog op een andere dynamische plek
 
     def __init__(self, ev_manager):
         """
@@ -28,6 +25,7 @@ class GameEngine(object):
         ev_manager.register_listener(self)
         self.running = False
         self.state = StateMachine()
+        self.map = MapData(self.MAP_PATH)
         self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
     def notify(self, event):
@@ -120,8 +118,13 @@ class StateMachine(object):
 class MapData(object):
     def __init__(self, map_path):
 
-        tmx_data = pytmx.load_pygame(map_path)
-        self.map_data = pyscroll.data.TiledMapData(tmx_data)
+        self.map_path = map_path
+
+        self.tmx_data = None
+        self.map_data = None
+
+        self.width = None
+        self.height = None
 
         self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
         self.trees = []         # een lijst van rects van alle bomen
@@ -131,18 +134,18 @@ class MapData(object):
         self.obstacles = []
         self.low_obst = []
 
-        for rect in tmx_data.get_layer_by_name("trees"):
-            self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
-            self.add_rect_to_list(rect, self.obstacles)
-
-        for rect in tmx_data.get_layer_by_name("water"):
-            self.add_rect_to_list(rect, self.waters)
-            self.add_rect_to_list(rect, self.low_obst)
-
-    @staticmethod
-    def add_rect_to_list(rect, alist):
-        alist.append(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
-
-    @staticmethod
-    def del_rect_from_list(rect, alist):
-        alist.remove(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
+    #     for rect in tmx_data.get_layer_by_name("trees"):
+    #         self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
+    #         self.add_rect_to_list(rect, self.obstacles)
+    #
+    #     for rect in tmx_data.get_layer_by_name("water"):
+    #         self.add_rect_to_list(rect, self.waters)
+    #         self.add_rect_to_list(rect, self.low_obst)
+    #
+    # @staticmethod
+    # def add_rect_to_list(rect, alist):
+    #     alist.append(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
+    #
+    # @staticmethod
+    # def del_rect_from_list(rect, alist):
+    #     alist.remove(pygame.Rect(rect.x, rect.y, rect.width, rect.height))

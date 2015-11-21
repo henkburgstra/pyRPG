@@ -3,6 +3,9 @@
 import os
 
 import pygame
+import pytmx
+import pyscroll
+import pyscroll.data
 
 from battle2.model import State
 from battle2.eventmanager import *
@@ -12,6 +15,8 @@ SCREENHEIGHT = 800  # 1600, 800  # 1920, 1080
 WINDOWWIDTH = 800
 WINDOWHEIGHT = 600
 WINDOWPOS = 100, 100
+
+PLAYERLAYER = 2
 
 FPS = 60
 
@@ -86,6 +91,9 @@ class GraphicalView(object):
         self.debugfont = pygame.font.SysFont('courier', 11)
         self.titlefont = pygame.font.SysFont('sans', 25, True)
         self._init_buttons()
+
+        self.map = MapView(self.model, PLAYERLAYER, WINDOWWIDTH, WINDOWHEIGHT)
+
         self.isinitialized = True
 
     def render_intro(self):
@@ -106,11 +114,15 @@ class GraphicalView(object):
         """
         Render the game play.
         """
-        self.screen.blit(self.window, WINDOWPOS)
+        self._show_window()
         self._show_debug()
         self._show_buttons()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
+
+    def _show_window(self):
+        self.map.group.draw(self.window)
+        self.screen.blit(self.window, WINDOWPOS)
 
     def _show_debug(self):
         if self.debug:
@@ -154,8 +166,20 @@ class GraphicalView(object):
 
 
 class MapView(object):
-    def __init__(self, layer, window_width, window_height):
-        pass
+    def __init__(self, model, layer, window_width, window_height):
+
+        self.model = model
+
+        # todo, is dit echt de manier om te werken?
+
+        self.model.map.tmx_data = pytmx.load_pygame(self.model.map.map_path)
+        self.model.map.map_data = pyscroll.data.TiledMapData(self.model.map.tmx_data)
+
+        self.model.map.width = int(self.model.map.tmx_data.width * self.model.map.tmx_data.tilewidth)
+        self.model.map.height = int(self.model.map.tmx_data.height * self.model.map.tmx_data.tileheight)
+
+        map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (window_width, window_height), clamp_camera=True)
+        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
 
 
 class Button(pygame.sprite.Sprite):
