@@ -108,8 +108,7 @@ class GraphicalView(object):
         """
         self.screen.blit(self.window, WINDOWPOS)
         self._show_debug()
-        for button in self.buttons:
-            button.draw(self.screen)
+        self._show_buttons()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
 
@@ -120,23 +119,27 @@ class GraphicalView(object):
             for count, line in enumerate(text):
                 self.screen.blit(self.debugfont.render(line, True, WHITE), (0, count * 10))
 
+    def _show_buttons(self):
+        for button in self.buttons:
+            button.draw(self.screen)
+
     def render_menu(self):
         """
         Render the game menu.
         """
-        self.background.fill(BLACK)
         somewords = self.titlefont.render('You are in the Menu. Space to play. Esc exits.', True, GREEN)
         self.screen.blit(somewords, (0, 0))
         pygame.display.flip()
+        self.screen.blit(self.background, (0, 0))
 
     def render_help(self):
         """
         Render the help screen.
         """
-        self.background.fill(BLACK)
         somewords = self.titlefont.render('Help is here. space, escape or return.', True, GREEN)
         self.screen.blit(somewords, (0, 0))
         pygame.display.flip()
+        self.screen.blit(self.background, (0, 0))
 
     def _init_buttons(self):
         self.button_view = Button((SCREENWIDTH-200,   SCREENHEIGHT-300), "V")
