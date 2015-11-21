@@ -196,7 +196,6 @@ class BattleWindow(object):
 
     def _draw(self):
         self._show_buttons()
-        self._button_view.draw(self._background)
         self._map.show_info(0)
         self._map.draw_group(self._window)
         self._screen.blit(self._window, WINDOWPOS)
