@@ -1,15 +1,22 @@
 
+
 import enum
 import time
-from battle2.eventmanager import *
 
-INTRO_WAIT_TIME = 2
+import pygame
+import pytmx
+import pyscroll.data
+
+from battle2.eventmanager import *
 
 
 class GameEngine(object):
     """
     Tracks the game state.
     """
+
+    INTRO_WAIT_TIME = 2
+
     def __init__(self, ev_manager):
         """
         ev_manager (EventManager): Allows posting messages to the event queue.
@@ -39,7 +46,7 @@ class GameEngine(object):
             currentstate = self.state.peek()
             if currentstate == State.Intro:
                 new_time = time.time()
-                if new_time - self.wait_timer > INTRO_WAIT_TIME:
+                if new_time - self.wait_timer > self.INTRO_WAIT_TIME:
                     self.wait_timer = None
                     self.ev_manager.post(ChangeStateEvent(None, currentstate))
 
@@ -108,3 +115,34 @@ class StateMachine(object):
         """
         self.statestack.append(state)
         return state
+
+
+class MapData(object):
+    def __init__(self, map_path):
+
+        tmx_data = pytmx.load_pygame(map_path)
+        self.map_data = pyscroll.data.TiledMapData(tmx_data)
+
+        self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
+        self.trees = []         # een lijst van rects van alle bomen
+        self.waters = []
+        self.heroes = []
+        self.villains = []
+        self.obstacles = []
+        self.low_obst = []
+
+        for rect in tmx_data.get_layer_by_name("trees"):
+            self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
+            self.add_rect_to_list(rect, self.obstacles)
+
+        for rect in tmx_data.get_layer_by_name("water"):
+            self.add_rect_to_list(rect, self.waters)
+            self.add_rect_to_list(rect, self.low_obst)
+
+    @staticmethod
+    def add_rect_to_list(rect, alist):
+        alist.append(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
+
+    @staticmethod
+    def del_rect_from_list(rect, alist):
+        alist.remove(pygame.Rect(rect.x, rect.y, rect.width, rect.height))

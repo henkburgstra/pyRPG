@@ -1,6 +1,7 @@
 
 
 import pygame
+
 from battle2.model import State
 from battle2.eventmanager import *
 
@@ -28,9 +29,9 @@ class HumanInput(object):
                 if event.type == pygame.QUIT:                   # handle window manager closing our window
                     self.ev_manager.post(QuitEvent())
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:        # handle mouse down events
                     if event.button:
-                        self.ev_manager.post(InputEvent(None, event.pos, event.button))
+                        self.ev_manager.post(InputEvent(clickpos=event.pos, button=event.button))
 
                 if event.type == pygame.KEYDOWN:                # handle key down events
                     if event.key == pygame.K_ESCAPE:
@@ -68,5 +69,7 @@ class HumanInput(object):
             self.ev_manager.post(ChangeStateEvent(None, currentstate))
         if event.key == pygame.K_F1:                                                # F1 shows the help
             self.ev_manager.post(ChangeStateEvent(State.Help))
+        elif event.key == pygame.K_F12:
+            self.ev_manager.post(InputEvent(event.key))
         else:
-            self.ev_manager.post(InputEvent(event.unicode, None, None))
+            self.ev_manager.post(InputEvent(event.unicode))
