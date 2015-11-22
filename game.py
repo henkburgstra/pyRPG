@@ -1,6 +1,7 @@
 
 
 from battle import screen
+from battle2 import main
 
 import commands
 from output import Output
@@ -92,6 +93,9 @@ class MainWindow(gui.MainFrame):
 
     def OnBtnEnemiesClick(self, event):
         screen.BattleWindow().run()
+
+    def OnBtnBossClick(self, event):
+        main.run()              # tijdelijk
 
     def OnBtnShopClick(self, event):
         ShopWindow(None).ShowModal()

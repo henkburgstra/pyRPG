@@ -44,7 +44,6 @@ class GraphicalView(object):
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
         self.model = model
-        self.debug = False                  # todo, moet de debug niet in de model?
         self.isinitialized = False
 
     def notify(self, event):
@@ -56,6 +55,8 @@ class GraphicalView(object):
         elif isinstance(event, QuitEvent):
             self.isinitialized = False
             pygame.quit()
+        elif isinstance(event, CharMoveEvent):
+            self.player1.rect.topleft = self.model.char.position
         elif isinstance(event, InputEvent):
             if event.key == pygame.K_F12:
                 self.debug ^= True          # simple boolean swith
@@ -94,6 +95,11 @@ class GraphicalView(object):
 
         self.map = MapView(self.model, PLAYERLAYER, WINDOWWIDTH, WINDOWHEIGHT)
 
+        import data
+        self.player1 = CharSprite(data.heroes.alagos.BMP)
+        self.map.group.add(self.player1)
+
+        self.debug = False                  # todo, moet de debug niet in de model?
         self.isinitialized = True
 
     def render_intro(self):
@@ -121,6 +127,7 @@ class GraphicalView(object):
         self.screen.blit(self.background, (0, 0))
 
     def _show_window(self):
+        self.map.group.center(self.player1.rect.center)
         self.map.group.draw(self.window)
         self.screen.blit(self.window, WINDOWPOS)
 
@@ -163,6 +170,27 @@ class GraphicalView(object):
 
         self.buttons = [self.button_view, self.button_up, self.button_down, self.button_left, self.button_right,
                         self.button_cancel]
+
+
+class CharSprite(pygame.sprite.Sprite):
+    # CharSprite extends the pygame.sprite.Sprite class
+    def __init__(self, spritesheet):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._west_states = {0:  (32, 32, 32, 32), 1: (0, 32, 32, 32), 2: (32, 32, 32, 32), 3: (64, 32, 32, 32)}
+        self._east_states = {0:  (32, 64, 32, 32), 1: (0, 64, 32, 32), 2: (32, 64, 32, 32), 3: (64, 64, 32, 32)}
+        self._north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
+        self._south_states = {0: (32,  0, 32, 32), 1: (0,  0, 32, 32), 2: (32,  0, 32, 32), 3: (64,  0, 32, 32)}
+
+        # Assign the spritesheet to self._full_sprite
+        self._full_sprite = pygame.image.load(spritesheet)
+        # 'Clip' the sheet so that only one frame is displayed (the first frame of _south_states)
+        self._full_sprite.set_clip(pygame.Rect(self._north_states[0]))
+
+        # Create a rect to animate around the screen
+        self.image = self._full_sprite.subsurface(self._full_sprite.get_clip())
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class MapView(object):

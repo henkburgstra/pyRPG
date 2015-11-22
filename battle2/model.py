@@ -12,7 +12,7 @@ class GameEngine(object):
     """
 
     INTRO_WAIT_TIME = 2
-    MAP_PATH = '../resources/maps/area01/new.tmx'          # todo, dit moet uiteraard nog op een andere dynamische plek
+    MAP_PATH = 'resources/maps/area01/new.tmx'          # todo, dit moet uiteraard nog op een andere dynamische plek
 
     def __init__(self, ev_manager):
         """
@@ -26,6 +26,7 @@ class GameEngine(object):
         self.running = False
         self.state = StateMachine()
         self.map = MapData(self.MAP_PATH)
+        self.char = CharData(ev_manager)
         self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
     def notify(self, event):
@@ -113,6 +114,25 @@ class StateMachine(object):
         """
         self.statestack.append(state)
         return state
+
+
+class CharData(object):
+    def __init__(self, ev_manager):
+        self.ev_manager = ev_manager
+        ev_manager.register_listener(self)
+
+        self.position = [0, 0]
+
+    def notify(self, event):
+        if isinstance(event, CharMoveEvent):
+            self.move(event.direction)
+
+    def move(self, direction):
+        if direction == "North":
+            self.position[1] -= 1
+        if direction == "South":
+            self.position[1] += 1
+        # self.ev_manager.post(CharUpdateEvent())
 
 
 class MapData(object):

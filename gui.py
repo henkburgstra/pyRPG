@@ -8,7 +8,6 @@
 ###########################################################################
 
 import wx
-# import wx.xrc
 import wx.grid
 
 ###########################################################################
@@ -156,6 +155,7 @@ class MainFrame ( wx.Frame ):
 		self.btn_new.Bind( wx.EVT_BUTTON, self.OnBtnNewClick )
 		self.btn_load.Bind( wx.EVT_BUTTON, self.OnBtnLoadClick )
 		self.btn_enemies.Bind( wx.EVT_BUTTON, self.OnBtnEnemiesClick )
+		self.btn_boss.Bind( wx.EVT_BUTTON, self.OnBtnBossClick )
 		self.btn_shop.Bind( wx.EVT_BUTTON, self.OnBtnShopClick )
 		self.btn_tavern.Bind( wx.EVT_BUTTON, self.OnBtnTavernClick )
 		self.btn_party.Bind( wx.EVT_BUTTON, self.OnBtnPartyClick )
@@ -173,6 +173,9 @@ class MainFrame ( wx.Frame ):
 		event.Skip()
 	
 	def OnBtnEnemiesClick( self, event ):
+		event.Skip()
+	
+	def OnBtnBossClick( self, event ):
 		event.Skip()
 	
 	def OnBtnShopClick( self, event ):

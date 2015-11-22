@@ -24,6 +24,16 @@ class HumanInput(object):
         Receive events posted to the message queue.
         """
         if isinstance(event, TickEvent):
+
+            key_input = pygame.key.get_pressed()
+            if 1 in key_input:
+                currentstate = self.model.state.peek()
+                if currentstate == State.Play:
+                    if key_input[pygame.K_UP]:
+                        self.ev_manager.post(CharMoveEvent("North"))
+                    if key_input[pygame.K_DOWN]:
+                        self.ev_manager.post(CharMoveEvent("South"))
+
             for event in pygame.event.get():                    # Called for each game tick. We check our input here.
 
                 if event.type == pygame.QUIT:                   # handle window manager closing our window
@@ -36,14 +46,14 @@ class HumanInput(object):
                 if event.type == pygame.KEYDOWN:                # handle key down events
                     if event.key == pygame.K_ESCAPE:
                         self.ev_manager.post(ChangeStateEvent(None, self.model.state.peek()))
-                    else:
-                        currentstate = self.model.state.peek()
-                        if currentstate == State.Menu:
-                            self.keydown_menu(event, currentstate)
-                        if currentstate == State.Play:
-                            self.keydown_play(event, currentstate)
-                        if currentstate == State.Help:
-                            self.keydown_help(event, currentstate)
+                    # else:
+                    #     currentstate = self.model.state.peek()
+                    #     if currentstate == State.Menu:
+                    #         self.keydown_menu(event, currentstate)
+                    #     if currentstate == State.Play:
+                    #         self.keydown_play(event, currentstate)
+                    #     if currentstate == State.Help:
+                    #         self.keydown_help(event, currentstate)
 
     def keydown_menu(self, event, currentstate):
         """
