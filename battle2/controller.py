@@ -5,6 +5,11 @@ import pygame
 from battle2.model import State
 from battle2.eventmanager import *
 
+MOVESPEED1 = 1
+MOVESPEED2 = 2
+MOVESPEED3 = 4
+MOVESPEED4 = 8
+
 
 class HumanInput(object):
     """
@@ -25,14 +30,40 @@ class HumanInput(object):
         """
         if isinstance(event, TickEvent):
 
-            key_input = pygame.key.get_pressed()
-            if 1 in key_input:
-                currentstate = self.model.state.peek()
-                if currentstate == State.Play:
+            currentstate = self.model.state.peek()
+            if currentstate == State.Play:
+                key_input = pygame.key.get_pressed()
+
+                self.model.char.movespeed = MOVESPEED2
+                if (key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]) and \
+                   (key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]):
+                    self.model.char.movespeed = MOVESPEED4
+                elif key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]:
+                    self.model.char.movespeed = MOVESPEED3
+                elif key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]:
+                    self.model.char.movespeed = MOVESPEED1
+
+                if key_input[pygame.K_UP] or key_input[pygame.K_DOWN] or \
+                   key_input[pygame.K_LEFT] or key_input[pygame.K_RIGHT]:
                     if key_input[pygame.K_UP]:
-                        self.ev_manager.post(CharMoveEvent("North"))
+                        self.model.char.step_north += 1
+                    else:
+                        self.model.char.step_north = 0
                     if key_input[pygame.K_DOWN]:
-                        self.ev_manager.post(CharMoveEvent("South"))
+                        self.model.char.step_south += 1
+                    else:
+                        self.model.char.step_south = 0
+                    if key_input[pygame.K_LEFT]:
+                        self.model.char.step_west += 1
+                    else:
+                        self.model.char.step_west = 0
+                    if key_input[pygame.K_RIGHT]:
+                        self.model.char.step_east += 1
+                    else:
+                        self.model.char.step_east = 0
+                    self.model.char.move()
+                else:
+                    self.model.char.stand()
 
             for event in pygame.event.get():                    # Called for each game tick. We check our input here.
 
@@ -46,14 +77,14 @@ class HumanInput(object):
                 if event.type == pygame.KEYDOWN:                # handle key down events
                     if event.key == pygame.K_ESCAPE:
                         self.ev_manager.post(ChangeStateEvent(None, self.model.state.peek()))
-                    # else:
-                    #     currentstate = self.model.state.peek()
-                    #     if currentstate == State.Menu:
-                    #         self.keydown_menu(event, currentstate)
-                    #     if currentstate == State.Play:
-                    #         self.keydown_play(event, currentstate)
-                    #     if currentstate == State.Help:
-                    #         self.keydown_help(event, currentstate)
+                    else:
+                        currentstate = self.model.state.peek()
+                        if currentstate == State.Menu:
+                            self.keydown_menu(event, currentstate)
+                        if currentstate == State.Play:
+                            self.keydown_play(event, currentstate)
+                        if currentstate == State.Help:
+                            self.keydown_help(event, currentstate)
 
     def keydown_menu(self, event, currentstate):
         """
@@ -80,6 +111,9 @@ class HumanInput(object):
         if event.key == pygame.K_F1:                                                # F1 shows the help
             self.ev_manager.post(ChangeStateEvent(State.Help))
         elif event.key == pygame.K_F12:
+            self.ev_manager.post(InputEvent(event.key))
+        elif (event.key == pygame.K_UP or event.key == pygame.K_DOWN or
+              event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
             self.ev_manager.post(InputEvent(event.key))
         else:
             self.ev_manager.post(InputEvent(event.unicode))

@@ -52,14 +52,21 @@ class GraphicalView(object):
         """
         if isinstance(event, InitializeEvent):
             self._initialize()
+
         elif isinstance(event, QuitEvent):
             self.isinitialized = False
             pygame.quit()
-        elif isinstance(event, CharMoveEvent):
-            self.player1.rect.topleft = self.model.char.position
+
+        elif isinstance(event, CharUpdateEvent):
+
+            self.player1.rect.topleft = self.model.char.new_position
+            self.player1.updatespeed = self.model.char.movespeed
+            self.player1.update(event)
+
         elif isinstance(event, InputEvent):
             if event.key == pygame.K_F12:
                 self.debug ^= True          # simple boolean swith
+
         elif isinstance(event, TickEvent):
             if not self.isinitialized:
                 return
@@ -120,25 +127,39 @@ class GraphicalView(object):
         """
         Render the game play.
         """
-        self._show_window()
-        self._show_debug()
-        self._show_buttons()
+        self.show_window()
+        self.show_debug()
+        self.show_buttons()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
 
-    def _show_window(self):
+    def show_window(self):
         self.map.group.center(self.player1.rect.center)
         self.map.group.draw(self.window)
         self.screen.blit(self.window, WINDOWPOS)
 
-    def _show_debug(self):
+    def show_debug(self):
         if self.debug:
             text = ("FPS:            {}".format(int(self.clock.get_fps())),
+                    "step_north:     {}".format(self.model.char.step_north),
+                    "step_south:     {}".format(self.model.char.step_south),
+                    "step_west:      {}".format(self.model.char.step_west),
+                    "step_east:      {}".format(self.model.char.step_east),
+                    "step_delay:     {}".format(self.model.char.step_delay),
+                    "last_direction: {}".format(self.model.char.last_direction),
+                    "move_direction: {}".format(self.model.char.move_direction),
+                    "movespeed:      {}".format(self.model.char.movespeed),
+                    "old_position.x: {}".format(self.model.char.old_position[0]),
+                    "old_position.y  {}".format(self.model.char.old_position[1]),
+                    "new_position.x: {}".format(self.model.char.new_position[0]),
+                    "new_position.y  {}".format(self.model.char.new_position[1]),
+                    "step_count:     {}".format(self.player1.step_count),
+                    "step_animation: {}".format(self.player1.step_animation),
                     )
             for count, line in enumerate(text):
                 self.screen.blit(self.debugfont.render(line, True, WHITE), (0, count * 10))
 
-    def _show_buttons(self):
+    def show_buttons(self):
         for button in self.buttons:
             button.draw(self.screen)
 
@@ -177,20 +198,65 @@ class CharSprite(pygame.sprite.Sprite):
     def __init__(self, spritesheet):
         pygame.sprite.Sprite.__init__(self)
 
-        self._west_states = {0:  (32, 32, 32, 32), 1: (0, 32, 32, 32), 2: (32, 32, 32, 32), 3: (64, 32, 32, 32)}
-        self._east_states = {0:  (32, 64, 32, 32), 1: (0, 64, 32, 32), 2: (32, 64, 32, 32), 3: (64, 64, 32, 32)}
-        self._north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
-        self._south_states = {0: (32,  0, 32, 32), 1: (0,  0, 32, 32), 2: (32,  0, 32, 32), 3: (64,  0, 32, 32)}
+        self.west_states = {0:  (32, 32, 32, 32), 1: (0, 32, 32, 32), 2: (32, 32, 32, 32), 3: (64, 32, 32, 32)}
+        self.east_states = {0:  (32, 64, 32, 32), 1: (0, 64, 32, 32), 2: (32, 64, 32, 32), 3: (64, 64, 32, 32)}
+        self.north_states = {0: (32, 96, 32, 32), 1: (0, 96, 32, 32), 2: (32, 96, 32, 32), 3: (64, 96, 32, 32)}
+        self.south_states = {0: (32,  0, 32, 32), 1: (0,  0, 32, 32), 2: (32,  0, 32, 32), 3: (64,  0, 32, 32)}
 
-        # Assign the spritesheet to self._full_sprite
-        self._full_sprite = pygame.image.load(spritesheet)
+        # Assign the spritesheet to self.full_sprite
+        self.full_sprite = pygame.image.load(spritesheet)
         # 'Clip' the sheet so that only one frame is displayed (the first frame of _south_states)
-        self._full_sprite.set_clip(pygame.Rect(self._north_states[0]))
+        self.full_sprite.set_clip(pygame.Rect(self.north_states[0]))
 
         # Create a rect to animate around the screen
-        self.image = self._full_sprite.subsurface(self._full_sprite.get_clip())
+        self.image = self.full_sprite.subsurface(self.full_sprite.get_clip())
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+
+        self.updatespeed = 0
+        self.step_count = 0
+        self.step_animation = 0
+
+    def update(self, event):
+
+        if event.movespeed is None:
+            if event.last_dir == 'west':
+                self._clip(self.west_states[0])
+            if event.last_dir == 'east':
+                self._clip(self.east_states[0])
+            if event.last_dir == 'north':
+                self._clip(self.north_states[0])
+            if event.last_dir == 'south':
+                self._clip(self.south_states[0])
+        else:
+            if event.move_dir == 'west':
+                self._clip(self.west_states)
+            if event.move_dir == 'east':
+                self._clip(self.east_states)
+            if event.move_dir == 'north':
+                self._clip(self.north_states)
+            if event.move_dir == 'south':
+                self._clip(self.south_states)
+
+        # Update the image for each pass
+        self.image = self.full_sprite.subsurface(self.full_sprite.get_clip())
+
+    def _clip(self, clipped_rect):
+        if type(clipped_rect) is dict:
+            self.full_sprite.set_clip(pygame.Rect(self._get_frame(clipped_rect)))
+        else:
+            self.step_count = 0
+            self.step_animation = 0
+            self.full_sprite.set_clip(pygame.Rect(clipped_rect))
+        return clipped_rect
+
+    def _get_frame(self, frame_set):
+        self.step_count += 1
+        if self.step_count % (24 / self.updatespeed) == 1:  # 24 is deelbaar door alle movespeeds
+            self.step_animation += 1
+            if self.step_animation > 3:
+                self.step_animation = 0
+        return frame_set[self.step_animation]
 
 
 class MapView(object):
@@ -214,20 +280,20 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, position, caption):
         pygame.sprite.Sprite.__init__(self)
 
-        self._width = 40
-        self._height = 40
+        self.width = 40
+        self.height = 40
         self._bgcolor = BLACK
         self._visible = True
 
-        self.image = pygame.Surface((self._width, self._height))
+        self.image = pygame.Surface((self.width, self.height))
         self.image = self.image.convert()
         self.rect = self.image.get_rect()
         self.rect.topleft = position
 
-        self._font = pygame.font.SysFont('sans', 14)
-        self._caption = self._font.render(caption, True, WHITE)
-        self._caprect = self._caption.get_rect()
-        self._caprect.center = self.rect.width / 2, self.rect.height / 2
+        self.font = pygame.font.SysFont('sans', 14)
+        self.caption = self.font.render(caption, True, WHITE)
+        self.caprect = self.caption.get_rect()
+        self.caprect.center = self.rect.width / 2, self.rect.height / 2
 
         self._update()
 
@@ -237,8 +303,8 @@ class Button(pygame.sprite.Sprite):
 
     def _update(self):
         self.image.fill(self.bgcolor)
-        pygame.draw.rect(self.image, WHITE, (0, 0, self._width, self._height), 1)
-        self.image.blit(self._caption, self._caprect)
+        pygame.draw.rect(self.image, WHITE, (0, 0, self.width, self.height), 1)
+        self.image.blit(self.caption, self.caprect)
 
     @property
     def bgcolor(self):

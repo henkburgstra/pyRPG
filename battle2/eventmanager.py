@@ -45,23 +45,16 @@ class InputEvent(Event):
         return "{}, key={}, clickpos={}, button={}".format(self.name, self.key, self.clickpos, self.button)
 
 
-class CharMoveEvent(Event):
+class CharUpdateEvent(Event):
     """
-    Character move event.
+    Character update event.
     """
-    def __init__(self, direction):
+    def __init__(self, last_dir=None, move_dir=None, movespeed=None):
         super().__init__()
-        self.name = "Character move event"
-        self.direction = direction
-
-
-# class CharUpdateEvent(Event):
-#     """
-#     Character update event.
-#     """
-#     def __init__(self):
-#         super().__init__()
-#         self.name = "Character update event"
+        self.name = "Character update event"
+        self.last_dir = last_dir
+        self.move_dir = move_dir
+        self.movespeed = movespeed
 
 
 class InitializeEvent(Event):
@@ -125,7 +118,7 @@ class EventManager(object):
         It will be broadcast to all listeners.
         """
         if not isinstance(event, TickEvent) and \
-           not isinstance(event, CharMoveEvent):
+           not isinstance(event, CharUpdateEvent):
             print(str(event))                   # print the event (unless it is TickEvent)
         for listener in self.listeners.keys():
             listener.notify(event)

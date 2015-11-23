@@ -35,12 +35,14 @@ class GameEngine(object):
         """
         if isinstance(event, QuitEvent):
             self.running = False
+
         if isinstance(event, ChangeStateEvent):
             if not event.new_state:                     # pop request
                 if not self.state.pop():                # false if no more states are left
                     self.ev_manager.post(QuitEvent())
             else:
                 self.state.push(event.new_state)        # push a new state on the stack
+
         if isinstance(event, TickEvent):
             currentstate = self.state.peek()
             if currentstate == State.Intro:
@@ -121,18 +123,82 @@ class CharData(object):
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
 
-        self.position = [0, 0]
+        self.old_position = [0, 0]
+        self.new_position = [0, 0]
+        self.last_direction = 'north'
+        self.move_direction = None
+        self.movespeed = 0
+
+        self.step_north = 0
+        self.step_south = 0
+        self.step_west = 0
+        self.step_east = 0
+        self.step_delay = 0
 
     def notify(self, event):
-        if isinstance(event, CharMoveEvent):
-            self.move(event.direction)
+        pass
 
-    def move(self, direction):
-        if direction == "North":
-            self.position[1] -= 1
-        if direction == "South":
-            self.position[1] += 1
-        # self.ev_manager.post(CharUpdateEvent())
+    def stand(self):
+        self.move_direction = None
+        self.step_north = 0
+        self.step_south = 0
+        self.step_west = 0
+        self.step_east = 0
+        self.step_delay = 0
+        self.ev_manager.post(CharUpdateEvent(last_dir=self.last_direction))
+
+    def move(self):
+
+        # Als hij nog geen stappen heeft gezet en hij kijkt naar een andere kant dan je drukt, stel een delay in.
+        if self.move_direction is None and ((self.step_north == 0 and self.last_direction == 'north') or
+                                            (self.step_south == 0 and self.last_direction == 'south') or
+                                            (self.step_west == 0 and self.last_direction == 'west') or
+                                            (self.step_east == 0 and self.last_direction == 'east')):
+            self.step_delay = 7
+
+        # Als je meerdere knoppen indrukt, ga dan naar de richting van de laatst ingedrukte knop.
+        if self.step_north > 0 and ((self.step_north <= self.step_south and self.step_south > 0) or
+                                    (self.step_north <= self.step_west and self.step_west > 0) or
+                                    (self.step_north <= self.step_east and self.step_east > 0)):
+            self.move_direction = 'north'
+        elif self.step_south > 0 and ((self.step_south <= self.step_north and self.step_north > 0) or
+                                      (self.step_south <= self.step_west and self.step_west > 0) or
+                                      (self.step_south <= self.step_east and self.step_east > 0)):
+            self.move_direction = 'south'
+        elif self.step_west > 0 and ((self.step_west <= self.step_north and self.step_north > 0) or
+                                     (self.step_west <= self.step_south and self.step_south > 0) or
+                                     (self.step_west <= self.step_east and self.step_east > 0)):
+            self.move_direction = 'west'
+        elif self.step_east > 0 and ((self.step_east <= self.step_north and self.step_north > 0) or
+                                     (self.step_east <= self.step_south and self.step_south > 0) or
+                                     (self.step_east <= self.step_west and self.step_west > 0)):
+            self.move_direction = 'east'
+        # Of ga in de richting van de enige knop die je indrukt.
+        elif self.step_north > 0:
+            self.move_direction = 'north'
+        elif self.step_south > 0:
+            self.move_direction = 'south'
+        elif self.step_west > 0:
+            self.move_direction = 'west'
+        elif self.step_east > 0:
+            self.move_direction = 'east'
+
+        self.last_direction = self.move_direction
+
+        # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
+        if self.step_delay > 0:
+            self.step_delay -= 1
+        else:
+            if self.move_direction == "north":
+                self.new_position[1] -= self.movespeed
+            elif self.move_direction == "south":
+                self.new_position[1] += self.movespeed
+            elif self.move_direction == "west":
+                self.new_position[0] -= self.movespeed
+            elif self.move_direction == "east":
+                self.new_position[0] += self.movespeed
+
+            self.ev_manager.post(CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
 
 
 class MapData(object):
