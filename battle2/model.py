@@ -25,7 +25,7 @@ class GameEngine(object):
         ev_manager.register_listener(self)
         self.running = False
         self.state = StateMachine()
-        self.map = MapData(self.MAP_PATH)
+        self.map = MapData(ev_manager, self.MAP_PATH)
         self.char = CharData(ev_manager)
         self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
@@ -60,6 +60,8 @@ class GameEngine(object):
         """
         self.running = True
         self.ev_manager.post(evm.InitializeEvent())
+        self.ev_manager.post(evm.InitMapEvent())
+        self.ev_manager.post(evm.DrawMapEvent())
         self.ev_manager.post(evm.ChangeStateEvent(State.Play))
         self.ev_manager.post(evm.ChangeStateEvent(State.Intro))
         self.wait_timer = time.time()
@@ -202,13 +204,12 @@ class CharData(object):
 
 
 class MapData(object):
-    def __init__(self, map_path):
+    def __init__(self, ev_manager, map_path):
+        self.ev_manager = ev_manager
+        ev_manager.register_listener(self)
 
         self.map_path = map_path
-
-        self.tmx_data = None
         self.map_data = None
-
         self.width = None
         self.height = None
 
@@ -220,18 +221,46 @@ class MapData(object):
         self.obstacles = []
         self.low_obst = []
 
-    #     for rect in tmx_data.get_layer_by_name("trees"):
-    #         self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
-    #         self.add_rect_to_list(rect, self.obstacles)
-    #
-    #     for rect in tmx_data.get_layer_by_name("water"):
-    #         self.add_rect_to_list(rect, self.waters)
-    #         self.add_rect_to_list(rect, self.low_obst)
-    #
-    # @staticmethod
-    # def add_rect_to_list(rect, alist):
-    #     alist.append(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
-    #
-    # @staticmethod
-    # def del_rect_from_list(rect, alist):
-    #     alist.remove(pygame.Rect(rect.x, rect.y, rect.width, rect.height))
+        # tijdelijke test
+        self.info = []
+        # ----------------
+
+    def notify(self, event):
+        if isinstance(event, evm.InitMapEvent):
+            self._initialize()
+
+    def _initialize(self):
+        import pytmx
+        import pyscroll.data
+
+        tmx_data = pytmx.load_pygame(self.map_path)
+        self.map_data = pyscroll.data.TiledMapData(tmx_data)
+
+        self.width = int(tmx_data.width * tmx_data.tilewidth)
+        self.height = int(tmx_data.height * tmx_data.tileheight)
+
+        for rect in tmx_data.get_layer_by_name("trees"):
+            self.add_rect_to_list(rect, self.trees)   # vul die lijst van rects van alle bomen
+            self.add_rect_to_list(rect, self.obstacles)
+
+        for rect in tmx_data.get_layer_by_name("water"):
+            self.add_rect_to_list(rect, self.waters)
+            self.add_rect_to_list(rect, self.low_obst)
+
+        # tijdelijke test
+        from battle2.view import Info
+        for rect in self.trees:
+            self.info.append(Info(rect, 'tree', 4))  # GRIDLAYER))
+        for rect in self.waters:
+            self.info.append(Info(rect, 'water', 4))  # GRIDLAYER))
+        # ----------------
+
+    @staticmethod
+    def add_rect_to_list(rect, alist):
+        from pygame import Rect
+        alist.append(Rect(rect.x, rect.y, rect.width, rect.height))
+
+    @staticmethod
+    def del_rect_from_list(rect, alist):
+        from pygame import Rect
+        alist.remove(Rect(rect.x, rect.y, rect.width, rect.height))

@@ -3,9 +3,6 @@
 import os
 
 import pygame
-import pytmx
-import pyscroll
-import pyscroll.data
 
 from battle2.model import State
 import battle2.eventmanager as evm
@@ -24,6 +21,8 @@ BLACK = pygame.Color("black")
 WHITE = pygame.Color("white")
 GREEN = pygame.Color("green")
 DARKGRAY = pygame.Color("gray12")
+BLUE = pygame.Color("blue")
+PURPLE = pygame.Color("purple")
 
 
 class GraphicalView(object):
@@ -52,6 +51,9 @@ class GraphicalView(object):
         """
         if isinstance(event, evm.InitializeEvent):
             self._initialize()
+
+        elif isinstance(event, evm.DrawMapEvent):
+            self._draw_map()
 
         elif isinstance(event, evm.QuitEvent):
             self.isinitialized = False
@@ -100,14 +102,19 @@ class GraphicalView(object):
         self.titlefont = pygame.font.SysFont('sans', 25, True)
         self._init_buttons()
 
-        self.map = MapView(self.model, PLAYERLAYER, WINDOWWIDTH, WINDOWHEIGHT)
-
         import data
         self.player1 = CharSprite(data.heroes.alagos.BMP)
-        self.map.group.add(self.player1)
 
         self.debug = False                  # todo, moet de debug niet in de model?
         self.isinitialized = True
+
+    def _draw_map(self):
+        import pyscroll
+        map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (WINDOWWIDTH, WINDOWHEIGHT), clamp_camera=True)
+        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=PLAYERLAYER)
+
+        self.group.add(self.player1)
+        self.group.add(self.model.map.info)
 
     def render_intro(self):
         """
@@ -134,8 +141,8 @@ class GraphicalView(object):
         self.screen.blit(self.background, (0, 0))
 
     def show_window(self):
-        self.map.group.center(self.player1.rect.center)
-        self.map.group.draw(self.window)
+        self.group.center(self.player1.rect.center)
+        self.group.draw(self.window)
         self.screen.blit(self.window, WINDOWPOS)
 
     def show_debug(self):
@@ -191,6 +198,11 @@ class GraphicalView(object):
 
         self.buttons = [self.button_view, self.button_up, self.button_down, self.button_left, self.button_right,
                         self.button_cancel]
+
+
+class MapView(object):
+    def __init__(self):
+        pass
 
 
 class CharSprite(pygame.sprite.Sprite):
@@ -259,23 +271,6 @@ class CharSprite(pygame.sprite.Sprite):
         return frame_set[self.step_animation]
 
 
-class MapView(object):
-    def __init__(self, model, layer, window_width, window_height):
-
-        self.model = model
-
-        # todo, is dit echt de manier om te werken?
-
-        self.model.map.tmx_data = pytmx.load_pygame(self.model.map.map_path)
-        self.model.map.map_data = pyscroll.data.TiledMapData(self.model.map.tmx_data)
-
-        self.model.map.width = int(self.model.map.tmx_data.width * self.model.map.tmx_data.tilewidth)
-        self.model.map.height = int(self.model.map.tmx_data.height * self.model.map.tmx_data.tileheight)
-
-        map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (window_width, window_height), clamp_camera=True)
-        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=layer)
-
-
 class Button(pygame.sprite.Sprite):
     def __init__(self, position, caption):
         pygame.sprite.Sprite.__init__(self)
@@ -323,3 +318,29 @@ class Button(pygame.sprite.Sprite):
     def visible(self, value):
         self._visible = value
         self._update()
+
+
+class Info(pygame.sprite.Sprite):
+    def __init__(self, rect, rect_type, layer):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._layer = layer
+        self.image = pygame.Surface((rect.width, rect.height))
+        self.image.fill(BLACK)
+        self.image.set_colorkey(BLACK)
+        self.rect_type = rect_type
+        pygame.draw.rect(self.image, self._color, (0, 0, rect.width, rect.height), 1)
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.topleft = rect.topleft
+
+    @property
+    def _color(self):
+        if self.rect_type == 'start':
+            return GREEN
+        if self.rect_type == 'hero':
+            return BLUE
+        if self.rect_type == 'tree':
+            return PURPLE
+        if self.rect_type == 'water':
+            return BLUE

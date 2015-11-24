@@ -70,6 +70,24 @@ class InitializeEvent(Event):
         self.name = "Initialize event"
 
 
+class InitMapEvent(Event):
+    """
+    Initialize map event.
+    """
+    def __init__(self):
+        super().__init__()
+        self.name = "Initialize map event"
+
+
+class DrawMapEvent(Event):
+    """
+    Draw map event.
+    """
+    def __init__(self):
+        super().__init__()
+        self.name = "Draw map event"
+
+
 class ChangeStateEvent(Event):
     """
     Change the model state machine.
