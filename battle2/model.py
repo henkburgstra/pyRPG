@@ -3,7 +3,7 @@
 import enum
 import time
 
-from battle2.eventmanager import *
+import battle2.eventmanager as evm
 
 
 class GameEngine(object):
@@ -33,23 +33,23 @@ class GameEngine(object):
         """
         Called by an event in the message queue.
         """
-        if isinstance(event, QuitEvent):
+        if isinstance(event, evm.QuitEvent):
             self.running = False
 
-        if isinstance(event, ChangeStateEvent):
+        if isinstance(event, evm.ChangeStateEvent):
             if not event.new_state:                     # pop request
                 if not self.state.pop():                # false if no more states are left
-                    self.ev_manager.post(QuitEvent())
+                    self.ev_manager.post(evm.QuitEvent())
             else:
                 self.state.push(event.new_state)        # push a new state on the stack
 
-        if isinstance(event, TickEvent):
+        if isinstance(event, evm.TickEvent):
             currentstate = self.state.peek()
             if currentstate == State.Intro:
                 new_time = time.time()
                 if new_time - self.wait_timer > self.INTRO_WAIT_TIME:
                     self.wait_timer = None
-                    self.ev_manager.post(ChangeStateEvent(None, currentstate))
+                    self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
 
     def run(self):
         """
@@ -59,12 +59,12 @@ class GameEngine(object):
         The loop ends when this object hears a QuitEvent in notify().
         """
         self.running = True
-        self.ev_manager.post(InitializeEvent())
-        self.ev_manager.post(ChangeStateEvent(State.Play))
-        self.ev_manager.post(ChangeStateEvent(State.Intro))
+        self.ev_manager.post(evm.InitializeEvent())
+        self.ev_manager.post(evm.ChangeStateEvent(State.Play))
+        self.ev_manager.post(evm.ChangeStateEvent(State.Intro))
         self.wait_timer = time.time()
         while self.running:
-            new_tick = TickEvent()
+            new_tick = evm.TickEvent()
             self.ev_manager.post(new_tick)
 
 
@@ -145,7 +145,7 @@ class CharData(object):
         self.step_west = 0
         self.step_east = 0
         self.step_delay = 0
-        self.ev_manager.post(CharUpdateEvent(last_dir=self.last_direction))
+        self.ev_manager.post(evm.CharUpdateEvent(last_dir=self.last_direction))
 
     def move(self):
 
@@ -198,7 +198,7 @@ class CharData(object):
             elif self.move_direction == "east":
                 self.new_position[0] += self.movespeed
 
-            self.ev_manager.post(CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
+            self.ev_manager.post(evm.CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
 
 
 class MapData(object):

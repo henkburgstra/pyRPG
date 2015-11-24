@@ -8,7 +8,7 @@ import pyscroll
 import pyscroll.data
 
 from battle2.model import State
-from battle2.eventmanager import *
+import battle2.eventmanager as evm
 
 SCREENWIDTH = 1600
 SCREENHEIGHT = 800  # 1600, 800  # 1920, 1080
@@ -50,24 +50,24 @@ class GraphicalView(object):
         """
         Receive events posted to the message queue.
         """
-        if isinstance(event, InitializeEvent):
+        if isinstance(event, evm.InitializeEvent):
             self._initialize()
 
-        elif isinstance(event, QuitEvent):
+        elif isinstance(event, evm.QuitEvent):
             self.isinitialized = False
             pygame.quit()
 
-        elif isinstance(event, CharUpdateEvent):
+        elif isinstance(event, evm.CharUpdateEvent):
 
             self.player1.rect.topleft = self.model.char.new_position
             self.player1.updatespeed = self.model.char.movespeed
             self.player1.update(event)
 
-        elif isinstance(event, InputEvent):
+        elif isinstance(event, evm.InputEvent):
             if event.key == pygame.K_F12:
                 self.debug ^= True          # simple boolean swith
 
-        elif isinstance(event, TickEvent):
+        elif isinstance(event, evm.TickEvent):
             if not self.isinitialized:
                 return
             currentstate = self.model.state.peek()

@@ -3,7 +3,7 @@
 import pygame
 
 from battle2.model import State
-from battle2.eventmanager import *
+import battle2.eventmanager as evm
 
 MOVESPEED1 = 1
 MOVESPEED2 = 2
@@ -28,7 +28,7 @@ class HumanInput(object):
         """
         Receive events posted to the message queue.
         """
-        if isinstance(event, TickEvent):
+        if isinstance(event, evm.TickEvent):
 
             currentstate = self.model.state.peek()
             if currentstate == State.Play:
@@ -68,15 +68,15 @@ class HumanInput(object):
             for event in pygame.event.get():                    # Called for each game tick. We check our input here.
 
                 if event.type == pygame.QUIT:                   # handle window manager closing our window
-                    self.ev_manager.post(QuitEvent())
+                    self.ev_manager.post(evm.QuitEvent())
 
                 if event.type == pygame.MOUSEBUTTONDOWN:        # handle mouse down events
                     if event.button:
-                        self.ev_manager.post(InputEvent(clickpos=event.pos, button=event.button))
+                        self.ev_manager.post(evm.InputEvent(clickpos=event.pos, button=event.button))
 
                 if event.type == pygame.KEYDOWN:                # handle key down events
                     if event.key == pygame.K_ESCAPE:
-                        self.ev_manager.post(ChangeStateEvent(None, self.model.state.peek()))
+                        self.ev_manager.post(evm.ChangeStateEvent(None, self.model.state.peek()))
                     else:
                         currentstate = self.model.state.peek()
                         if currentstate == State.Menu:
@@ -91,29 +91,29 @@ class HumanInput(object):
         Handles menu key events.
         """
         if event.key == pygame.K_ESCAPE:                                            # escape pops the menu
-            self.ev_manager.post(ChangeStateEvent(None, currentstate))
+            self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
         if event.key == pygame.K_SPACE:                                             # space plays the game
-            self.ev_manager.post(ChangeStateEvent(State.Play))
+            self.ev_manager.post(evm.ChangeStateEvent(State.Play))
 
     def keydown_help(self, event, currentstate):
         """
         Handles help key events.
         """
         if event.key in [pygame.K_ESCAPE, pygame.K_SPACE, pygame.K_RETURN]:         # space, enter or escape pops help
-            self.ev_manager.post(ChangeStateEvent(None, currentstate))
+            self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
 
     def keydown_play(self, event, currentstate):
         """
         Handles play key events.
         """
         if event.key == pygame.K_ESCAPE:
-            self.ev_manager.post(ChangeStateEvent(None, currentstate))
+            self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
         if event.key == pygame.K_F1:                                                # F1 shows the help
-            self.ev_manager.post(ChangeStateEvent(State.Help))
+            self.ev_manager.post(evm.ChangeStateEvent(State.Help))
         elif event.key == pygame.K_F12:
-            self.ev_manager.post(InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(event.key))
         elif (event.key == pygame.K_UP or event.key == pygame.K_DOWN or
               event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
-            self.ev_manager.post(InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(event.key))
         else:
-            self.ev_manager.post(InputEvent(event.unicode))
+            self.ev_manager.post(evm.InputEvent(event.unicode))
