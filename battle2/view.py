@@ -62,6 +62,30 @@ class GraphicalView(object):
         elif isinstance(event, evm.CharUpdateEvent):
 
             self.player1.rect.topleft = self.model.char.new_position
+
+            # todo, tijdelijke test
+
+            # loop tegen de rand van een obstacle aan
+            # er mag maar 1 obstacle in deze lijst zijn
+            if len(self.player1.rect.collidelistall(self.model.map.obstacles)) == 1:
+                # obj_nr is het nummer van de betreffende obstacle
+                obj_nr = self.player1.rect.collidelist(self.model.map.obstacles)
+                self.model.char.move_side(self.player1.rect, self.model.map.obstacles[obj_nr])
+                self.player1.rect.topleft = self.model.char.new_position
+
+            # loop tegen de rand van een low obstacle aan, bijv water
+            if len(self.player1.rect.collidelistall(self.model.map.low_obst)) == 1:
+                obj_nr = self.player1.rect.collidelist(self.model.map.low_obst)
+                self.model.char.move_side(self.player1.rect, self.model.map.low_obst[obj_nr])
+                self.player1.rect.topleft = self.model.char.new_position
+
+            # loop tegen een obstacle of low_obst aan
+            while self.player1.rect.collidelist(self.model.map.obstacles) > -1 or \
+                    self.player1.rect.collidelist(self.model.map.low_obst) > -1:
+                self.model.char.move_back()
+                self.player1.rect.topleft = self.model.char.new_position
+            # ----------------
+
             self.player1.updatespeed = self.model.char.movespeed
             self.player1.update(event)
 
@@ -102,7 +126,7 @@ class GraphicalView(object):
         self.titlefont = pygame.font.SysFont('sans', 25, True)
         self._init_buttons()
 
-        import data
+        import data                         # todo, deze import moet nog weg.
         self.player1 = CharSprite(data.heroes.alagos.BMP)
 
         self.debug = False                  # todo, moet de debug niet in de model?
@@ -157,8 +181,8 @@ class GraphicalView(object):
                     "move_direction: {}".format(self.model.char.move_direction),
                     "movespeed:      {}".format(self.model.char.movespeed),
                     "old_position.x: {}".format(self.model.char.old_position[0]),
-                    "old_position.y  {}".format(self.model.char.old_position[1]),
                     "new_position.x: {}".format(self.model.char.new_position[0]),
+                    "old_position.y  {}".format(self.model.char.old_position[1]),
                     "new_position.y  {}".format(self.model.char.new_position[1]),
                     "step_count:     {}".format(self.player1.step_count),
                     "step_animation: {}".format(self.player1.step_animation),
@@ -189,12 +213,12 @@ class GraphicalView(object):
         self.screen.blit(self.background, (0, 0))
 
     def _init_buttons(self):
-        self.button_view = Button((SCREENWIDTH-200,   SCREENHEIGHT-300), "V")
-        self.button_up = Button((SCREENWIDTH-150,     SCREENHEIGHT-300), "Up")
-        self.button_down = Button((SCREENWIDTH-150,   SCREENHEIGHT-250), "Down")
-        self.button_left = Button((SCREENWIDTH-200,   SCREENHEIGHT-250), "Left")
-        self.button_right = Button((SCREENWIDTH-100,  SCREENHEIGHT-250), "Right")
-        self.button_cancel = Button((SCREENWIDTH-100, SCREENHEIGHT-200), "C")
+        self.button_view = ButtonSprite((SCREENWIDTH-200,   SCREENHEIGHT-300), "V")
+        self.button_up = ButtonSprite((SCREENWIDTH-150,     SCREENHEIGHT-300), "Up")
+        self.button_down = ButtonSprite((SCREENWIDTH-150,   SCREENHEIGHT-250), "Down")
+        self.button_left = ButtonSprite((SCREENWIDTH-200,   SCREENHEIGHT-250), "Left")
+        self.button_right = ButtonSprite((SCREENWIDTH-100,  SCREENHEIGHT-250), "Right")
+        self.button_cancel = ButtonSprite((SCREENWIDTH-100, SCREENHEIGHT-200), "C")
 
         self.buttons = [self.button_view, self.button_up, self.button_down, self.button_left, self.button_right,
                         self.button_cancel]
@@ -271,7 +295,7 @@ class CharSprite(pygame.sprite.Sprite):
         return frame_set[self.step_animation]
 
 
-class Button(pygame.sprite.Sprite):
+class ButtonSprite(pygame.sprite.Sprite):
     def __init__(self, position, caption):
         pygame.sprite.Sprite.__init__(self)
 
@@ -320,7 +344,7 @@ class Button(pygame.sprite.Sprite):
         self._update()
 
 
-class Info(pygame.sprite.Sprite):
+class InfoSprite(pygame.sprite.Sprite):
     def __init__(self, rect, rect_type, layer):
         pygame.sprite.Sprite.__init__(self)
 

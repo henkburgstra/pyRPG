@@ -62,6 +62,7 @@ class GameEngine(object):
         self.ev_manager.post(evm.InitializeEvent())
         self.ev_manager.post(evm.InitMapEvent())
         self.ev_manager.post(evm.DrawMapEvent())
+        self.ev_manager.post(evm.ChangeStateEvent(State.Menu))
         self.ev_manager.post(evm.ChangeStateEvent(State.Play))
         self.ev_manager.post(evm.ChangeStateEvent(State.Intro))
         self.wait_timer = time.time()
@@ -125,8 +126,8 @@ class CharData(object):
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
 
-        self.old_position = [0, 0]
         self.new_position = [0, 0]
+        self.old_position = self.new_position
         self.last_direction = 'north'
         self.move_direction = None
         self.movespeed = 0
@@ -186,6 +187,7 @@ class CharData(object):
             self.move_direction = 'east'
 
         self.last_direction = self.move_direction
+        self.old_position = self.new_position[:]        # [:] maakt kloont de lijst. anders een verwijzing.
 
         # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
         if self.step_delay > 0:
@@ -201,6 +203,28 @@ class CharData(object):
                 self.new_position[0] += self.movespeed
 
             self.ev_manager.post(evm.CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
+
+    def move_back(self):
+        if self.move_direction == 'north':
+            self.new_position[1] += 1
+        if self.move_direction == 'south':
+            self.new_position[1] -= 1
+        if self.move_direction == 'west':
+            self.new_position[0] += 1
+        if self.move_direction == 'east':
+            self.new_position[0] -= 1
+
+    def move_side(self, char_rect, obst_rect):
+        if self.move_direction in ('north', 'south'):
+            if abs(char_rect.left - obst_rect.right) < char_rect.w / 2:
+                self.new_position[0] += self.movespeed
+            if abs(char_rect.right - obst_rect.left) < char_rect.w / 2:
+                self.new_position[0] -= self.movespeed
+        if self.move_direction in ('west', 'east'):
+            if abs(char_rect.top - obst_rect.bottom) < char_rect.h / 2:  # < 16
+                self.new_position[1] += self.movespeed
+            if abs(char_rect.bottom - obst_rect.top) < char_rect.h / 2:
+                self.new_position[1] -= self.movespeed
 
 
 class MapData(object):
@@ -221,7 +245,7 @@ class MapData(object):
         self.obstacles = []
         self.low_obst = []
 
-        # tijdelijke test
+        # todo, tijdelijke test
         self.info = []
         # ----------------
 
@@ -247,12 +271,12 @@ class MapData(object):
             self.add_rect_to_list(rect, self.waters)
             self.add_rect_to_list(rect, self.low_obst)
 
-        # tijdelijke test
-        from battle2.view import Info
+        # todo, tijdelijke test
+        from battle2.view import InfoSprite
         for rect in self.trees:
-            self.info.append(Info(rect, 'tree', 4))  # GRIDLAYER))
+            self.info.append(InfoSprite(rect, 'tree', 4))  # GRIDLAYER))
         for rect in self.waters:
-            self.info.append(Info(rect, 'water', 4))  # GRIDLAYER))
+            self.info.append(InfoSprite(rect, 'water', 4))  # GRIDLAYER))
         # ----------------
 
     @staticmethod

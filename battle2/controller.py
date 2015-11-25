@@ -33,37 +33,8 @@ class HumanInput(object):
             currentstate = self.model.state.peek()
             if currentstate == State.Play:
                 key_input = pygame.key.get_pressed()
-
-                self.model.char.movespeed = MOVESPEED2
-                if (key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]) and \
-                   (key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]):
-                    self.model.char.movespeed = MOVESPEED4
-                elif key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]:
-                    self.model.char.movespeed = MOVESPEED3
-                elif key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]:
-                    self.model.char.movespeed = MOVESPEED1
-
-                if key_input[pygame.K_UP] or key_input[pygame.K_DOWN] or \
-                   key_input[pygame.K_LEFT] or key_input[pygame.K_RIGHT]:
-                    if key_input[pygame.K_UP]:
-                        self.model.char.step_north += 1
-                    else:
-                        self.model.char.step_north = 0
-                    if key_input[pygame.K_DOWN]:
-                        self.model.char.step_south += 1
-                    else:
-                        self.model.char.step_south = 0
-                    if key_input[pygame.K_LEFT]:
-                        self.model.char.step_west += 1
-                    else:
-                        self.model.char.step_west = 0
-                    if key_input[pygame.K_RIGHT]:
-                        self.model.char.step_east += 1
-                    else:
-                        self.model.char.step_east = 0
-                    self.model.char.move()
-                else:
-                    self.model.char.stand()
+                self.speed_input(key_input)
+                self.movement_input(key_input)
 
             for event in pygame.event.get():                    # Called for each game tick. We check our input here.
 
@@ -75,16 +46,46 @@ class HumanInput(object):
                         self.ev_manager.post(evm.InputEvent(clickpos=event.pos, button=event.button))
 
                 if event.type == pygame.KEYDOWN:                # handle key down events
-                    if event.key == pygame.K_ESCAPE:
-                        self.ev_manager.post(evm.ChangeStateEvent(None, self.model.state.peek()))
-                    else:
-                        currentstate = self.model.state.peek()
-                        if currentstate == State.Menu:
-                            self.keydown_menu(event, currentstate)
-                        if currentstate == State.Play:
-                            self.keydown_play(event, currentstate)
-                        if currentstate == State.Help:
-                            self.keydown_help(event, currentstate)
+                    currentstate = self.model.state.peek()
+                    if currentstate == State.Menu:
+                        self.keydown_menu(event, currentstate)
+                    if currentstate == State.Play:
+                        self.keydown_play(event, currentstate)
+                    if currentstate == State.Help:
+                        self.keydown_help(event, currentstate)
+
+    def speed_input(self, key_input):
+        self.model.char.movespeed = MOVESPEED2
+        if (key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]) and \
+           (key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]):
+            self.model.char.movespeed = MOVESPEED4
+        elif key_input[pygame.K_LSHIFT] or key_input[pygame.K_RSHIFT]:
+            self.model.char.movespeed = MOVESPEED3
+        elif key_input[pygame.K_LCTRL] or key_input[pygame.K_RCTRL]:
+            self.model.char.movespeed = MOVESPEED1
+
+    def movement_input(self, key_input):
+        if key_input[pygame.K_UP] or key_input[pygame.K_DOWN] or \
+           key_input[pygame.K_LEFT] or key_input[pygame.K_RIGHT]:
+            if key_input[pygame.K_UP]:
+                self.model.char.step_north += 1
+            else:
+                self.model.char.step_north = 0
+            if key_input[pygame.K_DOWN]:
+                self.model.char.step_south += 1
+            else:
+                self.model.char.step_south = 0
+            if key_input[pygame.K_LEFT]:
+                self.model.char.step_west += 1
+            else:
+                self.model.char.step_west = 0
+            if key_input[pygame.K_RIGHT]:
+                self.model.char.step_east += 1
+            else:
+                self.model.char.step_east = 0
+            self.model.char.move()
+        else:
+            self.model.char.stand()
 
     def keydown_menu(self, event, currentstate):
         """
