@@ -125,6 +125,8 @@ class GraphicalView(object):
         for rect in self.model.map.waters:
             self.map1.info.append(InfoSprite(pygame.Rect(rect), 'water', GRIDLAYER))
 
+        self.map1.current = InfoSprite(self.player1.rect, 'hero', GRIDLAYER)
+
         self.group.add(self.player1)
 
         # voeg de obstacle waarden toe aan de mapview vanuit de mapdata
@@ -160,8 +162,7 @@ class GraphicalView(object):
 
     def draw_info(self):
         if self.info:
-            self.group.remove(self.map1.current)
-            self.map1.current = InfoSprite(self.player1.rect, 'hero', GRIDLAYER)
+            self.map1.current.rect.topleft = self.model.char.new_position
             self.group.add(self.map1.current)
             self.group.add(self.map1.info)
         else:
