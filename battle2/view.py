@@ -14,6 +14,7 @@ WINDOWHEIGHT = 600
 WINDOWPOS = 100, 100
 
 PLAYERLAYER = 2
+GRIDLAYER = 4
 
 FPS = 60
 
@@ -62,30 +63,7 @@ class GraphicalView(object):
         elif isinstance(event, evm.CharUpdateEvent):
 
             self.player1.rect.topleft = self.model.char.new_position
-
-            # todo, tijdelijke test
-
-            # loop tegen de rand van een obstacle aan
-            # er mag maar 1 obstacle in deze lijst zijn
-            if len(self.player1.rect.collidelistall(self.model.map.obstacles)) == 1:
-                # obj_nr is het nummer van de betreffende obstacle
-                obj_nr = self.player1.rect.collidelist(self.model.map.obstacles)
-                self.model.char.move_side(self.player1.rect, self.model.map.obstacles[obj_nr])
-                self.player1.rect.topleft = self.model.char.new_position
-
-            # loop tegen de rand van een low obstacle aan, bijv water
-            if len(self.player1.rect.collidelistall(self.model.map.low_obst)) == 1:
-                obj_nr = self.player1.rect.collidelist(self.model.map.low_obst)
-                self.model.char.move_side(self.player1.rect, self.model.map.low_obst[obj_nr])
-                self.player1.rect.topleft = self.model.char.new_position
-
-            # loop tegen een obstacle of low_obst aan
-            while self.player1.rect.collidelist(self.model.map.obstacles) > -1 or \
-                    self.player1.rect.collidelist(self.model.map.low_obst) > -1:
-                self.model.char.move_back()
-                self.player1.rect.topleft = self.model.char.new_position
-            # ----------------
-
+            self._detect_collision()
             self.player1.updatespeed = self.model.char.movespeed
             self.player1.update(event)
 
@@ -128,6 +106,7 @@ class GraphicalView(object):
 
         import data                         # todo, deze import moet nog weg.
         self.player1 = CharSprite(data.heroes.alagos.BMP)
+        self.map1 = MapView()
 
         self.debug = False                  # todo, moet de debug niet in de model?
         self.isinitialized = True
@@ -137,8 +116,20 @@ class GraphicalView(object):
         map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (WINDOWWIDTH, WINDOWHEIGHT), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=PLAYERLAYER)
 
+        # voeg de info sprites toe aan de mapview vanuit de mapdata
+        for rect in self.model.map.trees:
+            self.map1.info.append(InfoSprite(pygame.Rect(rect), 'tree', GRIDLAYER))
+        for rect in self.model.map.waters:
+            self.map1.info.append(InfoSprite(pygame.Rect(rect), 'water', GRIDLAYER))
+
         self.group.add(self.player1)
-        self.group.add(self.model.map.info)
+        self.group.add(self.map1.info)
+
+        # voeg de obstacle waarden toe aan de mapview vanuit de mapdata
+        for rect in self.model.map.obstacles:
+            self.map1.obstacles.append(pygame.Rect(rect))
+        for rect in self.model.map.low_obst:
+            self.map1.low_obst.append(pygame.Rect(rect))
 
     def render_intro(self):
         """
@@ -223,10 +214,33 @@ class GraphicalView(object):
         self.buttons = [self.button_view, self.button_up, self.button_down, self.button_left, self.button_right,
                         self.button_cancel]
 
+    def _detect_collision(self):
+        # loop tegen de rand van een obstacle aan
+        # er mag maar 1 obstacle in deze lijst zijn
+        if len(self.player1.rect.collidelistall(self.map1.obstacles)) == 1:
+            # obj_nr is het nummer van de betreffende obstacle
+            obj_nr = self.player1.rect.collidelist(self.map1.obstacles)
+            self.model.char.move_side(self.map1.obstacles[obj_nr])
+            self.player1.rect.topleft = self.model.char.new_position
+
+        # loop tegen de rand van een low obstacle aan, bijv water
+        if len(self.player1.rect.collidelistall(self.map1.low_obst)) == 1:
+            obj_nr = self.player1.rect.collidelist(self.map1.low_obst)
+            self.model.char.move_side(self.map1.low_obst[obj_nr])
+            self.player1.rect.topleft = self.model.char.new_position
+
+        # loop tegen een obstacle of low_obst aan
+        while self.player1.rect.collidelist(self.map1.obstacles) > -1 or \
+                self.player1.rect.collidelist(self.map1.low_obst) > -1:
+            self.model.char.move_back()
+            self.player1.rect.topleft = self.model.char.new_position
+
 
 class MapView(object):
     def __init__(self):
-        pass
+        self.info = []
+        self.obstacles = []
+        self.low_obst = []
 
 
 class CharSprite(pygame.sprite.Sprite):

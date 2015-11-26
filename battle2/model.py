@@ -122,9 +122,14 @@ class StateMachine(object):
 
 
 class CharData(object):
+    STEP_DELAY = 7
+
     def __init__(self, ev_manager):
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
+
+        self.width = 32
+        self.height = 32
 
         self.new_position = [0, 0]
         self.old_position = self.new_position
@@ -157,7 +162,7 @@ class CharData(object):
                                             (self.step_south == 0 and self.last_direction == 'south') or
                                             (self.step_west == 0 and self.last_direction == 'west') or
                                             (self.step_east == 0 and self.last_direction == 'east')):
-            self.step_delay = 7
+            self.step_delay = self.STEP_DELAY
 
         # Als je meerdere knoppen indrukt, ga dan naar de richting van de laatst ingedrukte knop.
         if self.step_north > 0 and ((self.step_north <= self.step_south and self.step_south > 0) or
@@ -214,17 +219,31 @@ class CharData(object):
         if self.move_direction == 'east':
             self.new_position[0] -= 1
 
-    def move_side(self, char_rect, obst_rect):
+    def move_side(self, obst_rect):
         if self.move_direction in ('north', 'south'):
-            if abs(char_rect.left - obst_rect.right) < char_rect.w / 2:
+            # als midden van char groter is dan rechts van object
+            if self.new_position[0] + (self.width / 2) > obst_rect.right:
                 self.new_position[0] += self.movespeed
-            if abs(char_rect.right - obst_rect.left) < char_rect.w / 2:
+                # als links van char groter is dan rechts van object
+                if self.new_position[0] > obst_rect.right:
+                    self.new_position[0] = obst_rect.right
+            # object oost van je
+            if self.new_position[0] + (self.width / 2) < obst_rect.left:
                 self.new_position[0] -= self.movespeed
+                if self.new_position[0] + self.width < obst_rect.left:
+                    self.new_position[0] = obst_rect.left - self.width
+
         if self.move_direction in ('west', 'east'):
-            if abs(char_rect.top - obst_rect.bottom) < char_rect.h / 2:  # < 16
+            # object noord van je
+            if self.new_position[1] + (self.height / 2) > obst_rect.bottom:
                 self.new_position[1] += self.movespeed
-            if abs(char_rect.bottom - obst_rect.top) < char_rect.h / 2:
+                if self.new_position[1] > obst_rect.bottom:
+                    self.new_position[1] = obst_rect.bottom
+            # object zuid van je
+            if self.new_position[1] + (self.height / 2) < obst_rect.top:
                 self.new_position[1] -= self.movespeed
+                if self.new_position[1] + self.height < obst_rect.top:
+                    self.new_position[1] = obst_rect.top - self.height
 
 
 class MapData(object):
@@ -244,10 +263,6 @@ class MapData(object):
         self.villains = []
         self.obstacles = []
         self.low_obst = []
-
-        # todo, tijdelijke test
-        self.info = []
-        # ----------------
 
     def notify(self, event):
         if isinstance(event, evm.InitMapEvent):
@@ -271,20 +286,10 @@ class MapData(object):
             self.add_rect_to_list(rect, self.waters)
             self.add_rect_to_list(rect, self.low_obst)
 
-        # todo, tijdelijke test
-        from battle2.view import InfoSprite
-        for rect in self.trees:
-            self.info.append(InfoSprite(rect, 'tree', 4))  # GRIDLAYER))
-        for rect in self.waters:
-            self.info.append(InfoSprite(rect, 'water', 4))  # GRIDLAYER))
-        # ----------------
-
     @staticmethod
     def add_rect_to_list(rect, alist):
-        from pygame import Rect
-        alist.append(Rect(rect.x, rect.y, rect.width, rect.height))
+        alist.append((rect.x, rect.y, rect.width, rect.height))
 
     @staticmethod
     def del_rect_from_list(rect, alist):
-        from pygame import Rect
-        alist.remove(Rect(rect.x, rect.y, rect.width, rect.height))
+        alist.remove((rect.x, rect.y, rect.width, rect.height))
