@@ -68,6 +68,8 @@ class GraphicalView(object):
             self.player1.update(event)
 
         elif isinstance(event, evm.InputEvent):
+            if event.key == pygame.K_F11:
+                self.info ^= True
             if event.key == pygame.K_F12:
                 self.debug ^= True          # simple boolean swith
 
@@ -108,7 +110,8 @@ class GraphicalView(object):
         self.player1 = CharSprite(data.heroes.alagos.BMP)
         self.map1 = MapView()
 
-        self.debug = False                  # todo, moet de debug niet in de model?
+        self.info = False
+        self.debug = False
         self.isinitialized = True
 
     def _draw_map(self):
@@ -123,7 +126,6 @@ class GraphicalView(object):
             self.map1.info.append(InfoSprite(pygame.Rect(rect), 'water', GRIDLAYER))
 
         self.group.add(self.player1)
-        self.group.add(self.map1.info)
 
         # voeg de obstacle waarden toe aan de mapview vanuit de mapdata
         for rect in self.model.map.obstacles:
@@ -149,11 +151,22 @@ class GraphicalView(object):
         """
         Render the game play.
         """
+        self.draw_info()
         self.show_window()
         self.show_debug()
         self.show_buttons()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
+
+    def draw_info(self):
+        if self.info:
+            self.group.remove(self.map1.current)
+            self.map1.current = InfoSprite(self.player1.rect, 'hero', GRIDLAYER)
+            self.group.add(self.map1.current)
+            self.group.add(self.map1.info)
+        else:
+            self.group.remove(self.map1.current)
+            self.group.remove(self.map1.info)
 
     def show_window(self):
         self.group.center(self.player1.rect.center)
@@ -239,6 +252,7 @@ class GraphicalView(object):
 class MapView(object):
     def __init__(self):
         self.info = []
+        self.current = None
         self.obstacles = []
         self.low_obst = []
 
