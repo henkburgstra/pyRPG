@@ -71,6 +71,13 @@ class GameEngine(object):
             self.ev_manager.post(new_tick)
 
 
+class Direction(enum.Enum):
+    North = 1
+    South = 2
+    West = 3
+    East = 4
+
+
 class State(enum.Enum):
     # State machine constants for the StateMachine class below
     Intro = 1
@@ -133,7 +140,7 @@ class CharData(object):
 
         self.new_position = [0, 0]
         self.old_position = self.new_position
-        self.last_direction = 'north'
+        self.last_direction = Direction.North
         self.move_direction = None
         self.movespeed = 0
 
@@ -158,38 +165,38 @@ class CharData(object):
     def move(self):
 
         # Als hij nog geen stappen heeft gezet en hij kijkt naar een andere kant dan je drukt, stel een delay in.
-        if self.move_direction is None and ((self.step_north == 0 and self.last_direction == 'north') or
-                                            (self.step_south == 0 and self.last_direction == 'south') or
-                                            (self.step_west == 0 and self.last_direction == 'west') or
-                                            (self.step_east == 0 and self.last_direction == 'east')):
+        if self.move_direction is None and ((self.step_north == 0 and self.last_direction == Direction.North) or
+                                            (self.step_south == 0 and self.last_direction == Direction.South) or
+                                            (self.step_west == 0 and self.last_direction == Direction.West) or
+                                            (self.step_east == 0 and self.last_direction == Direction.East)):
             self.step_delay = self.STEP_DELAY
 
         # Als je meerdere knoppen indrukt, ga dan naar de richting van de laatst ingedrukte knop.
         if self.step_north > 0 and ((self.step_north <= self.step_south and self.step_south > 0) or
                                     (self.step_north <= self.step_west and self.step_west > 0) or
                                     (self.step_north <= self.step_east and self.step_east > 0)):
-            self.move_direction = 'north'
+            self.move_direction = Direction.North
         elif self.step_south > 0 and ((self.step_south <= self.step_north and self.step_north > 0) or
                                       (self.step_south <= self.step_west and self.step_west > 0) or
                                       (self.step_south <= self.step_east and self.step_east > 0)):
-            self.move_direction = 'south'
+            self.move_direction = Direction.South
         elif self.step_west > 0 and ((self.step_west <= self.step_north and self.step_north > 0) or
                                      (self.step_west <= self.step_south and self.step_south > 0) or
                                      (self.step_west <= self.step_east and self.step_east > 0)):
-            self.move_direction = 'west'
+            self.move_direction = Direction.West
         elif self.step_east > 0 and ((self.step_east <= self.step_north and self.step_north > 0) or
                                      (self.step_east <= self.step_south and self.step_south > 0) or
                                      (self.step_east <= self.step_west and self.step_west > 0)):
-            self.move_direction = 'east'
+            self.move_direction = Direction.East
         # Of ga in de richting van de enige knop die je indrukt.
         elif self.step_north > 0:
-            self.move_direction = 'north'
+            self.move_direction = Direction.North
         elif self.step_south > 0:
-            self.move_direction = 'south'
+            self.move_direction = Direction.South
         elif self.step_west > 0:
-            self.move_direction = 'west'
+            self.move_direction = Direction.West
         elif self.step_east > 0:
-            self.move_direction = 'east'
+            self.move_direction = Direction.East
 
         self.last_direction = self.move_direction
         self.old_position = self.new_position[:]        # [:] maakt kloont de lijst. anders een verwijzing.
@@ -198,29 +205,29 @@ class CharData(object):
         if self.step_delay > 0:
             self.step_delay -= 1
         else:
-            if self.move_direction == "north":
+            if self.move_direction == Direction.North:
                 self.new_position[1] -= self.movespeed
-            elif self.move_direction == "south":
+            elif self.move_direction == Direction.South:
                 self.new_position[1] += self.movespeed
-            elif self.move_direction == "west":
+            elif self.move_direction == Direction.West:
                 self.new_position[0] -= self.movespeed
-            elif self.move_direction == "east":
+            elif self.move_direction == Direction.East:
                 self.new_position[0] += self.movespeed
 
             self.ev_manager.post(evm.CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
 
     def move_back(self):
-        if self.move_direction == 'north':
+        if self.move_direction == Direction.North:
             self.new_position[1] += 1
-        if self.move_direction == 'south':
+        if self.move_direction == Direction.South:
             self.new_position[1] -= 1
-        if self.move_direction == 'west':
+        if self.move_direction == Direction.West:
             self.new_position[0] += 1
-        if self.move_direction == 'east':
+        if self.move_direction == Direction.East:
             self.new_position[0] -= 1
 
     def move_side(self, obst_rect):
-        if self.move_direction in ('north', 'south'):
+        if self.move_direction in (Direction.North, Direction.South):
             # als midden van char groter is dan rechts van object
             if self.new_position[0] + (self.width / 2) > obst_rect.right:
                 self.new_position[0] += self.movespeed
@@ -233,7 +240,7 @@ class CharData(object):
                 if self.new_position[0] + self.width < obst_rect.left:
                     self.new_position[0] = obst_rect.left - self.width
 
-        if self.move_direction in ('west', 'east'):
+        if self.move_direction in (Direction.West, Direction.East):
             # object noord van je
             if self.new_position[1] + (self.height / 2) > obst_rect.bottom:
                 self.new_position[1] += self.movespeed

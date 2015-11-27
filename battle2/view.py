@@ -4,6 +4,7 @@ import os
 
 import pygame
 
+from battle2.model import Direction
 from battle2.model import State
 import battle2.eventmanager as evm
 
@@ -285,23 +286,23 @@ class CharSprite(pygame.sprite.Sprite):
     def update(self, event):
 
         if event.movespeed is None:
-            if event.last_dir == 'west':
-                self._clip(self.west_states[0])
-            if event.last_dir == 'east':
-                self._clip(self.east_states[0])
-            if event.last_dir == 'north':
+            if event.last_dir == Direction.North:
                 self._clip(self.north_states[0])
-            if event.last_dir == 'south':
+            if event.last_dir == Direction.South:
                 self._clip(self.south_states[0])
+            if event.last_dir == Direction.West:
+                self._clip(self.west_states[0])
+            if event.last_dir == Direction.East:
+                self._clip(self.east_states[0])
         else:
-            if event.move_dir == 'west':
-                self._clip(self.west_states)
-            if event.move_dir == 'east':
-                self._clip(self.east_states)
-            if event.move_dir == 'north':
+            if event.move_dir == Direction.North:
                 self._clip(self.north_states)
-            if event.move_dir == 'south':
+            if event.move_dir == Direction.South:
                 self._clip(self.south_states)
+            if event.move_dir == Direction.West:
+                self._clip(self.west_states)
+            if event.move_dir == Direction.East:
+                self._clip(self.east_states)
 
         # Update the image for each pass
         self.image = self.full_sprite.subsurface(self.full_sprite.get_clip())
