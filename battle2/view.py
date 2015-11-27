@@ -63,7 +63,7 @@ class GraphicalView(object):
         elif isinstance(event, evm.CharUpdateEvent):
 
             self.player1.rect.topleft = self.model.char.new_position
-            self._detect_collision()
+            self.detect_collision()
             self.player1.updatespeed = self.model.char.movespeed
             self.player1.update(event)
 
@@ -228,7 +228,7 @@ class GraphicalView(object):
         self.buttons = [self.button_view, self.button_up, self.button_down, self.button_left, self.button_right,
                         self.button_cancel]
 
-    def _detect_collision(self):
+    def detect_collision(self):
         # loop tegen de rand van een obstacle aan
         # er mag maar 1 obstacle in deze lijst zijn
         if len(self.player1.rect.collidelistall(self.map1.obstacles)) == 1:
