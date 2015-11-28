@@ -65,10 +65,10 @@ class GraphicalView(object):
 
         elif isinstance(event, evm.CharUpdateEvent):
 
-            self.player1.rect.topleft = self.model.char.new_position
+            self.current_player.rect.topleft = self.model.current_character.new_position
             self.detect_collision()
-            self.player1.updatespeed = self.model.char.movespeed
-            self.player1.update(event)
+            self.current_player.updatespeed = self.model.current_character.movespeed
+            self.current_player.update(event)
 
         elif isinstance(event, evm.InputEvent):
             if event.key == pygame.K_F10:
@@ -111,8 +111,10 @@ class GraphicalView(object):
         self.titlefont = pygame.font.SysFont('sans', 25, True)
         self._init_buttons()
 
-        import data                         # todo, deze import moet nog weg.
-        self.player1 = CharSprite(data.heroes.alagos.BMP)
+        self.players = []
+        for character in self.model.characters:
+            self.players.append(CharSprite(character.bmp))
+        self.current_player = None
 
         self.info = False
         self.debug = False
@@ -123,17 +125,39 @@ class GraphicalView(object):
         map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (WINDOWWIDTH, WINDOWHEIGHT), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=PLAYERLAYER)
 
+        # zet alle players sprites op de juiste posities
+        for count, player in enumerate(self.players):
+            player.rect.topleft = self.model.characters[count].new_position
+
+        self.current_player = self.players[0]
+
+        self.group.add(self.players)
+
+        # voeg de posities van alles heroes aan de mapdata toe en ook als obstacle
+        for char in self.model.characters:
+            rect = pygame.Rect(char.new_position[0], char.new_position[1], char.width, char.height)
+            self.model.map.add_rect_to_list(rect, self.model.map.heroes)
+            self.model.map.add_rect_to_list(rect, self.model.map.obstacles)
+
+        # de rect van de player die aan de beurt is weer verwijderen en ken de start_pos toe
+        self.model.map.del_rect_from_list(self.current_player.rect, self.model.map.heroes)
+        self.model.map.del_rect_from_list(self.current_player.rect, self.model.map.obstacles)
+        self.model.map.start_pos = self.current_player.rect.copy()
+
+        # creeer een mapview
         self.map1 = MapView(self.model.map.width, self.model.map.height)
 
+        # maak van het current hokje een hero-info sprite
+        self.map1.current = InfoSprite(self.current_player.rect, 'hero', GRIDLAYER)
+
         # voeg de info sprites toe aan de mapview vanuit de mapdata
+        self.map1.info.append(InfoSprite(self.model.map.start_pos, 'start', GRIDLAYER))
         for rect in self.model.map.trees:
             self.map1.info.append(InfoSprite(pygame.Rect(rect), 'tree', GRIDLAYER))
         for rect in self.model.map.waters:
             self.map1.info.append(InfoSprite(pygame.Rect(rect), 'water', GRIDLAYER))
-
-        self.map1.current = InfoSprite(self.player1.rect, 'hero', GRIDLAYER)
-
-        self.group.add(self.player1)
+        for rect in self.model.map.heroes:
+            self.map1.info.append(InfoSprite(pygame.Rect(rect), 'hero', GRIDLAYER))
 
         # voeg de obstacle waarden toe aan de mapview vanuit de mapdata
         for rect in self.model.map.obstacles:
@@ -175,7 +199,7 @@ class GraphicalView(object):
 
     def draw_info(self):
         if self.info:
-            self.map1.current.rect.topleft = self.model.char.new_position
+            self.map1.current.rect.topleft = self.model.current_character.new_position
             self.group.add(self.map1.current)
             self.group.add(self.map1.info)
         else:
@@ -183,27 +207,29 @@ class GraphicalView(object):
             self.group.remove(self.map1.info)
 
     def show_window(self):
-        self.group.center(self.player1.rect.center)
+        self.group.center(self.current_player.rect.center)
         self.group.draw(self.window)
         self.screen.blit(self.window, WINDOWPOS)
 
     def show_debug(self):
         if self.debug:
             text = ("FPS:            {}".format(int(self.clock.get_fps())),
-                    "step_north:     {}".format(self.model.char.step_north),
-                    "step_south:     {}".format(self.model.char.step_south),
-                    "step_west:      {}".format(self.model.char.step_west),
-                    "step_east:      {}".format(self.model.char.step_east),
-                    "step_delay:     {}".format(self.model.char.step_delay),
-                    "last_direction: {}".format(self.model.char.last_direction),
-                    "move_direction: {}".format(self.model.char.move_direction),
-                    "movespeed:      {}".format(self.model.char.movespeed),
-                    "old_position.x: {}".format(self.model.char.old_position[0]),
-                    "new_position.x: {}".format(self.model.char.new_position[0]),
-                    "old_position.y  {}".format(self.model.char.old_position[1]),
-                    "new_position.y  {}".format(self.model.char.new_position[1]),
-                    "step_count:     {}".format(self.player1.step_count),
-                    "step_animation: {}".format(self.player1.step_animation),
+                    "step_north:     {}".format(self.model.current_character.step_north),
+                    "step_south:     {}".format(self.model.current_character.step_south),
+                    "step_west:      {}".format(self.model.current_character.step_west),
+                    "step_east:      {}".format(self.model.current_character.step_east),
+                    "step_delay:     {}".format(self.model.current_character.step_delay),
+                    "last_direction: {}".format(self.model.current_character.last_direction),
+                    "move_direction: {}".format(self.model.current_character.move_direction),
+                    "movespeed:      {}".format(self.model.current_character.movespeed),
+                    "start_pos.x:    {}".format(self.model.map.start_pos[0]),
+                    "old_position.x: {}".format(self.model.current_character.old_position[0]),
+                    "new_position.x: {}".format(self.model.current_character.new_position[0]),
+                    "start_pos.y     {}".format(self.model.map.start_pos[1]),
+                    "old_position.y  {}".format(self.model.current_character.old_position[1]),
+                    "new_position.y  {}".format(self.model.current_character.new_position[1]),
+                    "step_count:     {}".format(self.current_player.step_count),
+                    "step_animation: {}".format(self.current_player.step_animation),
                     )
             for count, line in enumerate(text):
                 self.screen.blit(self.debugfont.render(line, True, WHITE), (0, count * 10))
@@ -244,23 +270,23 @@ class GraphicalView(object):
     def detect_collision(self):
         # loop tegen de rand van een obstacle aan
         # er mag maar 1 obstacle in deze lijst zijn
-        if len(self.player1.rect.collidelistall(self.map1.obstacles)) == 1:
+        if len(self.current_player.rect.collidelistall(self.map1.obstacles)) == 1:
             # obj_nr is het nummer van de betreffende obstacle
-            obj_nr = self.player1.rect.collidelist(self.map1.obstacles)
-            self.model.char.move_side(self.map1.obstacles[obj_nr])
-            self.player1.rect.topleft = self.model.char.new_position
+            obj_nr = self.current_player.rect.collidelist(self.map1.obstacles)
+            self.model.current_character.move_side(self.map1.obstacles[obj_nr])
+            self.current_player.rect.topleft = self.model.current_character.new_position
 
         # loop tegen de rand van een low obstacle aan, bijv water
-        if len(self.player1.rect.collidelistall(self.map1.low_obst)) == 1:
-            obj_nr = self.player1.rect.collidelist(self.map1.low_obst)
-            self.model.char.move_side(self.map1.low_obst[obj_nr])
-            self.player1.rect.topleft = self.model.char.new_position
+        if len(self.current_player.rect.collidelistall(self.map1.low_obst)) == 1:
+            obj_nr = self.current_player.rect.collidelist(self.map1.low_obst)
+            self.model.current_character.move_side(self.map1.low_obst[obj_nr])
+            self.current_player.rect.topleft = self.model.current_character.new_position
 
         # loop tegen een obstacle of low_obst aan
-        while self.player1.rect.collidelist(self.map1.obstacles) > -1 or \
-                self.player1.rect.collidelist(self.map1.low_obst) > -1:
-            self.model.char.move_back()
-            self.player1.rect.topleft = self.model.char.new_position
+        while self.current_player.rect.collidelist(self.map1.obstacles) > -1 or \
+                self.current_player.rect.collidelist(self.map1.low_obst) > -1:
+            self.model.current_character.move_back()
+            self.current_player.rect.topleft = self.model.current_character.new_position
 
 
 class MapView(object):
@@ -429,4 +455,3 @@ class Grid(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.show = False
-

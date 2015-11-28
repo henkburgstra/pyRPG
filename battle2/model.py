@@ -5,6 +5,9 @@ import time
 
 import battle2.eventmanager as evm
 
+import data
+from output import Output
+
 
 class GameEngine(object):
     """
@@ -26,7 +29,15 @@ class GameEngine(object):
         self.running = False
         self.state = StateMachine()
         self.map = MapData(ev_manager, self.MAP_PATH)
-        self.char = CharData(ev_manager)
+        self.characters = []
+        i = 0
+        for hero_raw in Output.HERO_SORT:
+            hero = data.heroes[hero_raw]
+            if hero in data.party:
+                self.characters.append(CharData(ev_manager, [336 + i * 32, 272 + i * 32], hero.BMP))  # todo, dit moet nog de echte hero class worden
+                i += 1
+        self.current_character = CharData(ev_manager, [336, 272], data.heroes.alagos.BMP)  # todo, dit moet eerst None zijn. hier moet hij uiteindelijk niet een char toegewezen krijgen.
+
         self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
     def notify(self, event):
@@ -130,15 +141,17 @@ class StateMachine(object):
 
 class CharData(object):
     STEP_DELAY = 7
+    TILESIZE = 32
 
-    def __init__(self, ev_manager):
+    def __init__(self, ev_manager, position, bmp):
         self.ev_manager = ev_manager
         ev_manager.register_listener(self)
 
-        self.width = 32
-        self.height = 32
+        self.bmp = bmp
+        self.width = self.TILESIZE
+        self.height = self.TILESIZE
 
-        self.new_position = [0, 0]
+        self.new_position = position
         self.old_position = self.new_position
         self.last_direction = Direction.North
         self.move_direction = None
@@ -154,6 +167,7 @@ class CharData(object):
         pass
 
     def stand(self):
+        self.old_position = self.new_position
         self.move_direction = None
         self.step_north = 0
         self.step_south = 0
@@ -199,7 +213,7 @@ class CharData(object):
             self.move_direction = Direction.East
 
         self.last_direction = self.move_direction
-        self.old_position = self.new_position[:]        # [:] maakt kloont de lijst. anders een verwijzing.
+        self.old_position = list(self.new_position)     # todo, list() of [:] kloont de lijst. anders een verwijzing.
 
         # Als je een knop indrukt, en er is geen delay, beweeg dan in die richting.
         if self.step_delay > 0:
@@ -215,6 +229,10 @@ class CharData(object):
                 self.new_position[0] += self.movespeed
 
             self.ev_manager.post(evm.CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
+
+    def align_to_grid(self):
+        self.new_position[0] = (round(self.new_position[0] / self.TILESIZE)) * self.TILESIZE
+        self.new_position[1] = (round(self.new_position[1] / self.TILESIZE)) * self.TILESIZE
 
     def move_back(self):
         if self.move_direction == Direction.North:
@@ -263,7 +281,7 @@ class MapData(object):
         self.width = None
         self.height = None
 
-        self.start_pos = []     # start pos is maar één rect, maar moet in een list staan ivm updaten
+        self.start_pos = None   # is maar één rect
         self.trees = []         # een lijst van rects van alle bomen
         self.waters = []
         self.heroes = []
