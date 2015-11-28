@@ -111,6 +111,8 @@ class HumanInput(object):
             self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
         elif event.key == pygame.K_F1:                                                # F1 shows the help
             self.ev_manager.post(evm.ChangeStateEvent(State.Help))
+        elif event.key == pygame.K_F10:
+            self.ev_manager.post(evm.InputEvent(event.key))
         elif event.key == pygame.K_F11:
             self.ev_manager.post(evm.InputEvent(event.key))
         elif event.key == pygame.K_F12:

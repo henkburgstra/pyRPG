@@ -14,6 +14,7 @@ WINDOWWIDTH = 800
 WINDOWHEIGHT = 600
 WINDOWPOS = 100, 100
 
+TILESIZE = 32
 PLAYERLAYER = 2
 GRIDLAYER = 4
 
@@ -22,6 +23,7 @@ FPS = 60
 BLACK = pygame.Color("black")
 WHITE = pygame.Color("white")
 GREEN = pygame.Color("green")
+GRAY = pygame.Color("gray38")
 DARKGRAY = pygame.Color("gray12")
 BLUE = pygame.Color("blue")
 PURPLE = pygame.Color("purple")
@@ -69,6 +71,8 @@ class GraphicalView(object):
             self.player1.update(event)
 
         elif isinstance(event, evm.InputEvent):
+            if event.key == pygame.K_F10:
+                self.map1.grid.show ^= True
             if event.key == pygame.K_F11:
                 self.info ^= True
             if event.key == pygame.K_F12:
@@ -109,7 +113,6 @@ class GraphicalView(object):
 
         import data                         # todo, deze import moet nog weg.
         self.player1 = CharSprite(data.heroes.alagos.BMP)
-        self.map1 = MapView()
 
         self.info = False
         self.debug = False
@@ -119,6 +122,8 @@ class GraphicalView(object):
         import pyscroll
         map_layer = pyscroll.BufferedRenderer(self.model.map.map_data, (WINDOWWIDTH, WINDOWHEIGHT), clamp_camera=True)
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=PLAYERLAYER)
+
+        self.map1 = MapView(self.model.map.width, self.model.map.height)
 
         # voeg de info sprites toe aan de mapview vanuit de mapdata
         for rect in self.model.map.trees:
@@ -154,12 +159,19 @@ class GraphicalView(object):
         """
         Render the game play.
         """
+        self.draw_grid()
         self.draw_info()
         self.show_window()
         self.show_debug()
         self.show_buttons()
         pygame.display.flip()
         self.screen.blit(self.background, (0, 0))
+
+    def draw_grid(self):
+        if self.map1.grid.show:
+            self.group.add(self.map1.grid)
+        else:
+            self.group.remove(self.map1.grid)
 
     def draw_info(self):
         if self.info:
@@ -252,7 +264,8 @@ class GraphicalView(object):
 
 
 class MapView(object):
-    def __init__(self):
+    def __init__(self, map_width, map_height):
+        self.grid = Grid(map_width, map_height, TILESIZE, GRIDLAYER)
         self.info = []
         self.current = None
         self.obstacles = []
@@ -398,3 +411,22 @@ class InfoSprite(pygame.sprite.Sprite):
             return PURPLE
         if self.rect_type == 'water':
             return BLUE
+
+
+class Grid(pygame.sprite.Sprite):
+    def __init__(self, map_width, map_height, tile_size, layer):
+        pygame.sprite.Sprite.__init__(self)
+
+        self._layer = layer
+        self.image = pygame.Surface((map_width, map_height))
+        self.image.fill(BLACK)
+        self.image.set_colorkey(BLACK)
+        for i in range(0, map_width, tile_size):
+            pygame.draw.line(self.image, GRAY, (0, i), (map_width, i))
+        for i in range(0, map_height, tile_size):
+            pygame.draw.line(self.image, GRAY, (i, 0), (i, map_height))
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+
+        self.show = False
+
