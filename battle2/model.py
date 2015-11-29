@@ -243,6 +243,8 @@ class CharData(object):
             self.new_position[0] += 1
         if self.move_direction == Direction.East:
             self.new_position[0] -= 1
+        if self.move_direction is None:         # is voor align_to_grid(), als het fout gaat.
+            self.new_position = [0, 0]
 
     def move_side(self, obst_rect):
         if self.move_direction in (Direction.North, Direction.South):
