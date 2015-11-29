@@ -109,18 +109,20 @@ class HumanInput(object):
         """
         if event.key == pygame.K_ESCAPE:
             self.ev_manager.post(evm.ChangeStateEvent(None, currentstate))
+        elif event.key == pygame.K_c:
+            self.ev_manager.post(evm.InputEvent(key=event.key))
         elif event.key == pygame.K_SPACE:
             self.model.current_character.align_to_grid()
         elif event.key == pygame.K_F1:                                                # F1 shows the help
             self.ev_manager.post(evm.ChangeStateEvent(State.Help))
         elif event.key == pygame.K_F10:
-            self.ev_manager.post(evm.InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(key=event.key))
         elif event.key == pygame.K_F11:
-            self.ev_manager.post(evm.InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(key=event.key))
         elif event.key == pygame.K_F12:
-            self.ev_manager.post(evm.InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(key=event.key))
         elif (event.key == pygame.K_UP or event.key == pygame.K_DOWN or
               event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
-            self.ev_manager.post(evm.InputEvent(event.key))
+            self.ev_manager.post(evm.InputEvent(key=event.key))
         else:
-            self.ev_manager.post(evm.InputEvent(event.unicode))
+            self.ev_manager.post(evm.InputEvent(key=event.unicode))

@@ -71,6 +71,37 @@ class GraphicalView(object):
             self.current_player.update(event)
 
         elif isinstance(event, evm.InputEvent):
+            if event.key == pygame.K_c:
+                self.model.current_character.align_to_grid()
+                # voeg de rect van de huidige speler toe aan de lists en verwijder de rect van start_pos
+                self.model.map.add_rect_to_list(self.current_player.rect, self.model.map.heroes)
+                self.model.map.add_rect_to_list(self.current_player.rect, self.model.map.obstacles)
+                self.model.map.start_pos = None
+
+                self.model.current_character = self.model.characters[1]
+                self.current_player = self.players[1]
+
+                # de rect van de player die aan de beurt is weer verwijderen en ken de start_pos toe
+                self.model.map.del_rect_from_list(self.current_player.rect, self.model.map.heroes)
+                self.model.map.del_rect_from_list(self.current_player.rect, self.model.map.obstacles)
+                self.model.map.start_pos = self.current_player.rect.copy()
+
+                # voeg de info sprites toe aan de mapview vanuit de mapdata
+                self.map1.info.append(InfoSprite(self.model.map.start_pos, 'start', GRIDLAYER))
+                for rect in self.model.map.trees:
+                    self.map1.info.append(InfoSprite(pygame.Rect(rect), 'tree', GRIDLAYER))
+                for rect in self.model.map.waters:
+                    self.map1.info.append(InfoSprite(pygame.Rect(rect), 'water', GRIDLAYER))
+                for rect in self.model.map.heroes:
+                    self.map1.info.append(InfoSprite(pygame.Rect(rect), 'hero', GRIDLAYER))
+
+                # voeg de obstacle waarden toe aan de mapview vanuit de mapdata
+                for rect in self.model.map.obstacles:
+                    self.map1.obstacles.append(pygame.Rect(rect))
+                for rect in self.model.map.low_obst:
+                    self.map1.low_obst.append(pygame.Rect(rect))
+
+
             if event.key == pygame.K_F10:
                 self.map1.grid.show ^= True
             if event.key == pygame.K_F11:
@@ -222,10 +253,12 @@ class GraphicalView(object):
                     "last_direction: {}".format(self.model.current_character.last_direction),
                     "move_direction: {}".format(self.model.current_character.move_direction),
                     "movespeed:      {}".format(self.model.current_character.movespeed),
-                    "start_pos.x:    {}".format(self.model.map.start_pos[0]),
+                    "start_pos.x:    {}".format(self.model.map.start_pos[0]
+                                                if self.model.map.start_pos is not None else "None"),
                     "old_position.x: {}".format(self.model.current_character.old_position[0]),
                     "new_position.x: {}".format(self.model.current_character.new_position[0]),
-                    "start_pos.y     {}".format(self.model.map.start_pos[1]),
+                    "start_pos.y     {}".format(self.model.map.start_pos[1]
+                                                if self.model.map.start_pos is not None else "None"),
                     "old_position.y  {}".format(self.model.current_character.old_position[1]),
                     "new_position.y  {}".format(self.model.current_character.new_position[1]),
                     "step_count:     {}".format(self.current_player.step_count),

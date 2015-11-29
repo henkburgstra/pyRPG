@@ -36,7 +36,7 @@ class GameEngine(object):
             if hero in data.party:
                 self.characters.append(CharData(ev_manager, [336 + i * 32, 272 + i * 32], hero.BMP))  # todo, dit moet nog de echte hero class worden
                 i += 1
-        self.current_character = CharData(ev_manager, [336, 272], data.heroes.alagos.BMP)  # todo, dit moet eerst None zijn. hier moet hij uiteindelijk niet een char toegewezen krijgen.
+        self.current_character = self.characters[0]  # todo, dit moet eerst None zijn. hier moet hij uiteindelijk niet een char toegewezen krijgen.
 
         self.wait_timer = None                          # todo, is dit wel de juiste plek voor een timer?
 
@@ -142,6 +142,7 @@ class StateMachine(object):
 class CharData(object):
     STEP_DELAY = 7
     TILESIZE = 32
+    GRIDSIZE = 16
 
     def __init__(self, ev_manager, position, bmp):
         self.ev_manager = ev_manager
@@ -231,8 +232,8 @@ class CharData(object):
             self.ev_manager.post(evm.CharUpdateEvent(move_dir=self.move_direction, movespeed=self.movespeed))
 
     def align_to_grid(self):
-        self.new_position[0] = (round(self.new_position[0] / self.TILESIZE)) * self.TILESIZE
-        self.new_position[1] = (round(self.new_position[1] / self.TILESIZE)) * self.TILESIZE
+        self.new_position[0] = (round(self.new_position[0] / self.GRIDSIZE)) * self.GRIDSIZE
+        self.new_position[1] = (round(self.new_position[1] / self.GRIDSIZE)) * self.GRIDSIZE
 
     def move_back(self):
         if self.move_direction == Direction.North:
