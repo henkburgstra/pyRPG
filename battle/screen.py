@@ -187,6 +187,8 @@ class BattleWindow(object):
             if self._is_viewing:
                 self._view_map(self._key_input)
             else:
+                if self._key_input is None:
+                    continue
                 self._player[self._cu].set_speed(self._key_input)
                 self._player[self._cu].set_fallback()
                 self._player[self._cu].handle_movement(self._key_input)
