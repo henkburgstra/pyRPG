@@ -45,9 +45,14 @@ CLEARPOS = -SCREENWIDTH, -SCREENHEIGHT  # ergens ver weg buiten beeld
 
 class BattleWindow(object):
     def __init__(self):
+        global SCREENHEIGHT, SCREENWIDTH
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
-        self._screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT), pygame.DOUBLEBUF)  # | pygame.FULLSCREEN)
+        info = pygame.display.Info()
+        if info.current_h != -1:
+            SCREENWIDTH = info.current_w
+            SCREENHEIGHT = info.current_h
+        self._screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT), pygame.DOUBLEBUF | pygame.FULLSCREEN)
         self._background = pygame.Surface(self._screen.get_size())
         self._background.fill(BLACK)
         self._background = self._background.convert()
